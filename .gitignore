@@ -1,0 +1,14 @@
+# Guide and personal notes — keep off GitHub
+GUIDE.md
+
+# Environment files
+.env
+.env.local
+.env.*
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
