@@ -32,7 +32,7 @@ AI-powered bookmark manager for saving and organizing internet content with auto
 ### Setup
 
 ```bash
-git clone https://github.com/yourusername/recall.git
+git clone https://github.com/MinitJain/recall.git
 cd recall/client
 npm install
 ```
