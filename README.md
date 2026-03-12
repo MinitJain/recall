@@ -54,6 +54,16 @@ npm run dev
 
 App runs at `http://localhost:3000`
 
+## Roadmap
+
+Current version covers the core MVP. Planned for future phases:
+
+- Semantic / vector search (find similar bookmarks by meaning)
+- D3.js knowledge graph — visualize bookmarks and tags as a graph
+- Background queue workers for async AI tagging
+- Browser extension for one-click saving
+- Page screenshot storage
+
 ## License
 
 MIT
