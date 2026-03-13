@@ -2,6 +2,14 @@
 
 AI-powered bookmark manager for saving and organizing internet content with automatic metadata extraction, tagging, and collections.
 
+## How it works
+
+![User Flow](docs/recall-user-flow.svg)
+
+![Architecture](docs/recall-architecture.svg)
+
+![Database Schema](docs/recall-db-schema.svg)
+
 ## Features
 
 - Paste any URL → auto-fetches title, description, and thumbnail

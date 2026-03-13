@@ -1,0 +1,96 @@
+<svg width="680" height="380" viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="680" height="380" fill="#0f1117" rx="16"/>
+
+  <!-- Title -->
+  <text x="340" y="30" text-anchor="middle" font-size="15" font-weight="600" fill="#e2e8f0">Database tables and how they relate</text>
+
+  <!-- USER table -->
+  <rect x="40" y="50" width="160" height="130" rx="10" fill="#1e1b2e" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="120" y="76" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#a78bfa">User</text>
+  <line x1="48" y1="90" x2="192" y2="90" stroke="#3d3555" stroke-width="1"/>
+  <text x="56" y="110" dominant-baseline="central" font-size="11" fill="#c4b5fd">id</text>
+  <text x="192" y="110" text-anchor="end" dominant-baseline="central" font-size="11" fill="#ef4444">String (PK)</text>
+  <text x="56" y="130" dominant-baseline="central" font-size="11" fill="#c4b5fd">email</text>
+  <text x="192" y="130" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String unique</text>
+  <text x="56" y="150" dominant-baseline="central" font-size="11" fill="#c4b5fd">name</text>
+  <text x="192" y="150" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String?</text>
+  <text x="56" y="170" dominant-baseline="central" font-size="11" fill="#c4b5fd">createdAt</text>
+  <text x="192" y="170" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">DateTime</text>
+
+  <!-- BOOKMARK table -->
+  <rect x="250" y="50" width="180" height="210" rx="10" fill="#0f2a2a" stroke="#0d9488" stroke-width="1.5"/>
+  <text x="340" y="76" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#5eead4">Bookmark</text>
+  <line x1="258" y1="90" x2="422" y2="90" stroke="#1a3a3a" stroke-width="1"/>
+  <text x="266" y="110" dominant-baseline="central" font-size="11" fill="#99f6e4">id</text>
+  <text x="422" y="110" text-anchor="end" dominant-baseline="central" font-size="11" fill="#ef4444">String (PK)</text>
+  <text x="266" y="130" dominant-baseline="central" font-size="11" fill="#99f6e4">url</text>
+  <text x="422" y="130" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String</text>
+  <text x="266" y="150" dominant-baseline="central" font-size="11" fill="#99f6e4">title</text>
+  <text x="422" y="150" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String?</text>
+  <text x="266" y="170" dominant-baseline="central" font-size="11" fill="#99f6e4">description</text>
+  <text x="422" y="170" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String?</text>
+  <text x="266" y="190" dominant-baseline="central" font-size="11" fill="#99f6e4">thumbnail</text>
+  <text x="422" y="190" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String?</text>
+  <text x="266" y="210" dominant-baseline="central" font-size="11" fill="#99f6e4">userId</text>
+  <text x="422" y="210" text-anchor="end" dominant-baseline="central" font-size="11" fill="#f59e0b">String (FK)</text>
+  <text x="266" y="230" dominant-baseline="central" font-size="11" fill="#99f6e4">createdAt</text>
+  <text x="422" y="230" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">DateTime</text>
+
+  <!-- TAG table -->
+  <rect x="480" y="50" width="160" height="110" rx="10" fill="#2a1f05" stroke="#d97706" stroke-width="1.5"/>
+  <text x="560" y="76" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#fbbf24">Tag</text>
+  <line x1="488" y1="90" x2="632" y2="90" stroke="#3a2d0a" stroke-width="1"/>
+  <text x="496" y="110" dominant-baseline="central" font-size="11" fill="#fde68a">id</text>
+  <text x="632" y="110" text-anchor="end" dominant-baseline="central" font-size="11" fill="#ef4444">String (PK)</text>
+  <text x="496" y="130" dominant-baseline="central" font-size="11" fill="#fde68a">name</text>
+  <text x="632" y="130" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String</text>
+  <text x="496" y="150" dominant-baseline="central" font-size="11" fill="#fde68a">bookmarks</text>
+  <text x="632" y="150" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">Bookmark[]</text>
+
+  <!-- COLLECTION table -->
+  <rect x="480" y="190" width="160" height="110" rx="10" fill="#2a0f0f" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="560" y="216" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#f87171">Collection</text>
+  <line x1="488" y1="230" x2="632" y2="230" stroke="#3a1a1a" stroke-width="1"/>
+  <text x="496" y="250" dominant-baseline="central" font-size="11" fill="#fca5a5">id</text>
+  <text x="632" y="250" text-anchor="end" dominant-baseline="central" font-size="11" fill="#ef4444">String (PK)</text>
+  <text x="496" y="270" dominant-baseline="central" font-size="11" fill="#fca5a5">name</text>
+  <text x="632" y="270" text-anchor="end" dominant-baseline="central" font-size="11" fill="#94a3b8">String</text>
+  <text x="496" y="290" dominant-baseline="central" font-size="11" fill="#fca5a5">userId</text>
+  <text x="632" y="290" text-anchor="end" dominant-baseline="central" font-size="11" fill="#f59e0b">String (FK)</text>
+
+  <!-- RELATIONS -->
+  <!-- User → Bookmark -->
+  <line x1="202" y1="115" x2="248" y2="115" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="225" y="107" text-anchor="middle" font-size="10" fill="#94a3b8">1</text>
+  <text x="225" y="130" text-anchor="middle" font-size="10" fill="#94a3b8">many</text>
+
+  <!-- Bookmark → Tag -->
+  <line x1="432" y1="110" x2="478" y2="110" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="455" y="100" text-anchor="middle" font-size="10" fill="#94a3b8">many</text>
+  <text x="455" y="124" text-anchor="middle" font-size="10" fill="#94a3b8">many</text>
+
+  <!-- Bookmark → Collection -->
+  <line x1="432" y1="220" x2="478" y2="240" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="450" y="222" text-anchor="middle" font-size="10" fill="#94a3b8">many</text>
+  <text x="455" y="255" text-anchor="middle" font-size="10" fill="#94a3b8">many</text>
+
+  <!-- Cascade note -->
+  <text x="120" y="210" text-anchor="middle" font-size="10" fill="#7c3aed">&#8595; onDelete: Cascade</text>
+  <text x="120" y="226" text-anchor="middle" font-size="10" fill="#7c3aed">bookmarks deleted too</text>
+
+  <!-- Legend -->
+  <rect x="40" y="318" width="12" height="12" rx="3" fill="#ef4444"/>
+  <text x="58" y="324" dominant-baseline="central" font-size="10" fill="#94a3b8">PK = Primary Key — unique row ID</text>
+  <rect x="340" y="318" width="12" height="12" rx="3" fill="#f59e0b"/>
+  <text x="358" y="324" dominant-baseline="central" font-size="10" fill="#94a3b8">FK = Foreign Key — points to another table</text>
+
+  <!-- Footer -->
+  <text x="340" y="356" text-anchor="middle" font-size="10" fill="#475569">Recall — DB Schema — recall.app</text>
+</svg>
