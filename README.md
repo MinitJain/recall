@@ -21,7 +21,7 @@ AI-powered bookmark manager for saving and organizing internet content with auto
 
 ## Tech Stack
 
-- **Frontend + API** — Next.js 14 (App Router)
+- **Frontend + API** — Next.js 16 (App Router)
 - **Styling** — Tailwind CSS
 - **Database** — PostgreSQL via Supabase
 - **ORM** — Prisma
@@ -56,6 +56,7 @@ GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ```bash
+npx prisma generate
 npx prisma db push
 npm run dev
 ```
