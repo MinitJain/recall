@@ -1,0 +1,29 @@
+language: en
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+
+chat:
+  auto_reply: true
+
+instructions: |
+  Recall is an AI-powered bookmark manager built with Next.js 16 (App Router),
+  TypeScript, Prisma v7, Supabase (PostgreSQL), Tailwind CSS, and Google Gemini API.
+  The Prisma client uses @prisma/adapter-pg.
+
+  The developer is experienced with the MERN stack but is transitioning to this stack.
+
+  When reviewing code:
+  - Explain issues clearly — state WHY something is wrong, not just that it is.
+  - If a concept is being used incorrectly, give the MERN/Express equivalent to bridge understanding.
+  - Flag incorrect Server vs Client component usage (Next.js App Router logic).
+  - Suggest more efficient Prisma queries (e.g., avoiding N+1 issues).
+  - Point out security issues (exposed secrets, SQL injection, XSS) explicitly.
+  - Focus on correctness and security — avoid nitpicking stylistic preferences.
