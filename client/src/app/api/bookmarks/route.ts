@@ -27,6 +27,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid url" }, { status: 400 });
   }
 
+  const blockedHosts = new Set(["localhost", "127.0.0.1", "::1", "0.0.0.0"]);
+  const host = parsedUrl.hostname.toLowerCase();
+  if (blockedHosts.has(host) || host.endsWith(".local")) {
+    return NextResponse.json({ error: "invalid url" }, { status: 400 });
+  }
+
   const normalizedUrl = parsedUrl.href;
 
   const metadata = await scrapeUrl(normalizedUrl).catch(() => ({
