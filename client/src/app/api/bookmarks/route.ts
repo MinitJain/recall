@@ -3,7 +3,14 @@ import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 
 export async function POST(req: NextRequest) {
-  const { url } = await req.json();
+  let body: { url?: unknown };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "invalid json" }, { status: 400 });
+  }
+
+  const { url } = body;
 
   if (!url) {
     return NextResponse.json({ error: "url is required" }, { status: 400 });
@@ -23,7 +30,7 @@ export async function POST(req: NextRequest) {
   const normalizedUrl = parsedUrl.href;
 
   const metadata = await scrapeUrl(normalizedUrl).catch(() => ({
-    title: url,
+    title: normalizedUrl,
     description: null,
     thumbnail: null,
   }));
