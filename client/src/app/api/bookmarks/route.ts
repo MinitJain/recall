@@ -1,6 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isIP } from "net";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
+
+function isPrivateIp(host: string): boolean {
+  if (isIP(host) === 4) {
+    const parts = host.split(".").map(Number);
+    return (
+      parts[0] === 10 ||
+      parts[0] === 127 ||
+      (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
+      (parts[0] === 192 && parts[1] === 168) ||
+      (parts[0] === 169 && parts[1] === 254)
+    );
+  }
+  if (isIP(host) === 6) {
+    const lower = host.toLowerCase();
+    return lower === "::1" || lower.startsWith("fe80:") || lower.startsWith("fc") || lower.startsWith("fd");
+  }
+  return false;
+}
 
 export async function POST(req: NextRequest) {
   let body: { url?: unknown };
@@ -29,7 +48,7 @@ export async function POST(req: NextRequest) {
 
   const blockedHosts = new Set(["localhost", "127.0.0.1", "::1", "0.0.0.0"]);
   const host = parsedUrl.hostname.toLowerCase();
-  if (blockedHosts.has(host) || host.endsWith(".local")) {
+  if (blockedHosts.has(host) || host.endsWith(".local") || isPrivateIp(host)) {
     return NextResponse.json({ error: "invalid url" }, { status: 400 });
   }
 
