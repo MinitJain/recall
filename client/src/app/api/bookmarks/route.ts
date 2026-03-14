@@ -9,7 +9,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "url is required" }, { status: 400 });
   }
 
-  const metadata = await scrapeUrl(url).catch(() => ({
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(url);
+  } catch {
+    return NextResponse.json({ error: "invalid url" }, { status: 400 });
+  }
+
+  if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+    return NextResponse.json({ error: "invalid url" }, { status: 400 });
+  }
+
+  const normalizedUrl = parsedUrl.href;
+
+  const metadata = await scrapeUrl(normalizedUrl).catch(() => ({
     title: url,
     description: null,
     thumbnail: null,
@@ -17,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   const bookmark = await prisma.bookmark.create({
     data: {
-      url,
+      url: normalizedUrl,
       title: metadata.title,
       description: metadata.description,
       thumbnail: metadata.thumbnail,

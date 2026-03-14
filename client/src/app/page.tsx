@@ -12,7 +12,7 @@ export default async function Home() {
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-8">
           Bookmarks
         </h1>
-        {bookmarks.length === 0 ? (
+        {bookmarks.length === 0 ? (5
           <p className="text-zinc-500 text-sm">
             No bookmarks yet. POST to /api/bookmarks to add one.
           </p>
