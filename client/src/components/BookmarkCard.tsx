@@ -24,6 +24,7 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
         <a
           href={bookmark.url}
           target="_blank"
+          rel="noopener noreferrer"
           className="font-semibold text-blue-600
   hover:underline"
         >
