@@ -1,5 +1,7 @@
 # Recall
 
+[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/MinitJain/recall?utm_source=oss&utm_medium=github&utm_campaign=MinitJain%2Frecall&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
+
 AI-powered bookmark manager for saving and organizing internet content with automatic metadata extraction, tagging, and collections.
 
 ## How it works
