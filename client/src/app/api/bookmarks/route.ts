@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
   const { url } = body;
 
-  if (!url) {
+  if (typeof url !== "string" || !url) {
     return NextResponse.json({ error: "url is required" }, { status: 400 });
   }
 
@@ -35,14 +35,20 @@ export async function POST(req: NextRequest) {
     thumbnail: null,
   }));
 
-  const bookmark = await prisma.bookmark.create({
-    data: {
-      url: normalizedUrl,
-      title: metadata.title,
-      description: metadata.description,
-      thumbnail: metadata.thumbnail,
-    },
-  });
+  let bookmark;
+  try {
+    bookmark = await prisma.bookmark.create({
+      data: {
+        url: normalizedUrl,
+        title: metadata.title,
+        description: metadata.description,
+        thumbnail: metadata.thumbnail,
+      },
+    });
+  } catch (err) {
+    console.error("Failed to create bookmark:", err);
+    return NextResponse.json({ error: "failed to save bookmark" }, { status: 500 });
+  }
 
   return NextResponse.json(bookmark, { status: 201 });
 }
