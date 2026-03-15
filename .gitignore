@@ -13,3 +13,6 @@ notes/
 # Editor
 .vscode/
 .idea/
+
+# Claude Code
+.claude/

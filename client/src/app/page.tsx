@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import BookmarkCard from "@/components/BookmarkCard";
+import SaveUrlForm from "@/components/SaveUrlForm";
 
 export default async function Home() {
   const bookmarks = await prisma.bookmark.findMany({
@@ -12,9 +13,10 @@ export default async function Home() {
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-8">
           Bookmarks
         </h1>
+        <SaveUrlForm />
         {bookmarks.length === 0 ? (
           <p className="text-zinc-500 text-sm">
-            No bookmarks yet. POST to /api/bookmarks to add one.
+            No bookmarks yet. Paste a URL above to save one.
           </p>
         ) : (
           <div className="flex flex-col gap-4">
