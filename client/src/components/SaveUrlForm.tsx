@@ -37,22 +37,30 @@ export default function SaveUrlForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mb-8">
-      <input
-        type="text"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        placeholder="Paste a URL..."
-        className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
-      />
-      <button
-        type="submit"
-        disabled={loading || !url}
-        className="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50"
-      >
-        {loading ? "Saving..." : "Save"}
-      </button>
+    <div className="mb-8">
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <label htmlFor="bookmark-url" className="sr-only">
+          URL
+        </label>
+        <input
+          id="bookmark-url"
+          type="url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="Paste a URL..."
+          autoComplete="url"
+          required
+          className="flex-1 rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+        />
+        <button
+          type="submit"
+          disabled={loading || !url}
+          className="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50"
+        >
+          {loading ? "Saving..." : "Save"}
+        </button>
+      </form>
       {error && <p className="text-sm text-red-400 mt-2">{error}</p>}
-    </form>
+    </div>
   );
 }
