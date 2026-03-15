@@ -14,22 +14,26 @@ export default function SaveUrlForm() {
     setLoading(true);
     setError(null);
 
-    const res = await fetch("/api/bookmarks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url }),
-    });
+    try {
+      const res = await fetch("/api/bookmarks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error ?? "something went wrong");
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error ?? "something went wrong");
+        return;
+      }
+
+      setUrl("");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "something went wrong");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setUrl("");
-    setLoading(false);
-    router.refresh();
   }
 
   return (
