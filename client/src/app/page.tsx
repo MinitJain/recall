@@ -5,6 +5,7 @@ import SaveUrlForm from "@/components/SaveUrlForm";
 export default async function Home() {
   const bookmarks = await prisma.bookmark.findMany({
     orderBy: { createdAt: "desc" },
+    include: { tags: true },
   });
 
   return (

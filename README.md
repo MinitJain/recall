@@ -23,7 +23,7 @@ Save anything from the internet. Recall it with AI.
 
 ## Tech Stack
 
-- **Frontend + API** — Next.js 16 (App Router)
+- **Frontend + API** — Next.js 15 (App Router)
 - **Styling** — Tailwind CSS
 - **Database** — PostgreSQL via Supabase
 - **ORM** — Prisma
@@ -69,10 +69,15 @@ App runs at `http://localhost:3000`
 
 Current version covers the core MVP. Planned for future phases:
 
+**Phase 2**
+- Chrome extension — floating save button on any page, popup with recent bookmarks, cross-browser sync via same account
+- Bookmarklet — one-click saving that works in any browser, no extension required
+- Resurfacing — surface older bookmarks with matching tags when you save something new
+
+**Phase 3**
 - Semantic / vector search (find similar bookmarks by meaning)
 - D3.js knowledge graph — visualize bookmarks and tags as a graph
 - Background queue workers for async AI tagging
-- Browser extension for one-click saving
 - Page screenshot storage
 
 ## License
