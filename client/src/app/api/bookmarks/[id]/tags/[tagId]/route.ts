@@ -7,14 +7,18 @@ export async function DELETE(
 ) {
   const { id, tagId } = await params;
 
-  const tag = await prisma.tag.findFirst({
-    where: { id: tagId, bookmarkId: id },
-  });
-  if (!tag) {
-    return NextResponse.json({ error: "tag not found" }, { status: 404 });
-  }
+  try {
+    const tag = await prisma.tag.findFirst({
+      where: { id: tagId, bookmarkId: id },
+    });
+    if (!tag) {
+      return NextResponse.json({ error: "tag not found" }, { status: 404 });
+    }
 
-  await prisma.tag.delete({ where: { id: tagId } });
+    await prisma.tag.delete({ where: { id: tagId } });
+  } catch {
+    return NextResponse.json({ error: "failed to delete tag" }, { status: 500 });
+  }
 
   return new NextResponse(null, { status: 204 });
 }
