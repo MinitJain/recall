@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isIP } from "net";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
+import { checkApiKey } from "@/lib/api-auth";
 
 function isPrivateIp(host: string): boolean {
   if (isIP(host) === 4) {
@@ -22,6 +23,10 @@ function isPrivateIp(host: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  if (!checkApiKey(req)) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
   let body: { url?: unknown };
   try {
     body = await req.json();
