@@ -29,13 +29,6 @@ export async function POST(
       return NextResponse.json({ error: "bookmark not found" }, { status: 404 });
     }
 
-    const existing = await prisma.tag.findFirst({
-      where: { bookmarkId: id, name },
-    });
-    if (existing) {
-      return NextResponse.json({ error: "tag already exists" }, { status: 409 });
-    }
-
     const tag = await prisma.tag.create({
       data: { name, bookmarkId: id },
     });
