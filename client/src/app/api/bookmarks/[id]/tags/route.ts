@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "../../../../generated/prisma";
 
 export async function POST(
   req: NextRequest,
@@ -40,7 +41,10 @@ export async function POST(
     });
 
     return NextResponse.json(tag, { status: 201 });
-  } catch {
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+      return NextResponse.json({ error: "tag already exists" }, { status: 409 });
+    }
     return NextResponse.json({ error: "failed to create tag" }, { status: 500 });
   }
 }

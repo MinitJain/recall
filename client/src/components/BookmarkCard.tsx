@@ -29,30 +29,40 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
     if (!name) return;
     setLoading(true);
     setError(null);
-    const res = await fetch(`/api/bookmarks/${bookmark.id}/tags`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name }),
-    });
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error ?? "failed to add tag");
-    } else {
-      setInput("");
+    try {
+      const res = await fetch(`/api/bookmarks/${bookmark.id}/tags`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error ?? "failed to add tag");
+      } else {
+        setInput("");
+        router.refresh();
+      }
+    } catch {
+      setError("failed to add tag");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-    router.refresh();
   }
 
   async function removeTag(tagId: string) {
-    const res = await fetch(`/api/bookmarks/${bookmark.id}/tags/${tagId}`, {
-      method: "DELETE",
-    });
-    if (!res.ok) {
+    setError(null);
+    try {
+      const res = await fetch(`/api/bookmarks/${bookmark.id}/tags/${tagId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        setError("failed to remove tag");
+        return;
+      }
+      router.refresh();
+    } catch {
       setError("failed to remove tag");
-      return;
     }
-    router.refresh();
   }
 
   return (
@@ -88,6 +98,8 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
             >
               {tag.name}
               <button
+                type="button"
+                aria-label={`Remove tag ${tag.name}`}
                 onClick={() => removeTag(tag.id)}
                 className="text-zinc-400 hover:text-red-500"
               >
