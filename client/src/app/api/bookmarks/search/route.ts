@@ -7,8 +7,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const q = req.nextUrl.searchParams.get("q");
-  if (!q || !q.trim()) {
+  const raw = req.nextUrl.searchParams.get("q");
+  const q = raw?.trim() ?? "";
+  if (!q) {
     return NextResponse.json({ error: "q is required" }, { status: 400 });
   }
 
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
           { description: { contains: q, mode: "insensitive" } },
         ],
       },
+      take: 50,
       select: {
         id: true,
         url: true,

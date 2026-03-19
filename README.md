@@ -23,7 +23,7 @@ Save anything from the internet. Recall it with AI.
 
 ## Tech Stack
 
-- **Frontend + API** — Next.js 15 (App Router)
+- **Frontend + API** — Next.js 16 (App Router)
 - **Styling** — Tailwind CSS
 - **Database** — PostgreSQL via Supabase
 - **ORM** — Prisma

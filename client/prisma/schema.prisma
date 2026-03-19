@@ -37,6 +37,8 @@ model Tag {
 
   bookmarkId String
   bookmark   Bookmark @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+
+  @@unique([bookmarkId, name])
 }
 
 model Collection {
