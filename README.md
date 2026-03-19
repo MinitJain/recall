@@ -14,12 +14,19 @@ Save anything from the internet. Recall it with AI.
 
 ## Features
 
+**Built so far:**
 - Paste any URL → auto-fetches title, description, and thumbnail
-- AI-generated tags per bookmark (powered by Gemini)
-- Manual tag add/remove
+- Manual tag add/remove per bookmark
+- Text search API across title, URL, and description
+
+**Coming in Phase 1:**
+- User authentication (login/register)
+- Chrome extension (save, list, delete bookmarks from any page)
+
+**Coming in Phase 2:**
+- AI-generated tags (powered by Gemini)
 - Collections (folders) for organizing bookmarks
-- Text search across saved content
-- User authentication
+- User and admin dashboards
 
 ## Tech Stack
 
@@ -55,6 +62,7 @@ DIRECT_URL=your_supabase_direct_connection_string
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 GEMINI_API_KEY=your_gemini_api_key
+RECALL_API_KEY=some_long_random_secret
 ```
 
 ```bash
@@ -67,18 +75,21 @@ App runs at `http://localhost:3000`
 
 ## Roadmap
 
-Current version covers the core MVP. Planned for future phases:
+**Phase 1 (in progress)**
+- Supabase Auth (login/register)
+- Chrome extension — floating save button, popup, cross-browser sync via same account
+- Bookmarklet — backup for any browser, no extension required
 
 **Phase 2**
-- Chrome extension — floating save button on any page, popup with recent bookmarks, cross-browser sync via same account
-- Bookmarklet — one-click saving that works in any browser, no extension required
-- Resurfacing — surface older bookmarks with matching tags when you save something new
+- User dashboard and admin dashboard
+- AI-generated tags (Gemini)
+- Collections/folders
+- Resurfacing — surface older bookmarks with matching tags
 
 **Phase 3**
 - Semantic / vector search (find similar bookmarks by meaning)
 - D3.js knowledge graph — visualize bookmarks and tags as a graph
 - Background queue workers for async AI tagging
-- Page screenshot storage
 
 ## License
 
