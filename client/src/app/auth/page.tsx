@@ -38,6 +38,8 @@ export default function AuthPage() {
       }
       router.push("/");
       router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "something went wrong");
     } finally {
       setLoading(false);
     }
@@ -51,22 +53,30 @@ export default function AuthPage() {
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
-          />
+          <div className="flex flex-col gap-1">
+            <label htmlFor="email-input" className="text-sm text-zinc-400">Email</label>
+            <input
+              id="email-input"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="password-input" className="text-sm text-zinc-400">Password</label>
+            <input
+              id="password-input"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+            />
+          </div>
 
           {error && <p className="text-sm text-red-400">{error}</p>}
 
