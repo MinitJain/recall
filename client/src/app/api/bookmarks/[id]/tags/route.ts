@@ -25,7 +25,12 @@ export async function POST(
     return NextResponse.json({ error: "name is required" }, { status: 400 });
   }
 
-  const bookmark = await prisma.bookmark.findFirst({ where: { id, userId: user.id } });
+  let bookmark;
+  try {
+    bookmark = await prisma.bookmark.findFirst({ where: { id, userId: user.id } });
+  } catch {
+    return NextResponse.json({ error: "failed to fetch bookmark" }, { status: 500 });
+  }
   if (!bookmark) {
     return NextResponse.json({ error: "bookmark not found" }, { status: 404 });
   }

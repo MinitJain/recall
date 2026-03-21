@@ -17,9 +17,8 @@ export default function AuthPage() {
     setLoading(true);
     setError(null);
 
-    const supabase = createClient();
-
     try {
+      const supabase = createClient();
       if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -30,9 +29,13 @@ export default function AuthPage() {
           return;
         }
       } else {
-        const { error } = await supabase.auth.signUp({ email, password });
+        const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) {
           setError(error.message);
+          return;
+        }
+        if (!data.session) {
+          setError("Check your email to confirm your account.");
           return;
         }
       }
@@ -78,7 +81,7 @@ export default function AuthPage() {
             />
           </div>
 
-          {error && <p className="text-sm text-red-400">{error}</p>}
+          {error && <p role="alert" aria-live="polite" className="text-sm text-red-400">{error}</p>}
 
           <button
             type="submit"
