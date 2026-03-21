@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "../../../../generated/prisma";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   let body: { name?: unknown };
   try {
@@ -19,14 +23,16 @@ export async function POST(
   if (!name) {
     return NextResponse.json({ error: "name is required" }, { status: 400 });
   }
-  if (name.length > 50) {
-    return NextResponse.json({ error: "tag name too long" }, { status: 400 });
+
+  const bookmark = await prisma.bookmark.findFirst({ where: { id, userId: user.id } });
+  if (!bookmark) {
+    return NextResponse.json({ error: "bookmark not found" }, { status: 404 });
   }
 
   try {
-    const bookmark = await prisma.bookmark.findUnique({ where: { id } });
-    if (!bookmark) {
-      return NextResponse.json({ error: "bookmark not found" }, { status: 404 });
+    const existing = await prisma.tag.findFirst({ where: { bookmarkId: id, name } });
+    if (existing) {
+      return NextResponse.json({ error: "tag already exists" }, { status: 409 });
     }
 
     const tag = await prisma.tag.create({
@@ -34,10 +40,7 @@ export async function POST(
     });
 
     return NextResponse.json(tag, { status: 201 });
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      return NextResponse.json({ error: "tag already exists" }, { status: 409 });
-    }
+  } catch {
     return NextResponse.json({ error: "failed to create tag" }, { status: 500 });
   }
 }
