@@ -101,7 +101,11 @@ export default function AuthPage() {
             ? "Don't have an account?"
             : "Already have an account?"}{" "}
           <button
-            onClick={() => setMode(mode === "login" ? "signup" : "login")}
+            onClick={() => {
+              setMode(mode === "login" ? "signup" : "login");
+              setError(null);
+              setPassword("");
+            }}
             className="text-zinc-300 hover:underline"
           >
             {mode === "login" ? "Sign up" : "Log in"}
