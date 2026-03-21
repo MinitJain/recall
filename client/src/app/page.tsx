@@ -1,9 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import BookmarkCard from "@/components/BookmarkCard";
 import SaveUrlForm from "@/components/SaveUrlForm";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/auth");
+
   const bookmarks = await prisma.bookmark.findMany({
+    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
     include: { tags: true },
   });

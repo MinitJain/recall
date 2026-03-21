@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isIP } from "net";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
-import { checkApiKey } from "@/lib/api-auth";
+import { createClient } from "@/lib/supabase/server";
 
 function isPrivateIp(host: string): boolean {
   if (isIP(host) === 4) {
@@ -17,15 +17,23 @@ function isPrivateIp(host: string): boolean {
   }
   if (isIP(host) === 6) {
     const lower = host.toLowerCase();
-    return lower === "::1" || lower.startsWith("fe80:") || lower.startsWith("fc") || lower.startsWith("fd");
+    return (
+      lower === "::1" ||
+      lower.startsWith("fe80:") ||
+      lower.startsWith("fc") ||
+      lower.startsWith("fd")
+    );
   }
   return false;
 }
 
 export async function POST(req: NextRequest) {
-  if (!checkApiKey(req)) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user)
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
 
   let body: { url?: unknown };
   try {
@@ -73,11 +81,15 @@ export async function POST(req: NextRequest) {
         title: metadata.title,
         description: metadata.description,
         thumbnail: metadata.thumbnail,
+        userId: user.id,
       },
     });
   } catch (err) {
     console.error("Failed to create bookmark:", err);
-    return NextResponse.json({ error: "failed to save bookmark" }, { status: 500 });
+    return NextResponse.json(
+      { error: "failed to save bookmark" },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json(bookmark, { status: 201 });
