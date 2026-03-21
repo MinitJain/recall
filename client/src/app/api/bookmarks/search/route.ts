@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { checkApiKey } from "@/lib/api-auth";
+import { createClient } from "@/lib/supabase/server";
 
 export async function GET(req: NextRequest) {
-  if (!checkApiKey(req)) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   const raw = req.nextUrl.searchParams.get("q");
   const q = raw?.trim() ?? "";
@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
   try {
     bookmarks = await prisma.bookmark.findMany({
       where: {
+        userId: user.id,
         OR: [
           { title: { contains: q, mode: "insensitive" } },
           { url: { contains: q, mode: "insensitive" } },

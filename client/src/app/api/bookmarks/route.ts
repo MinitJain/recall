@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isIP } from "net";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
-import { checkApiKey } from "@/lib/api-auth";
+import { createClient } from "@/lib/supabase/server";
 
 function isPrivateIp(host: string): boolean {
   if (isIP(host) === 4) {
@@ -23,9 +23,9 @@ function isPrivateIp(host: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  if (!checkApiKey(req)) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   let body: { url?: unknown };
   try {
@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
         title: metadata.title,
         description: metadata.description,
         thumbnail: metadata.thumbnail,
+        userId: user.id,
       },
     });
   } catch (err) {
@@ -84,7 +85,12 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
   const bookmarks = await prisma.bookmark.findMany({
+    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   });
   return NextResponse.json(bookmarks);
