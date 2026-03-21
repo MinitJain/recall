@@ -17,15 +17,23 @@ function isPrivateIp(host: string): boolean {
   }
   if (isIP(host) === 6) {
     const lower = host.toLowerCase();
-    return lower === "::1" || lower.startsWith("fe80:") || lower.startsWith("fc") || lower.startsWith("fd");
+    return (
+      lower === "::1" ||
+      lower.startsWith("fe80:") ||
+      lower.startsWith("fc") ||
+      lower.startsWith("fd")
+    );
   }
   return false;
 }
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user)
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   let body: { url?: unknown };
   try {
@@ -78,19 +86,17 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error("Failed to create bookmark:", err);
-    return NextResponse.json({ error: "failed to save bookmark" }, { status: 500 });
+    return NextResponse.json(
+      { error: "failed to save bookmark" },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json(bookmark, { status: 201 });
 }
 
 export async function GET() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-
   const bookmarks = await prisma.bookmark.findMany({
-    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   });
   return NextResponse.json(bookmarks);
