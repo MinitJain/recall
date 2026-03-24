@@ -1,43 +1,65 @@
 # Recall
 
+**Save anything. Find everything.**
+
 [![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/MinitJain/recall?utm_source=oss&utm_medium=github&utm_campaign=MinitJain%2Frecall&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 
-Save anything from the internet. Recall it with AI.
+---
 
-## How it works
+## The Problem
 
-![User Flow](docs/recall-user-flow.png)
+You read something valuable — an article, a thread, a tool — and you save it somewhere. A week later it's gone. Not gone from the internet, gone from your memory. You can't search for what you don't remember saving.
 
-![Architecture](docs/recall-architecture.svg)
+## How Recall Solves It
 
-![Database Schema](docs/recall-db-schema.svg)
+Recall gives every bookmark an AI-generated tag cloud the moment you save it. Paste a URL, get a title, description, thumbnail, and tags — automatically. Search by tag or keyword. Organize into collections. Never lose track of what you've read.
 
 ## Features
 
-- Paste any URL → auto-fetches title, description, and thumbnail
-- AI-generated tags per bookmark (powered by Gemini)
-- Manual tag add/remove
-- Collections (folders) for organizing bookmarks
-- Text search across saved content
-- User authentication
+- **Instant metadata** — paste a URL, auto-fetches title, description, and thumbnail
+- **AI tagging** — Gemini generates relevant tags per bookmark on save
+- **Manual tags** — add or remove tags at any time
+- **Collections** — group bookmarks into folders
+- **Text search** — search across titles, descriptions, and tags
+- **Auth** — secure accounts via Supabase Auth (email/password + magic link)
+
+## How It Works
+
+**User flow**
+
+![User Flow](docs/recall-user-flow.png)
+
+**Architecture**
+
+![Architecture](docs/recall-architecture.svg)
+
+**Database schema**
+
+![Database Schema](docs/recall-db-schema.svg)
 
 ## Tech Stack
 
-- **Frontend + API** — Next.js 16 (App Router)
-- **Styling** — Tailwind CSS
-- **Database** — PostgreSQL via Supabase
-- **ORM** — Prisma
-- **AI Tagging** — Google Gemini API
-- **Auth** — Supabase Auth
-- **Deployment** — Vercel
+| Layer | Technology |
+|-------|-----------|
+| Frontend + API | Next.js 16 (App Router) |
+| Styling | Tailwind CSS |
+| Database | PostgreSQL via Supabase |
+| ORM | Prisma |
+| AI Tagging | Google Gemini API |
+| Auth | Supabase Auth |
+| Deployment | Vercel |
+
+---
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- A [Supabase](https://supabase.com) project
-- A [Gemini API key](https://aistudio.google.com/app/apikey)
+- Node.js 20+
+- A [Supabase](https://supabase.com) project (free tier works)
+- A [Gemini API key](https://aistudio.google.com/app/apikey) (free)
 
 ### Setup
 
@@ -47,7 +69,7 @@ cd recall/client
 npm install
 ```
 
-Create a `.env.local` file inside `client/`:
+Create `client/.env.local`:
 
 ```env
 DATABASE_URL=your_supabase_postgres_connection_string
@@ -63,22 +85,35 @@ npx prisma db push
 npm run dev
 ```
 
-App runs at `http://localhost:3000`
+App runs at `http://localhost:3000`.
+
+---
 
 ## Roadmap
 
-Current version covers the core MVP. Planned for future phases:
+**M8 — Chrome Extension**
+- Floating save button on any page
+- Popup with recent bookmarks
+- Cross-browser sync via same account
 
-**Phase 2**
-- Chrome extension — floating save button on any page, popup with recent bookmarks, cross-browser sync via same account
-- Bookmarklet — one-click saving that works in any browser, no extension required
-- Resurfacing — surface older bookmarks with matching tags when you save something new
+**M9 — Deployment**
+- Vercel production deploy
+- Preview URLs on every PR
 
-**Phase 3**
-- Semantic / vector search (find similar bookmarks by meaning)
-- D3.js knowledge graph — visualize bookmarks and tags as a graph
+**Future**
+- Bookmarklet (no extension required)
+- Resurfacing — surface older bookmarks when you save something related
+- Semantic / vector search
+- D3.js knowledge graph
 - Background queue workers for async AI tagging
-- Page screenshot storage
+
+---
+
+## Contributing
+
+PRs welcome. Open an issue before starting major changes.
+
+[CodeRabbit](https://coderabbit.ai) reviews every PR automatically. CI runs lint, typecheck, and build on every push.
 
 ## License
 
