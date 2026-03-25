@@ -23,7 +23,9 @@ model Bookmark {
   thumbnail   String?
   createdAt   DateTime @default(now())
 
-  userId String?
+  userId String
+
+  @@index([userId])
 
   tags        Tag[]
   collections CollectionBookmark[]
