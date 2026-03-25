@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header({ email }: { email: string }) {
   const router = useRouter();
@@ -14,15 +15,16 @@ export default function Header({ email }: { email: string }) {
   }
 
   return (
-    <header className="flex items-center justify-between mb-8">
-      <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+    <header className="sticky top-0 z-10 flex items-center justify-between px-4 h-12 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-sm">
+      <span className="text-sm font-semibold tracking-tight text-[var(--text)]">
         Recall
-      </h1>
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-zinc-500 hidden sm:block">{email}</span>
+      </span>
+      <div className="flex items-center gap-1">
+        <span className="text-xs text-[var(--text-dim)] hidden sm:block mr-2">{email}</span>
+        <ThemeToggle />
         <button
           onClick={handleLogout}
-          className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+          className="h-8 px-3 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] rounded-md transition-all duration-100"
         >
           Log out
         </button>

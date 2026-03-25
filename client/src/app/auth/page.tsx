@@ -54,77 +54,94 @@ export default function AuthPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-6">
-          {mode === "login" ? "Log in" : "Sign up"}
-        </h1>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email-input" className="text-sm text-zinc-400">Email</label>
-            <input
-              id="email-input"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
-            />
+    <main className="min-h-screen bg-[var(--bg)] flex items-center justify-center px-4">
+      <div className="w-full max-w-sm animate-fade-up">
+        {/* Logo / wordmark */}
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--accent)] mb-4">
+            <span className="text-xl font-bold text-white">R</span>
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password-input" className="text-sm text-zinc-400">Password</label>
-            <input
-              id="password-input"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500"
-            />
-          </div>
+          <h1 className="text-xl font-semibold text-[var(--text)]">Recall</h1>
+          <p className="text-sm text-[var(--text-muted)] mt-1">
+            Save anything. Surface it when it matters.
+          </p>
+        </div>
 
-          {error && (
-            <p role="alert" aria-live="polite" className="text-sm text-red-400">
-              {error}
-            </p>
-          )}
-          {slow && !error && (
-            <p className="text-sm text-zinc-500" aria-live="polite">
-              Still working — this can take a few seconds on first load...
-            </p>
-          )}
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
+          <h2 className="text-sm font-semibold text-[var(--text)] mb-5">
+            {mode === "login" ? "Welcome back" : "Create your account"}
+          </h2>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50"
-          >
-            {loading
-              ? "Please wait..."
-              : mode === "login"
-                ? "Log in"
-                : "Sign up"}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="email-input" className="text-xs font-medium text-[var(--text-muted)]">
+                Email
+              </label>
+              <input
+                id="email-input"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="password-input" className="text-xs font-medium text-[var(--text-muted)]">
+                Password
+              </label>
+              <input
+                id="password-input"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+              />
+            </div>
 
-        <p className="text-sm text-zinc-500 mt-4">
-          {mode === "login"
-            ? "Don't have an account?"
-            : "Already have an account?"}{" "}
-          <button
-            onClick={() => {
-              setMode(mode === "login" ? "signup" : "login");
-              setError(null);
-              setPassword("");
-            }}
-            className="text-zinc-300 hover:underline"
-          >
-            {mode === "login" ? "Sign up" : "Log in"}
-          </button>
-        </p>
+            {error && (
+              <p role="alert" aria-live="polite" className="text-xs text-[var(--error)] bg-[var(--error-bg)] rounded-lg px-3 py-2">
+                {error}
+              </p>
+            )}
+            {slow && !error && (
+              <p className="text-xs text-[var(--text-muted)]" aria-live="polite">
+                Still working — this can take a few seconds on first load…
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--accent-text)] hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-colors duration-100 active:scale-95 mt-1"
+            >
+              {loading
+                ? "Please wait…"
+                : mode === "login"
+                  ? "Log in"
+                  : "Sign up"}
+            </button>
+          </form>
+
+          <p className="text-xs text-[var(--text-muted)] mt-4 text-center">
+            {mode === "login"
+              ? "Don't have an account?"
+              : "Already have an account?"}{" "}
+            <button
+              onClick={() => {
+                setMode(mode === "login" ? "signup" : "login");
+                setError(null);
+                setPassword("");
+              }}
+              className="text-[var(--accent)] hover:underline font-medium"
+            >
+              {mode === "login" ? "Sign up" : "Log in"}
+            </button>
+          </p>
+        </div>
       </div>
     </main>
   );
