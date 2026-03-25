@@ -3,6 +3,7 @@ import { isIP } from "net";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
+import { bookmarkRatelimit } from "@/lib/ratelimit";
 
 function isPrivateIp(host: string): boolean {
   if (isIP(host) === 4) {
@@ -31,6 +32,13 @@ export async function POST(req: NextRequest) {
   const user = await getUserFromRequest(req);
   if (!user)
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
+  const { success } = await bookmarkRatelimit.limit(user.id);
+  if (!success)
+    return NextResponse.json(
+      { error: "too many requests — slow down" },
+      { status: 429 },
+    );
 
   let body: { url?: unknown };
   try {
