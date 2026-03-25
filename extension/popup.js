@@ -140,25 +140,38 @@ async function deleteBookmark(id, access_token) {
   if (res.status !== 204 && !res.ok) throw new Error("Failed to delete");
 }
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function renderBookmarks(bookmarks) {
   if (bookmarks.length === 0) {
     bookmarksList.innerHTML = '<p class="empty-state">No bookmarks yet.</p>';
     return;
   }
   bookmarksList.innerHTML = bookmarks
-    .map(
-      (b) => `
-    <div class="bookmark-item" data-id="${b.id}">
+    .map((b) => {
+      let hostname = "";
+      try {
+        hostname = new URL(b.url).hostname;
+      } catch {
+        hostname = b.url;
+      }
+      return `
+    <div class="bookmark-item" data-id="${escapeHtml(b.id)}">
       <div class="bookmark-info">
-        <a href="${b.url}" target="_blank" rel="noopener noreferrer" class="bookmark-title">
-          ${b.title || b.url}
+        <a href="${escapeHtml(b.url)}" target="_blank" rel="noopener noreferrer" class="bookmark-title">
+          ${escapeHtml(b.title || b.url)}
         </a>
-        <span class="bookmark-url">${new URL(b.url).hostname}</span>
+        <span class="bookmark-url">${escapeHtml(hostname)}</span>
       </div>
-      <button class="delete-btn" data-id="${b.id}">×</button>
-    </div>
-  `,
-    )
+      <button class="delete-btn" data-id="${escapeHtml(b.id)}">×</button>
+    </div>`;
+    })
     .join("");
 
   bookmarksList.querySelectorAll(".delete-btn").forEach((btn) => {
