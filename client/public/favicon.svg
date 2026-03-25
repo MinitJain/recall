@@ -1,76 +1,20 @@
-<svg width="100%" viewBox="100 80 300 400" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="outerGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#e8820c" stop-opacity="0.22"/>
-      <stop offset="55%" stop-color="#b85a04" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="#7a3300" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="midGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#f59c1a" stop-opacity="0.32"/>
-      <stop offset="60%" stop-color="#d4710a" stop-opacity="0.12"/>
-      <stop offset="100%" stop-color="#a04800" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="coreCircle" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ffd27a"/>
-      <stop offset="35%" stop-color="#f5a020"/>
-      <stop offset="70%" stop-color="#d46808"/>
-      <stop offset="100%" stop-color="#a84500"/>
-    </radialGradient>
-    <radialGradient id="dot1Glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ffe8a0"/>
-      <stop offset="50%" stop-color="#ffbe3c"/>
-      <stop offset="100%" stop-color="#f59010" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="dot2Glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fff0c0"/>
-      <stop offset="40%" stop-color="#ffd060"/>
-      <stop offset="100%" stop-color="#f09010" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="dot3Glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ffe4a0"/>
-      <stop offset="45%" stop-color="#ffba38"/>
-      <stop offset="100%" stop-color="#e88010" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="dot4Glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fff2d0"/>
-      <stop offset="35%" stop-color="#ffc840"/>
-      <stop offset="100%" stop-color="#e08800" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark background -->
+  <rect width="32" height="32" rx="7" fill="#1a0e00"/>
 
-  <!-- Outer ambient glow -->
-  <ellipse cx="250" cy="250" rx="220" ry="220" fill="url(#outerGlow)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <ellipse cx="250" cy="250" rx="148" ry="148" fill="url(#midGlow)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Amber circle (core) -->
+  <circle cx="16" cy="16" r="8" fill="#d97706"/>
+  <circle cx="16" cy="16" r="8" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.6"/>
 
-  <!-- Main amber circle -->
-  <circle cx="250" cy="250" r="96" fill="url(#coreCircle)" opacity="0.95" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.95;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="250" cy="250" r="96" fill="none" stroke="#ffd060" stroke-width="1.2" opacity="0.35" style="fill:none;stroke:rgb(255, 208, 96);color:rgb(255, 255, 255);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.35;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="250" cy="250" r="86" fill="none" stroke="#ffe090" stroke-width="0.6" opacity="0.18" style="fill:none;stroke:rgb(255, 224, 144);color:rgb(255, 255, 255);stroke-width:0.6px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.18;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Constellation dots -->
+  <circle cx="13" cy="12" r="1.8" fill="#fff8e1"/>
+  <circle cx="19.5" cy="11" r="2.2" fill="#ffffff"/>
+  <circle cx="21" cy="17.5" r="1.6" fill="#fef3c7"/>
+  <circle cx="14.5" cy="20" r="1.4" fill="#fde68a"/>
 
-  <!-- Constellation lines -->
-  <line x1="200" y1="205" x2="280" y2="180" stroke="#f5a830" stroke-width="1.1" opacity="0.55" style="fill:rgb(0, 0, 0);stroke:rgb(245, 168, 48);color:rgb(255, 255, 255);stroke-width:1.1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.55;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="280" y1="180" x2="305" y2="265" stroke="#f5a830" stroke-width="1.1" opacity="0.55" style="fill:rgb(0, 0, 0);stroke:rgb(245, 168, 48);color:rgb(255, 255, 255);stroke-width:1.1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.55;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="305" y1="265" x2="210" y2="300" stroke="#f5a830" stroke-width="1.0" opacity="0.48" style="fill:rgb(0, 0, 0);stroke:rgb(245, 168, 48);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.48;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="200" y1="205" x2="210" y2="300" stroke="#f5a830" stroke-width="0.9" opacity="0.40" style="fill:rgb(0, 0, 0);stroke:rgb(245, 168, 48);color:rgb(255, 255, 255);stroke-width:0.9px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <line x1="200" y1="205" x2="305" y2="265" stroke="#e09020" stroke-width="0.7" opacity="0.25" style="fill:rgb(0, 0, 0);stroke:rgb(224, 144, 32);color:rgb(255, 255, 255);stroke-width:0.7px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.25;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- Dot 1 -->
-  <ellipse cx="200" cy="205" rx="22" ry="22" fill="url(#dot1Glow)" opacity="0.7" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="200" cy="205" r="6.5" fill="#fff5d0" style="fill:rgb(255, 245, 208);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="200" cy="205" r="4.5" fill="#fffde0" style="fill:rgb(255, 253, 224);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- Dot 2 (brightest) -->
-  <ellipse cx="280" cy="180" rx="28" ry="28" fill="url(#dot2Glow)" opacity="0.82" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.82;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="280" cy="180" r="7.5" fill="#fffae8" style="fill:rgb(255, 250, 232);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="280" cy="180" r="5.0" fill="#ffffff" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- Dot 3 -->
-  <ellipse cx="305" cy="265" rx="20" ry="20" fill="url(#dot3Glow)" opacity="0.68" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.68;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="305" cy="265" r="6.0" fill="#fff0c0" style="fill:rgb(255, 240, 192);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="305" cy="265" r="4.0" fill="#fff8e0" style="fill:rgb(255, 248, 224);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-
-  <!-- Dot 4 -->
-  <ellipse cx="210" cy="300" rx="16" ry="16" fill="url(#dot4Glow)" opacity="0.60" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="210" cy="300" r="5.0" fill="#ffeaaa" style="fill:rgb(255, 234, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
-  <circle cx="210" cy="300" r="3.2" fill="#fff4cc" style="fill:rgb(255, 244, 204);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Connecting lines -->
+  <line x1="13" y1="12" x2="19.5" y2="11" stroke="#fcd34d" stroke-width="0.7" opacity="0.8"/>
+  <line x1="19.5" y1="11" x2="21" y2="17.5" stroke="#fcd34d" stroke-width="0.7" opacity="0.8"/>
+  <line x1="21" y1="17.5" x2="14.5" y2="20" stroke="#fcd34d" stroke-width="0.6" opacity="0.7"/>
+  <line x1="13" y1="12" x2="14.5" y2="20" stroke="#fcd34d" stroke-width="0.6" opacity="0.6"/>
 </svg>
