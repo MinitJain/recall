@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isIP } from "net";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
-import { createClient } from "@/lib/supabase/server";
+import { getUserFromRequest } from "@/lib/supabase/get-user";
 
 function isPrivateIp(host: string): boolean {
   if (isIP(host) === 4) {
@@ -28,10 +28,7 @@ function isPrivateIp(host: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUserFromRequest(req);
   if (!user)
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
@@ -95,8 +92,13 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(bookmark, { status: 201 });
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const user = await getUserFromRequest(req);
+  if (!user)
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
   const bookmarks = await prisma.bookmark.findMany({
+    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   });
   return NextResponse.json(bookmarks);
