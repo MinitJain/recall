@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recall</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <!-- AUTH VIEW: shown when logged out -->
+    <div id="auth-view">
+      <h1>Recall</h1>
+      <p class="tagline">Save anything. Find everything.</p>
+
+      <div id="auth-error" class="error hidden"></div>
+
+      <input id="email" type="email" placeholder="Email" />
+      <input id="password" type="password" placeholder="Password" />
+
+      <div class="button-row">
+        <button id="login-btn">Log in</button>
+        <button id="signup-btn" class="secondary">Sign up</button>
+      </div>
+    </div>
+
+    <!-- MAIN VIEW: shown when logged in -->
+    <div id="main-view" class="hidden">
+      <div class="header">
+        <span id="user-email" class="user-email"></span>
+        <button id="logout-btn" class="ghost">Log out</button>
+      </div>
+
+      <button id="save-btn">Save this page</button>
+      <div id="save-status" class="status hidden"></div>
+
+      <div id="bookmarks-list"></div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

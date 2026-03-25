@@ -4,10 +4,6 @@
 
 **Save anything. Find everything.**
 
-[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/MinitJain/recall?utm_source=oss&utm_medium=github&utm_campaign=MinitJain%2Frecall&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
-
 </div>
 
 ---
@@ -45,15 +41,15 @@ Recall gives every bookmark an AI-generated tag cloud the moment you save it. Pa
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
+| Layer          | Technology              |
+| -------------- | ----------------------- |
 | Frontend + API | Next.js 16 (App Router) |
-| Styling | Tailwind CSS |
-| Database | PostgreSQL via Supabase |
-| ORM | Prisma |
-| AI Tagging | Google Gemini API |
-| Auth | Supabase Auth |
-| Deployment | Vercel |
+| Styling        | Tailwind CSS            |
+| Database       | PostgreSQL via Supabase |
+| ORM            | Prisma                  |
+| AI Tagging     | Google Gemini API       |
+| Auth           | Supabase Auth           |
+| Deployment     | Vercel                  |
 
 ---
 
@@ -96,15 +92,18 @@ App runs at `http://localhost:3000`.
 ## Roadmap
 
 **M8 — Chrome Extension**
+
 - Floating save button on any page
 - Popup with recent bookmarks
 - Cross-browser sync via same account
 
 **M9 — Deployment**
+
 - Vercel production deploy
 - Preview URLs on every PR
 
 **Future**
+
 - Bookmarklet (no extension required)
 - Resurfacing — surface older bookmarks when you save something related
 - Semantic / vector search
