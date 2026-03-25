@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
+/* ── Dark mode via class on <html> ──────────────────────────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Design tokens ──────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --bg:         #FAFAF9;
+  --surface:    #FFFFFF;
+  --surface-2:  #F5F4F2;
+
+  /* Borders */
+  --border:     #E7E5E4;
+  --border-2:   #D6D3D1;
+
+  /* Text */
+  --text:       #1C1917;
+  --text-muted: #78716C;
+  --text-dim:   #A8A29E;
+
+  /* Accent — amber */
+  --accent:     #D97706;
+  --accent-hover: #B45309;
+  --accent-text:  #FFFFFF;
+
+  /* States */
+  --error:      #DC2626;
+  --error-bg:   #FEF2F2;
+  --success:    #16A34A;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --bg:         #0C0A09;
+  --surface:    #1C1917;
+  --surface-2:  #292524;
+
+  --border:     #292524;
+  --border-2:   #44403C;
+
+  --text:       #FAFAF9;
+  --text-muted: #A8A29E;
+  --text-dim:   #78716C;
+
+  --accent:     #F59E0B;
+  --accent-hover: #D97706;
+  --accent-text:  #0C0A09;
+
+  --error:      #F87171;
+  --error-bg:   #1C0A0A;
+  --success:    #4ADE80;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ───────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.3s ease both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease both;
+}
+
+.animate-skeleton {
+  animation: pulse-subtle 1.8s ease-in-out infinite;
+}
+
+/* ── Tag height transition ──────────────────────────────────────────────── */
+.tag-enter {
+  animation: fade-up 0.15s ease both;
 }
