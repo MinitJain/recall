@@ -11,11 +11,14 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [slow, setSlow] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSlow(false);
+    const slowTimer = setTimeout(() => setSlow(true), 2500);
 
     try {
       const supabase = createClient();
@@ -44,7 +47,9 @@ export default function AuthPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : "something went wrong");
     } finally {
+      clearTimeout(slowTimer);
       setLoading(false);
+      setSlow(false);
     }
   }
 
@@ -81,7 +86,16 @@ export default function AuthPage() {
             />
           </div>
 
-          {error && <p role="alert" aria-live="polite" className="text-sm text-red-400">{error}</p>}
+          {error && (
+            <p role="alert" aria-live="polite" className="text-sm text-red-400">
+              {error}
+            </p>
+          )}
+          {slow && !error && (
+            <p className="text-sm text-zinc-500" aria-live="polite">
+              Still working — this can take a few seconds on first load...
+            </p>
+          )}
 
           <button
             type="submit"
