@@ -3,7 +3,7 @@
 // Find them in your .env.local as NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
 const SUPABASE_URL = "https://gfdwrzaeofehgpwuulvr.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_PLZj21S_KtFVCz1-jiq5PQ_3WNyg3dQ";
-const API_BASE = "http://localhost:3001";
+const API_BASE = "https://recallsave.vercel.app";
 
 // ── DOM REFS ─────────────────────────────────────────────────────────────────
 const authView = document.getElementById("auth-view");
@@ -140,6 +140,15 @@ async function deleteBookmark(id, access_token) {
   if (res.status !== 204 && !res.ok) throw new Error("Failed to delete");
 }
 
+function isSafeUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" || parsed.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -164,7 +173,7 @@ function renderBookmarks(bookmarks) {
       return `
     <div class="bookmark-item" data-id="${escapeHtml(b.id)}">
       <div class="bookmark-info">
-        <a href="${escapeHtml(b.url)}" target="_blank" rel="noopener noreferrer" class="bookmark-title">
+        <a href="${isSafeUrl(b.url) ? escapeHtml(b.url) : "#"}" target="_blank" rel="noopener noreferrer" class="bookmark-title">
           ${escapeHtml(b.title || b.url)}
         </a>
         <span class="bookmark-url">${escapeHtml(hostname)}</span>
