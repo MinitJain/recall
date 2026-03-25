@@ -22,6 +22,7 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
   const router = useRouter();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [removingId, setRemovingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function addTag() {
@@ -50,6 +51,8 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
   }
 
   async function removeTag(tagId: string) {
+    if (removingId) return;
+    setRemovingId(tagId);
     setError(null);
     try {
       const res = await fetch(`/api/bookmarks/${bookmark.id}/tags/${tagId}`, {
@@ -62,6 +65,8 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
       router.refresh();
     } catch {
       setError("failed to remove tag");
+    } finally {
+      setRemovingId(null);
     }
   }
 
@@ -101,7 +106,8 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
                 type="button"
                 aria-label={`Remove tag ${tag.name}`}
                 onClick={() => removeTag(tag.id)}
-                className="text-zinc-400 hover:text-red-500"
+                disabled={removingId === tag.id}
+                className="text-zinc-400 hover:text-red-500 disabled:opacity-40"
               >
                 ×
               </button>

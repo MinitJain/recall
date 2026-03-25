@@ -11,11 +11,15 @@
 import ogs from "open-graph-scraper";
 
 export async function scrapeUrl(url: string) {
-  const { result } = await ogs({ url });
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error("scrape timeout")), 5000),
+  );
 
-  return {
+  const scrape = ogs({ url }).then(({ result }) => ({
     title: result.ogTitle ?? result.dcTitle ?? url,
     description: result.ogDescription ?? null,
     thumbnail: result.ogImage?.[0]?.url ?? null,
-  };
+  }));
+
+  return Promise.race([scrape, timeout]);
 }
