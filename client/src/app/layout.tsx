@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Recall",
   description: "Save anything. Recall resurfaces it when it matters.",
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23D97706'/><text x='50%' y='54%' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='700' font-size='20' fill='white'>R</text></svg>",
+    icon: "/favicon.svg",
   },
 };
 

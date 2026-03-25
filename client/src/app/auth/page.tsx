@@ -58,8 +58,8 @@ export default function AuthPage() {
       <div className="w-full max-w-sm animate-fade-up">
         {/* Logo / wordmark */}
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--accent)] mb-4">
-            <span className="text-xl font-bold text-white">R</span>
+          <div className="inline-flex items-center justify-center w-14 h-14 mb-4">
+            <img src="/favicon.svg" alt="Recall logo" className="w-14 h-14" />
           </div>
           <h1 className="text-xl font-semibold text-[var(--text)]">Recall</h1>
           <p className="text-sm text-[var(--text-muted)] mt-1">
