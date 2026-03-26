@@ -213,30 +213,31 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SOCIAL PROOF ───────────────────────────────────────────────── */}
+      {/* ── STATS STRIP ────────────────────────────────────────────────── */}
       <div style={{
         background: "var(--lp-bg-secondary)",
         borderTop: "1px solid var(--lp-border)",
         borderBottom: "1px solid var(--lp-border)",
-        padding: "28px 0", overflow: "hidden",
+        padding: "40px 24px",
       }}>
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--lp-text-muted)", marginBottom: 20, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-          Trusted by curious people across the internet
-        </p>
-        <div style={{ overflow: "hidden", position: "relative" }}>
-          <div style={{
-            display: "flex", gap: 64, width: "max-content",
-            animation: "marquee 30s linear infinite",
-          }}>
-            {[...BRAND_NAMES, ...BRAND_NAMES].map((name, i) => (
-              <span key={i} style={{
-                fontSize: 16, fontWeight: 600, color: "var(--lp-text-muted)",
-                letterSpacing: name.spacing ?? "0.02em",
-                fontFamily: name.font ?? "inherit",
-                whiteSpace: "nowrap",
-              }}>{name.label}</span>
-            ))}
-          </div>
+        <div style={{
+          maxWidth: 900, margin: "0 auto",
+          display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 0, textAlign: "center",
+        }} className="stats-grid">
+          {STATS.map((s, i) => (
+            <div key={i} style={{
+              padding: "0 24px",
+              borderRight: i < 2 ? "1px solid var(--lp-border)" : "none",
+            }}>
+              <p className="font-display" style={{
+                fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 800,
+                color: "var(--lp-accent)", margin: "0 0 4px",
+                lineHeight: 1,
+              }}>{s.value}</p>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0 }}>{s.label}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -447,6 +448,7 @@ export default function LandingPage() {
 
       {/* ── RESPONSIVE STYLES ─────────────────────────────────────────── */}
       <style>{`
+        .stats-grid { grid-template-columns: repeat(3, 1fr); }
         .nav-buttons { display: flex; align-items: center; gap: 12px; }
         .nav-signin {
           font-size: 14px; font-weight: 500; color: var(--lp-text-secondary);
@@ -474,6 +476,7 @@ export default function LandingPage() {
           transform: translateY(-2px) !important;
         }
         @media (max-width: 768px) {
+          .stats-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
           .nav-buttons { display: none; }
           .problem-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
           .features-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -530,14 +533,10 @@ const MOCK_BOOKMARKS = [
   },
 ];
 
-const BRAND_NAMES = [
-  { label: "Notion", font: "system-ui", spacing: "0.02em" },
-  { label: "Linear", font: "system-ui", spacing: "0.04em" },
-  { label: "Vercel", font: "system-ui", spacing: "0.02em" },
-  { label: "Figma", font: "system-ui", spacing: "0.02em" },
-  { label: "Stripe", font: "system-ui", spacing: "0.02em" },
-  { label: "Raycast", font: "system-ui", spacing: "0.02em" },
-  { label: "Arc", font: "system-ui", spacing: "0.06em" },
+const STATS = [
+  { value: "Any URL", label: "Tweet, video, article, Reddit thread — if it has a link, Recall saves it" },
+  { value: "< 3 sec", label: "Average time for AI to tag and preview a new bookmark" },
+  { value: "0 manual tags", label: "Required — AI handles it automatically, you can always add more" },
 ];
 
 const PAIN_POINTS = [
