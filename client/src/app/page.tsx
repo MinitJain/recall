@@ -1,7 +1,12 @@
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+if (user) redirect("/app");
   return (
     <div
       className="landing-page"
@@ -18,10 +23,7 @@ export default function LandingPage() {
         padding: "0 24px", height: "60px",
       }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
-          <span style={{
-            width: 20, height: 20, borderRadius: 6,
-            background: "var(--lp-accent)", display: "inline-block", flexShrink: 0,
-          }} />
+          <img src="/logo.svg" alt="" width={22} height={22} style={{ display: "block", flexShrink: 0 }} />
           <span className="font-display" style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)" }}>
             Recall
           </span>

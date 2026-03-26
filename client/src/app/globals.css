@@ -31,24 +31,31 @@
 }
 
 .dark {
-  --bg:         #0C0A09;
-  --surface:    #1C1917;
-  --surface-2:  #292524;
+  --bg:         #0A0A08;
+  --surface:    #1A1A17;
+  --surface-2:  #252520;
 
-  --border:     #292524;
-  --border-2:   #44403C;
+  --border:     rgba(247,245,239,0.06);
+  --border-2:   rgba(247,245,239,0.12);
 
   --text:       #FAFAF9;
   --text-muted: #A8A29E;
   --text-dim:   #78716C;
 
-  --accent:     #F59E0B;
-  --accent-hover: #D97706;
-  --accent-text:  #0C0A09;
+  --accent:     #F0A500;
+  --accent-hover: #E8820A;
+  --accent-text:  #0A0A08;
+  --accent-soft:  rgba(240,165,0,0.12);
+  --accent-glow:  rgba(240,165,0,0.15);
+  --shadow-glow:  0 0 40px rgba(240,165,0,0.12);
 
   --error:      #F87171;
   --error-bg:   #1C0A0A;
   --success:    #4ADE80;
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 2px; }
 }
 
 /* ── Base ───────────────────────────────────────────────────────────────── */

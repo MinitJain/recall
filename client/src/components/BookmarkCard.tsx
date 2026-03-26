@@ -99,13 +99,13 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
   }
 
   return (
-    <div className="group relative flex gap-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-sm animate-fade-up">
+    <div className="group relative flex gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-[var(--shadow-glow)] animate-fade-up">
       {/* Thumbnail */}
       {bookmark.thumbnail && (
         <img
           src={bookmark.thumbnail}
           alt={bookmark.title ?? ""}
-          className="w-16 h-16 flex-shrink-0 rounded-lg object-cover bg-[var(--surface-2)]"
+          className="w-16 h-16 flex-shrink-0 rounded-xl object-cover bg-[var(--surface-2)]"
         />
       )}
 
@@ -126,7 +126,7 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
             onClick={deleteBookmark}
             disabled={deleting}
             aria-label="Delete bookmark"
-            className="flex-shrink-0 opacity-0 group-hover:opacity-100 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-[var(--error)] hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
+            className="flex-shrink-0 opacity-0 group-hover:opacity-100 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
@@ -142,7 +142,7 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
         )}
 
         {/* Hostname */}
-        <span className="text-xs text-[var(--text-dim)]">{hostname}</span>
+        <span className="text-xs text-[var(--text-muted)]">{hostname}</span>
 
         {/* Tags */}
         {bookmark.tags.length > 0 && (
@@ -150,7 +150,7 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
             {bookmark.tags.map((tag) => (
               <span
                 key={tag.id}
-                className="tag-enter flex items-center gap-1 text-xs bg-[var(--surface-2)] text-[var(--text-muted)] border border-[var(--border)] px-2 py-0.5 rounded-full"
+                className="tag-enter flex items-center gap-1 text-xs bg-[var(--accent-soft)] text-[var(--accent)] px-2.5 py-0.5 rounded-full"
               >
                 {tag.name}
                 <button

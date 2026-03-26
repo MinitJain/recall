@@ -42,7 +42,7 @@ export default function SearchBar() {
       <div className="relative">
         {/* Search icon */}
         <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-dim)] pointer-events-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--accent)] pointer-events-none"
           width="14" height="14" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
         >
@@ -54,7 +54,7 @@ export default function SearchBar() {
           value={query}
           onChange={(e) => handleSearch(e.target.value)}
           placeholder="Search bookmarks..."
-          className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] pl-9 pr-16 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+          className="w-full h-12 rounded-xl border border-[var(--border-2)] bg-[var(--surface)] pl-9 pr-16 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
         />
         {isPending && (
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-dim)]">
@@ -72,7 +72,7 @@ export default function SearchBar() {
       </div>
 
       {results !== null && (
-        <div className="absolute left-0 right-0 mt-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-lg overflow-hidden z-20 animate-fade-up">
+        <div className="absolute left-0 right-0 mt-1 rounded-xl border border-[var(--border-2)] bg-[var(--surface)] shadow-lg overflow-hidden z-20 animate-fade-up">
           {results.length === 0 ? (
             <p className="px-4 py-3 text-sm text-[var(--text-muted)]">No results found.</p>
           ) : (
@@ -82,7 +82,7 @@ export default function SearchBar() {
                 href={b.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col px-4 py-2.5 hover:bg-[var(--surface-2)] border-b border-[var(--border)] last:border-0 transition-colors duration-100"
+                className="flex flex-col px-4 py-2.5 hover:bg-[var(--surface-2)] border-b border-[var(--border-2)] last:border-0 transition-colors duration-100"
               >
                 <span className="text-sm font-medium text-[var(--text)] truncate">
                   {b.title || hostname(b.url)}

@@ -1,7 +1,3 @@
-/*  Next.js 16.2 renamed middleware.ts to
-  proxy.ts
- */
-
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -18,18 +14,18 @@ export async function proxy(req: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) =>
-            res.cookies.set(name, value, options),
+            res.cookies.set(name, value, options)
           );
         },
       },
-    },
+    }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Calling getUser() triggers token refresh and writes the new cookie to `res`
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) {
+  // Only protect /app routes — landing page and auth page are public
+  if (!user && req.nextUrl.pathname.startsWith("/app")) {
     return NextResponse.redirect(new URL("/auth", req.url));
   }
 
@@ -37,8 +33,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
-/* To protect /any-page you'd add it to the
-  matcher:
-  matcher: ["/", "/any-page"], */

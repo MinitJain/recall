@@ -10,15 +10,18 @@ export default function Header({ email }: { email: string }) {
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/auth");
+    router.push("/");
     router.refresh();
   }
 
   return (
-    <header className="sticky top-0 z-10 flex items-center justify-between px-4 h-12 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur-sm">
-      <span className="text-sm font-semibold tracking-tight text-[var(--text)]">
-        Recall
-      </span>
+    <header className="sticky top-0 z-10 flex items-center justify-between px-4 h-12 border-b border-[var(--border)] backdrop-blur-md bg-[var(--bg)]/80">
+      <div className="flex items-center gap-2">
+        <img src="/logo.svg" width={20} height={20} alt="Recall logo" />
+        <span className="text-sm font-semibold tracking-tight text-[var(--text)]">
+          Recall
+        </span>
+      </div>
       <div className="flex items-center gap-1">
         <span className="text-xs text-[var(--text-dim)] hidden sm:block mr-2">{email}</span>
         <ThemeToggle />
