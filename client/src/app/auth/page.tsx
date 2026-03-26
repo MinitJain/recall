@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -85,10 +86,12 @@ export default function AuthPage() {
       <div className="w-full max-w-sm animate-fade-up">
         {/* Logo / wordmark */}
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
-            <Image src="/logo.svg" alt="Recall" width={48} height={48} priority />
-          </div>
-          <h1 className="text-xl font-semibold text-[var(--text)]">Recall</h1>
+          <Link href="/" className="inline-flex flex-col items-center gap-4 group">
+            <div className="inline-flex items-center justify-center w-12 h-12">
+              <Image src="/logo.svg" alt="Recall" width={48} height={48} priority />
+            </div>
+            <h1 className="text-xl font-semibold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-100">Recall</h1>
+          </Link>
           <p className="text-sm text-[var(--text-muted)] mt-1">
             Save anything. Surface it when it matters.
           </p>
