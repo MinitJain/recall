@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [slow, setSlow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -42,7 +44,7 @@ export default function AuthPage() {
           return;
         }
       }
-      router.push("/");
+      router.push("/app");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "something went wrong");
@@ -58,8 +60,8 @@ export default function AuthPage() {
       <div className="w-full max-w-sm animate-fade-up">
         {/* Logo / wordmark */}
         <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 mb-4">
-            <img src="/favicon.svg" alt="Recall logo" className="w-14 h-14" />
+          <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
+            <img src="/logo.svg" alt="Recall" width={48} height={48} />
           </div>
           <h1 className="text-xl font-semibold text-[var(--text)]">Recall</h1>
           <p className="text-sm text-[var(--text-muted)] mt-1">
@@ -74,7 +76,10 @@ export default function AuthPage() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="email-input" className="text-xs font-medium text-[var(--text-muted)]">
+              <label
+                htmlFor="email-input"
+                className="text-xs font-medium text-[var(--text-muted)]"
+              >
                 Email
               </label>
               <input
@@ -88,27 +93,47 @@ export default function AuthPage() {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="password-input" className="text-xs font-medium text-[var(--text-muted)]">
+              <label
+                htmlFor="password-input"
+                className="text-xs font-medium text-[var(--text-muted)]"
+              >
                 Password
               </label>
-              <input
-                id="password-input"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
-              />
+              <div className="relative">
+                <input
+                  id="password-input"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 pr-9 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors duration-100"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
 
             {error && (
-              <p role="alert" aria-live="polite" className="text-xs text-[var(--error)] bg-[var(--error-bg)] rounded-lg px-3 py-2">
+              <p
+                role="alert"
+                aria-live="polite"
+                className="text-xs text-[var(--error)] bg-[var(--error-bg)] rounded-lg px-3 py-2"
+              >
                 {error}
               </p>
             )}
             {slow && !error && (
-              <p className="text-xs text-[var(--text-muted)]" aria-live="polite">
+              <p
+                className="text-xs text-[var(--text-muted)]"
+                aria-live="polite"
+              >
                 Still working — this can take a few seconds on first load…
               </p>
             )}

@@ -24,9 +24,13 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 
 ## Current Milestone
 
-**M7 (Auth) is complete.** Next milestone is **M8: Chrome Extension**.
+**ui-overhaul branch is in progress** (landing page + smart `/` routing — not yet merged).
 
-After M8 comes M9 (Vercel deployment + preview URLs on PRs).
+Before M8 can start, two things must be done on this branch:
+1. Remove debug `console.log` from `client/src/app/page.tsx` line 9
+2. Fix the Supabase SSR session refresh loop — create `client/src/proxy.ts` (Next.js 16.2 uses `proxy.ts`, NOT `middleware.ts`) using the Supabase SSR proxy pattern so token refresh happens before server components run
+
+After that: **M8: Chrome Extension**, then M9 (Vercel deployment).
 
 ## Project Structure
 
