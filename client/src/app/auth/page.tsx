@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -85,7 +86,7 @@ export default function AuthPage() {
         {/* Logo / wordmark */}
         <div className="mb-8 text-center">
           <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
-            <img src="/logo.svg" alt="Recall" width={48} height={48} />
+            <Image src="/logo.svg" alt="Recall" width={48} height={48} priority />
           </div>
           <h1 className="text-xl font-semibold text-[var(--text)]">Recall</h1>
           <p className="text-sm text-[var(--text-muted)] mt-1">
