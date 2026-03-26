@@ -64,6 +64,36 @@ body {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
+/* ── Landing page design tokens (scoped — don't conflict with app tokens) ── */
+.landing-page {
+  --lp-bg-primary: #0A0A08;
+  --lp-bg-secondary: #111110;
+  --lp-bg-elevated: #1A1A17;
+  --lp-bg-card: #1F1F1B;
+  --lp-text-primary: #F7F5EF;
+  --lp-text-secondary: #9B9785;
+  --lp-text-muted: #5A5750;
+  --lp-accent: #F0A500;
+  --lp-accent-warm: #E8820A;
+  --lp-accent-soft: rgba(240,165,0,0.12);
+  --lp-accent-glow: rgba(240,165,0,0.25);
+  --lp-purple: #8B5CF6;
+  --lp-purple-soft: rgba(139,92,246,0.12);
+  --lp-teal: #14B8A6;
+  --lp-teal-soft: rgba(20,184,166,0.12);
+  --lp-border: rgba(247,245,239,0.06);
+  --lp-border-strong: rgba(247,245,239,0.12);
+  --lp-shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --lp-shadow-md: 0 4px 20px rgba(0,0,0,0.5);
+  --lp-shadow-lg: 0 16px 48px rgba(0,0,0,0.7);
+  --lp-shadow-glow: 0 0 40px rgba(240,165,0,0.15);
+}
+
+/* ── Landing page font utilities ─────────────────────────────────────────── */
+.font-display { font-family: var(--font-display), system-ui, sans-serif; }
+.font-sans-lp { font-family: var(--font-sans), system-ui, sans-serif; }
+.font-mono-lp { font-family: var(--font-mono), monospace; }
+
 /* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fade-up {
   from {
@@ -101,4 +131,44 @@ body {
 /* ── Tag height transition ──────────────────────────────────────────────── */
 .tag-enter {
   animation: fade-up 0.15s ease both;
+}
+
+/* ── Landing page animations ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes blobDrift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33%       { transform: translate(40px,-30px) scale(1.08); }
+  66%       { transform: translate(-30px,20px) scale(0.95); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes shimmerBorder {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+[data-animate].visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
