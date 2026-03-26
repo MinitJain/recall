@@ -87,7 +87,7 @@ if (user) redirect("/app");
           {/* Headline */}
           <h1 className="font-display" style={{
             animation: "fadeUp 0.5s ease both 60ms",
-            fontSize: "clamp(36px, 8vw, 80px)",
+            fontSize: "clamp(32px, 5.5vw, 64px)",
             fontWeight: 800, lineHeight: 1.05,
             margin: "0 0 24px",
           }}>
@@ -225,19 +225,20 @@ if (user) redirect("/app");
         <div style={{
           maxWidth: 900, margin: "0 auto",
           display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 0, textAlign: "center",
+          gap: 0, textAlign: "center", alignItems: "stretch",
         }} className="stats-grid">
           {STATS.map((s, i) => (
             <div key={i} style={{
               padding: "0 24px",
               borderRight: i < 2 ? "1px solid var(--lp-border)" : "none",
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
             }}>
               <p className="font-display" style={{
                 fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 800,
-                color: "var(--lp-accent)", margin: "0 0 4px",
-                lineHeight: 1,
+                color: "var(--lp-accent)", margin: "0 0 8px",
+                lineHeight: 1.1, textAlign: "center",
               }}>{s.value}</p>
-              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0 }}>{s.label}</p>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, textAlign: "center" }}>{s.label}</p>
             </div>
           ))}
         </div>
