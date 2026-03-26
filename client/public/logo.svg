@@ -1,0 +1,24 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mark-gradient" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%"   stop-color="#FDE68A"/>
+      <stop offset="40%"  stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="50%"  stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Bookmark mark -->
+  <path
+    d="M31 10 L69 10 Q76 10 76 17 L76 90 L50 73 L24 90 L24 17 Q24 10 31 10 Z"
+    fill="url(#mark-gradient)"
+  />
+  <!-- Subtle highlight sheen on upper-left -->
+  <path
+    d="M31 10 L69 10 Q76 10 76 17 L76 90 L50 73 L24 90 L24 17 Q24 10 31 10 Z"
+    fill="url(#sheen)"
+  />
+</svg>

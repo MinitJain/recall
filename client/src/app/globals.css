@@ -1,26 +1,181 @@
 @import "tailwindcss";
 
+/* ── Dark mode via class on <html> ──────────────────────────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Design tokens ──────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --bg:         #FAFAF9;
+  --surface:    #FFFFFF;
+  --surface-2:  #F5F4F2;
+
+  /* Borders */
+  --border:     #E7E5E4;
+  --border-2:   #D6D3D1;
+
+  /* Text */
+  --text:       #1C1917;
+  --text-muted: #78716C;
+  --text-dim:   #A8A29E;
+
+  /* Accent — amber */
+  --accent:     #D97706;
+  --accent-hover: #B45309;
+  --accent-text:  #FFFFFF;
+
+  /* States */
+  --error:      #DC2626;
+  --error-bg:   #FEF2F2;
+  --success:    #16A34A;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --bg:         #0A0A08;
+  --surface:    #1A1A17;
+  --surface-2:  #252520;
+
+  --border:     rgba(247,245,239,0.06);
+  --border-2:   rgba(247,245,239,0.12);
+
+  --text:       #FAFAF9;
+  --text-muted: #A8A29E;
+  --text-dim:   #78716C;
+
+  --accent:     #F0A500;
+  --accent-hover: #E8820A;
+  --accent-text:  #0A0A08;
+  --accent-soft:  rgba(240,165,0,0.12);
+  --accent-glow:  rgba(240,165,0,0.15);
+  --shadow-glow:  0 0 40px rgba(240,165,0,0.12);
+
+  --error:      #F87171;
+  --error-bg:   #1C0A0A;
+  --success:    #4ADE80;
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 2px; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ───────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* ── Landing page design tokens (scoped — don't conflict with app tokens) ── */
+.landing-page {
+  --lp-bg-primary: #0A0A08;
+  --lp-bg-secondary: #111110;
+  --lp-bg-elevated: #1A1A17;
+  --lp-bg-card: #1F1F1B;
+  --lp-text-primary: #F7F5EF;
+  --lp-text-secondary: #9B9785;
+  --lp-text-muted: #5A5750;
+  --lp-accent: #F0A500;
+  --lp-accent-warm: #E8820A;
+  --lp-accent-soft: rgba(240,165,0,0.12);
+  --lp-accent-glow: rgba(240,165,0,0.25);
+  --lp-purple: #8B5CF6;
+  --lp-purple-soft: rgba(139,92,246,0.12);
+  --lp-teal: #14B8A6;
+  --lp-teal-soft: rgba(20,184,166,0.12);
+  --lp-border: rgba(247,245,239,0.06);
+  --lp-border-strong: rgba(247,245,239,0.12);
+  --lp-shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --lp-shadow-md: 0 4px 20px rgba(0,0,0,0.5);
+  --lp-shadow-lg: 0 16px 48px rgba(0,0,0,0.7);
+  --lp-shadow-glow: 0 0 40px rgba(240,165,0,0.15);
+}
+
+/* ── Landing page font utilities ─────────────────────────────────────────── */
+.font-display { font-family: var(--font-display), system-ui, sans-serif; }
+.font-sans-lp { font-family: var(--font-sans), system-ui, sans-serif; }
+.font-mono-lp { font-family: var(--font-mono), monospace; }
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.3s ease both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease both;
+}
+
+.animate-skeleton {
+  animation: pulse-subtle 1.8s ease-in-out infinite;
+}
+
+/* ── Tag height transition ──────────────────────────────────────────────── */
+.tag-enter {
+  animation: fade-up 0.15s ease both;
+}
+
+/* ── Landing page animations ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes blobDrift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33%       { transform: translate(40px,-30px) scale(1.08); }
+  66%       { transform: translate(-30px,20px) scale(0.95); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes shimmerBorder {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+[data-animate].visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
