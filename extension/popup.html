@@ -9,13 +9,24 @@
   <body>
     <!-- AUTH VIEW: shown when logged out -->
     <div id="auth-view">
-      <h1>Recall</h1>
+      <div class="brand">
+        <img src="icon48.png" alt="" width="28" height="28" />
+        <h1>Recall</h1>
+      </div>
       <p class="tagline">Save anything. Find everything.</p>
 
       <div id="auth-error" class="error hidden"></div>
 
       <input id="email" type="email" placeholder="Email" />
-      <input id="password" type="password" placeholder="Password" />
+      <div class="password-wrap">
+        <input id="password" type="password" placeholder="Password" />
+        <button id="toggle-password" type="button" class="eye-btn" aria-label="Toggle password visibility">
+          <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
 
       <div class="button-row">
         <button id="login-btn">Log in</button>
@@ -31,6 +42,7 @@
       </div>
 
       <button id="save-btn">Save this page</button>
+      <a href="https://recallsave.vercel.app/app" target="_blank" rel="noopener noreferrer" class="manage-link">Manage your bookmarks →</a>
       <div id="save-status" class="status hidden"></div>
 
       <div id="bookmarks-list"></div>

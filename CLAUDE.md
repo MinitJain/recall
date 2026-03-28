@@ -7,12 +7,14 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 | Layer | Technology |
 |-------|-----------|
 | Frontend + API | Next.js 16 (App Router) |
-| Styling | Tailwind CSS |
+| Styling | Tailwind CSS v4 |
 | Database | PostgreSQL via Supabase |
-| ORM | Prisma |
+| ORM | Prisma 7 |
 | AI Tagging | Google Gemini API |
 | Auth | Supabase Auth |
-| Deployment | Vercel (planned) |
+| Deployment | Vercel — live at **recallsave.vercel.app** |
+| Rate Limiting | Upstash Redis |
+| Analytics | Vercel Analytics + Speed Insights |
 
 ## Key Rules
 
@@ -22,15 +24,25 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 - All `npm` commands run from `client/` — the repo root has no package.json.
 - Prisma commands (`npx prisma generate`, `npx prisma db push`) also run from `client/`.
 
-## Current Milestone
+## Current State
 
-**ui-overhaul branch is in progress** (landing page + smart `/` routing — not yet merged).
+**Phase 1 is complete. Project is live.**
 
-Before M8 can start, two things must be done on this branch:
-1. Remove debug `console.log` from `client/src/app/page.tsx` line 9
-2. Fix the Supabase SSR session refresh loop — create `client/src/proxy.ts` (Next.js 16.2 uses `proxy.ts`, NOT `middleware.ts`) using the Supabase SSR proxy pattern so token refresh happens before server components run
+- M8 (Chrome Extension) — ✅ Done
+- M9 (Vercel deployment) — ✅ Done at [recallsave.vercel.app](https://recallsave.vercel.app)
+- `proxy.ts` SSR session fix — ✅ Done
+- Landing page + smart `/` routing — ✅ Done
 
-After that: **M8: Chrome Extension**, then M9 (Vercel deployment).
+**Next up: Phase 2**
+
+| Task | Status |
+|------|--------|
+| P2.1 User dashboard (web UI) | ⬜ Not started |
+| P2.2 Admin dashboard | ⬜ Not started |
+| P2.3 Collections (folders) | ⬜ Schema exists, no UI/endpoints |
+| P2.4 AI auto-tagging via Gemini | ✅ Done |
+| P2.5 Text search UI improvements | ⬜ Not started |
+| P2.6 Bookmarklet | ⬜ Not started |
 
 ## Project Structure
 

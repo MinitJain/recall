@@ -13,6 +13,7 @@ const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
+const togglePasswordBtn = document.getElementById("toggle-password");
 const logoutBtn = document.getElementById("logout-btn");
 const saveBtn = document.getElementById("save-btn");
 const saveStatus = document.getElementById("save-status");
@@ -112,6 +113,11 @@ async function loadBookmarks(access_token) {
   const res = await fetch(`${API_BASE}/api/bookmarks`, {
     headers: { Authorization: `Bearer ${access_token}` },
   });
+  if (res.status === 401) {
+    const err = new Error("Unauthorized");
+    err.status = 401;
+    throw err;
+  }
   if (!res.ok) throw new Error("Failed to load bookmarks");
   return res.json();
 }
@@ -209,10 +215,13 @@ async function init() {
     try {
       const bookmarks = await loadBookmarks(access_token);
       renderBookmarks(bookmarks);
-    } catch {
-      // Token expired — force re-login
-      await clearSession();
-      showAuthView();
+    } catch (e) {
+      if (e.status === 401) {
+        // Token expired — force re-login
+        await clearSession();
+        showAuthView();
+      }
+      // Network errors / server errors: stay logged in, show empty list
     }
   } else {
     showAuthView();
@@ -275,8 +284,12 @@ saveBtn.addEventListener("click", async () => {
       active: true,
       currentWindow: true,
     });
-    await saveBookmark(tab.url, access_token);
-    showSaveStatus("Saved!", "success");
+    const data = await saveBookmark(tab.url, access_token);
+    if (data.aiTagsFailed) {
+      showSaveStatus("Saved — add tags manually", "success");
+    } else {
+      showSaveStatus("Saved!", "success");
+    }
     const bookmarks = await loadBookmarks(access_token);
     renderBookmarks(bookmarks);
   } catch (e) {
@@ -285,6 +298,12 @@ saveBtn.addEventListener("click", async () => {
     saveBtn.textContent = "Save this page";
     saveBtn.disabled = false;
   }
+});
+
+togglePasswordBtn.addEventListener("click", () => {
+  const isPassword = passwordInput.type === "password";
+  passwordInput.type = isPassword ? "text" : "password";
+  togglePasswordBtn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
 });
 
 init();
