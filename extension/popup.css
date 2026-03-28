@@ -13,16 +13,67 @@ body {
   padding: 16px;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
 h1 {
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: 4px;
 }
 
 .tagline {
   color: #888;
   margin-bottom: 16px;
   font-size: 12px;
+}
+
+.password-wrap {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.password-wrap input {
+  margin-bottom: 0;
+  padding-right: 36px;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.eye-btn:hover {
+  background: none;
+  color: #ededed;
+}
+
+.manage-link {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #F59E0B;
+  text-decoration: none;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.manage-link:hover {
+  text-decoration: underline;
 }
 
 input {

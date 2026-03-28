@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import ThemeToggle from "./ThemeToggle";
 
@@ -17,7 +18,7 @@ export default function Header({ email }: { email: string }) {
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between px-4 h-12 border-b border-[var(--border)] backdrop-blur-md bg-[var(--bg)]/80">
       <div className="flex items-center gap-2">
-        <img src="/logo.svg" width={20} height={20} alt="Recall logo" />
+        <Image src="/logo.svg" width={20} height={20} alt="Recall logo" />
         <span className="text-sm font-semibold tracking-tight text-[var(--text)]">
           Recall
         </span>
