@@ -1,6 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+let _ai: GoogleGenAI | null = null;
+
+function getClient(): GoogleGenAI {
+  if (!_ai) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) throw new Error("GEMINI_API_KEY is not set");
+    _ai = new GoogleGenAI({ apiKey });
+  }
+  return _ai;
+}
 
 export async function generateTags(
   title: string | null,
@@ -15,7 +24,7 @@ Content: ${text}
 
 Example output: ["javascript", "tutorial", "web dev"]`;
 
-  const response = await ai.models.generateContent({
+  const response = await getClient().models.generateContent({
     model: "gemini-2.5-flash",
     contents: prompt,
   });
