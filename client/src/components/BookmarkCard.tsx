@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type Tag = {
   id: string;
@@ -102,10 +103,13 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
     <div className="group relative flex gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-[var(--shadow-glow)] animate-fade-up">
       {/* Thumbnail */}
       {bookmark.thumbnail && (
-        <img
+        <Image
           src={bookmark.thumbnail}
           alt={bookmark.title ?? ""}
+          width={64}
+          height={64}
           className="w-16 h-16 flex-shrink-0 rounded-xl object-cover bg-[var(--surface-2)]"
+          unoptimized
         />
       )}
 

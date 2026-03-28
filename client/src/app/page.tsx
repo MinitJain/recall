@@ -1,5 +1,6 @@
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -23,16 +24,16 @@ if (user) redirect("/app");
         padding: "0 24px", height: "60px",
       }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
-          <img src="/logo.svg" alt="" width={22} height={22} style={{ display: "block", flexShrink: 0 }} />
+          <Image src="/logo.svg" alt="" width={22} height={22} style={{ display: "block", flexShrink: 0 }} />
           <span className="font-display" style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)" }}>
             Recall
           </span>
         </Link>
         <div className="nav-buttons" style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <Link href="/auth" className="nav-signin">
+          <Link href="/auth?mode=login" className="nav-signin">
             Sign in
           </Link>
-          <Link href="/auth" className="nav-cta">
+          <Link href="/auth?mode=signup" className="nav-cta">
             Get started free
           </Link>
         </div>
