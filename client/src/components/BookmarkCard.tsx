@@ -19,7 +19,7 @@ type Bookmark = {
   tags: Tag[];
 };
 
-export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
+export default function BookmarkCard({ bookmark, view = "list" }: { bookmark: Bookmark; view?: "list" | "grid" }) {
   const router = useRouter();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -97,6 +97,65 @@ export default function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
       setError("failed to delete");
       setDeleting(false);
     }
+  }
+
+  if (view === "grid") {
+    return (
+      <div className="group relative flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-[var(--shadow-glow)] animate-fade-up">
+        {/* Thumbnail */}
+        {bookmark.thumbnail ? (
+          <Image
+            src={bookmark.thumbnail}
+            alt={bookmark.title ?? ""}
+            width={400}
+            height={128}
+            className="w-full h-32 object-cover bg-[var(--surface-2)]"
+            unoptimized
+          />
+        ) : (
+          <div className="w-full h-32 bg-[var(--surface-2)]" />
+        )}
+
+        {/* Content */}
+        <div className="flex flex-col gap-1.5 p-3 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <a
+              href={bookmark.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-2 leading-snug"
+            >
+              {bookmark.title ?? hostname}
+            </a>
+            <button
+              type="button"
+              onClick={deleteBookmark}
+              disabled={deleting}
+              aria-label="Delete bookmark"
+              className="flex-shrink-0 opacity-0 group-hover:opacity-100 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+              </svg>
+            </button>
+          </div>
+
+          <span className="text-xs text-[var(--text-muted)]">{hostname}</span>
+
+          {bookmark.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-0.5">
+              {bookmark.tags.map((tag) => (
+                <span key={tag.id} className="text-xs bg-[var(--accent-soft)] text-[var(--accent)] px-2 py-0.5 rounded-full">
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {error && <p className="text-xs text-[var(--error)] mt-0.5">{error}</p>}
+        </div>
+      </div>
+    );
   }
 
   return (
