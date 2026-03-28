@@ -431,7 +431,7 @@ if (user) redirect("/app");
         flexWrap: "wrap", gap: 16,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ width: 16, height: 16, borderRadius: 4, background: "var(--lp-accent)", display: "inline-block" }} />
+          <Image src="/logo.svg" alt="Recall" width={16} height={16} style={{ display: "block" }} />
           <span style={{ fontSize: 13, color: "var(--lp-text-muted)" }}>
             <span className="font-display" style={{ fontWeight: 700, color: "var(--lp-text-primary)", marginRight: 6 }}>Recall</span>
             © 2025. All rights reserved.
