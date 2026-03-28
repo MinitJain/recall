@@ -44,8 +44,18 @@ chrome.commands.onCommand.addListener(async (command) => {
       }
     } else if (res.status === 401) {
       chrome.action.openPopup().catch(() => {});
+    } else {
+      if (tabId !== undefined) {
+        chrome.action.setBadgeText({ text: "✖", tabId }).catch(() => {});
+        chrome.action.setBadgeBackgroundColor({ color: "#EF4444", tabId }).catch(() => {});
+        setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }).catch(() => {}), 3000);
+      }
     }
   } catch {
-    // Network error — silently fail, badge stays clean
+    if (tabId !== undefined) {
+      chrome.action.setBadgeText({ text: "✖", tabId }).catch(() => {});
+      chrome.action.setBadgeBackgroundColor({ color: "#EF4444", tabId }).catch(() => {});
+      setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }).catch(() => {}), 3000);
+    }
   }
 });
