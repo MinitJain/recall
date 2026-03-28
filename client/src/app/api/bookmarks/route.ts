@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { bookmarkRatelimit } from "@/lib/ratelimit";
+import { generateTags } from "@/lib/gemini";
 
 function isPrivateIp(host: string): boolean {
   if (isIP(host) === 4) {
@@ -97,7 +98,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  return NextResponse.json(bookmark, { status: 201 });
+  let aiTagsFailed = false;
+  try {
+    const tagNames = await generateTags(metadata.title ?? null, metadata.description);
+    if (tagNames.length > 0) {
+      await prisma.tag.createMany({
+        data: tagNames.map((name) => ({ name, bookmarkId: bookmark.id })),
+        skipDuplicates: true,
+      });
+    }
+  } catch (err) {
+    console.error("AI tagging failed (non-fatal):", err);
+    aiTagsFailed = true;
+  }
+
+  return NextResponse.json({ ...bookmark, aiTagsFailed }, { status: 201 });
 }
 
 export async function GET(req: NextRequest) {
@@ -108,6 +123,7 @@ export async function GET(req: NextRequest) {
   const bookmarks = await prisma.bookmark.findMany({
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
+    include: { tags: true },
   });
   return NextResponse.json(bookmarks);
 }
