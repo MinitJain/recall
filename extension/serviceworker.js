@@ -14,12 +14,17 @@ chrome.commands.onCommand.addListener(async (command) => {
   const { access_token } = await getSession();
   if (!access_token) {
     // Not logged in — open the popup so they can sign in
-    chrome.action.openPopup();
+    chrome.action.openPopup().catch(() => {});
     return;
   }
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab?.url) return;
+
+  const protocol = new URL(tab.url).protocol;
+  if (protocol !== "http:" && protocol !== "https:") return;
+
+  const tabId = typeof tab.id === "number" ? tab.id : undefined;
 
   try {
     const res = await fetch(`${API_BASE}/api/bookmarks`, {
@@ -32,11 +37,13 @@ chrome.commands.onCommand.addListener(async (command) => {
     });
 
     if (res.ok) {
-      chrome.action.setBadgeText({ text: "✓", tabId: tab.id });
-      chrome.action.setBadgeBackgroundColor({ color: "#F59E0B", tabId: tab.id });
-      setTimeout(() => chrome.action.setBadgeText({ text: "", tabId: tab.id }), 2000);
+      if (tabId !== undefined) {
+        chrome.action.setBadgeText({ text: "✓", tabId }).catch(() => {});
+        chrome.action.setBadgeBackgroundColor({ color: "#F59E0B", tabId }).catch(() => {});
+        setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }).catch(() => {}), 2000);
+      }
     } else if (res.status === 401) {
-      chrome.action.openPopup();
+      chrome.action.openPopup().catch(() => {});
     }
   } catch {
     // Network error — silently fail, badge stays clean
