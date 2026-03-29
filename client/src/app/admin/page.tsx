@@ -17,10 +17,10 @@ export default async function AdminPage() {
   // Admin guard
   const adminEmails = (process.env.ADMIN_EMAILS ?? "")
     .split(",")
-    .map((e) => e.trim())
+    .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
 
-  if (!adminEmails.includes(user.email ?? "")) {
+  if (!adminEmails.includes((user.email ?? "").toLowerCase())) {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
         <div className="text-center">
@@ -32,8 +32,8 @@ export default async function AdminPage() {
   }
 
   // All queries run in parallel
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
+  const now = new Date();
+  const todayStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 
   const [
     totalBookmarks,
@@ -70,7 +70,8 @@ export default async function AdminPage() {
   const totalUsers = uniqueUsers.length;
 
   // Fetch emails for all user IDs from Supabase auth
-  const { data: { users: authUsers } } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+  const { data: listData, error: listError } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+  const authUsers = listError ? [] : listData.users;
   const emailMap = new Map(authUsers.map((u) => [u.id, u.email ?? u.id]));
 
   return (
