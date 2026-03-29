@@ -19,6 +19,7 @@ type Sort = "newest" | "oldest" | "az";
 type View = "list" | "grid";
 
 export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem[] }) {
+  const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [sort, setSort] = useState<Sort>("newest");
   const [view, setView] = useState<View>("list");
@@ -44,15 +45,23 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
 
   // Filtered + sorted list
   const filtered = useMemo(() => {
-    let list = activeTag
-      ? bookmarks.filter((b) => b.tags.some((t) => t.name === activeTag))
-      : bookmarks;
+    const q = query.trim().toLowerCase();
+
+    let list = bookmarks.filter((b) => {
+      const matchesTag = activeTag ? b.tags.some((t) => t.name === activeTag) : true;
+      const matchesQuery = q
+        ? (b.title ?? "").toLowerCase().includes(q) ||
+          b.url.toLowerCase().includes(q) ||
+          (b.description ?? "").toLowerCase().includes(q)
+        : true;
+      return matchesTag && matchesQuery;
+    });
 
     if (sort === "oldest") list = [...list].reverse();
     else if (sort === "az") list = [...list].sort((a, b) => (a.title ?? "").localeCompare(b.title ?? ""));
 
     return list;
-  }, [bookmarks, activeTag, sort]);
+  }, [bookmarks, activeTag, sort, query]);
 
   if (bookmarks.length === 0) {
     return (
@@ -68,6 +77,33 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
 
   return (
     <div className="flex flex-col gap-4">
+
+      {/* Search */}
+      <div className="relative">
+        <svg
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--accent)] pointer-events-none"
+          width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search bookmarks..."
+          className="w-full h-11 rounded-xl border border-[var(--border-2)] bg-[var(--surface)] pl-9 pr-16 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+        />
+        {query && (
+          <button
+            onClick={() => setQuery("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
+          >
+            Clear
+          </button>
+        )}
+      </div>
 
       {/* Stats */}
       <div className="flex items-center gap-3">
@@ -170,14 +206,18 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
       </div>
 
       {/* Empty filter state */}
-      {filtered.length === 0 && activeTag && (
+      {filtered.length === 0 && (activeTag || query) && (
         <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-center py-12">
-          <p className="text-sm text-[var(--text-muted)]">No bookmarks tagged <span className="text-[var(--accent)]">#{activeTag}</span></p>
+          <p className="text-sm text-[var(--text-muted)]">
+            No bookmarks found
+            {query && <> for <span className="text-[var(--accent)]">&ldquo;{query}&rdquo;</span></>}
+            {activeTag && <> tagged <span className="text-[var(--accent)]">#{activeTag}</span></>}
+          </p>
           <button
-            onClick={() => setActiveTag(null)}
+            onClick={() => { setActiveTag(null); setQuery(""); }}
             className="text-xs text-[var(--accent)] hover:underline"
           >
-            Clear filter
+            Clear filters
           </button>
         </div>
       )}
