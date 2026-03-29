@@ -37,11 +37,11 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 
 | Task | Status |
 |------|--------|
-| P2.1 User dashboard (web UI) | ⬜ Not started |
-| P2.2 Admin dashboard | ⬜ Not started |
+| P2.1 User dashboard (web UI) | ✅ Done |
+| P2.2 Admin dashboard | ✅ Done |
 | P2.3 Collections (folders) | ⬜ Schema exists, no UI/endpoints |
 | P2.4 AI auto-tagging via Gemini | ✅ Done |
-| P2.5 Text search UI improvements | ⬜ Not started |
+| P2.5 Text search UI improvements | ✅ Done |
 | P2.6 Bookmarklet | ⬜ Not started |
 
 ## Project Structure
