@@ -58,7 +58,8 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
       return matchesTag && matchesQuery;
     });
 
-    if (sort === "oldest") list = [...list].reverse();
+    if (sort === "newest") list = [...list].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    else if (sort === "oldest") list = [...list].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
     else if (sort === "az") list = [...list].sort((a, b) => (a.title ?? "").localeCompare(b.title ?? ""));
 
     return list;
@@ -94,6 +95,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search bookmarks..."
+          aria-label="Search bookmarks"
           className="w-full h-11 rounded-xl border border-[var(--border-2)] bg-[var(--surface)] pl-9 pr-16 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
         />
         {query && (
@@ -231,7 +233,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
         view === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {filtered.map((bookmark, i) => (
-              <div key={bookmark.id} className="animate-fade-up" style={{ animationDelay: `${i * 30}ms` }}>
+              <div key={bookmark.id} className="animate-fade-up" style={{ animationDelay: `${Math.min(i * 30, 300)}ms` }}>
                 <BookmarkCard bookmark={bookmark} view="grid" />
               </div>
             ))}
@@ -239,7 +241,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
         ) : (
           <div className="flex flex-col gap-3">
             {filtered.map((bookmark, i) => (
-              <div key={bookmark.id} className="animate-fade-up" style={{ animationDelay: `${i * 30}ms` }}>
+              <div key={bookmark.id} className="animate-fade-up" style={{ animationDelay: `${Math.min(i * 30, 300)}ms` }}>
                 <BookmarkCard bookmark={bookmark} view="list" />
               </div>
             ))}
