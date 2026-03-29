@@ -32,7 +32,7 @@ No manual work. No lost tabs. No graveyard of forgotten links.
 | 🧩 | **Chrome extension** | Save any tab in one click or with `Alt+Shift+S` (Windows/Linux) / `Option+Shift+S` (Mac). No copy-paste needed. | Live |
 | 🔐 | **Secure auth** | Email/password + Google + GitHub via Supabase Auth. | Live |
 | ⚡ | **Rate limiting** | Per-user rate limiting via Upstash Redis to keep the service stable. | Live |
-| 🔍 | **Natural language search** | Search by feeling. _"that article about focus and music"_ will actually work. | Coming soon |
+| 🔍 | **Instant search** | Search by title, URL, or description. Filter by tag. Sort by newest, oldest, or A→Z. | Live |
 | 📁 | **Collections** | Group bookmarks into folders manually, or let AI suggest groupings based on your saves. | Coming soon |
 | ✨ | **Resurfacing** | Daily digest, random rediscovery, and "you saved this a year ago". Recall brings things back to you. | Coming soon |
 
@@ -189,8 +189,8 @@ When you search, Recall looks across titles, descriptions, and tags simultaneous
 | ✅ | AI auto-tagging via Gemini |
 | ✅ | Vercel deployment at recallsave.vercel.app |
 | ✅ | OAuth (Google + GitHub) |
-| ⬜ | User dashboard (web UI) |
-| ⬜ | Admin dashboard |
+| ✅ | User dashboard (web UI) |
+| ✅ | Admin dashboard |
 | ⬜ | Collections UI |
 | ⬜ | Natural language / semantic search |
 | ⬜ | Resurfacing (daily digest, random rediscovery, time capsule) |
