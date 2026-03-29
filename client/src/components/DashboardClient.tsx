@@ -40,6 +40,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
     bookmarks.forEach((b) => b.tags.forEach((t) => freq.set(t.name, (freq.get(t.name) ?? 0) + 1)));
     return Array.from(freq.entries())
       .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
       .map(([name]) => name);
   }, [bookmarks]);
 
@@ -164,6 +165,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
+            aria-label="Sort bookmarks"
             className="text-xs rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100 cursor-pointer"
           >
             <option value="newest">Newest</option>
@@ -175,6 +177,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
           <button
             onClick={() => setView("list")}
             aria-label="List view"
+            aria-pressed={view === "list"}
             className={`p-1.5 rounded-lg border transition-all duration-100 ${
               view === "list"
                 ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
@@ -191,6 +194,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
           <button
             onClick={() => setView("grid")}
             aria-label="Grid view"
+            aria-pressed={view === "grid"}
             className={`p-1.5 rounded-lg border transition-all duration-100 ${
               view === "grid"
                 ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
