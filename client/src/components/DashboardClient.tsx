@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Bookmark, BookMarked, Tag } from "lucide-react";
+import { Bookmark, BookMarked, Tag as TagIcon } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
 
-type Tag = { id: string; name: string };
+type TagItem = { id: string; name: string };
 type BookmarkItem = {
   id: string;
   url: string;
@@ -12,7 +12,7 @@ type BookmarkItem = {
   description: string | null;
   thumbnail: string | null;
   createdAt: string;
-  tags: Tag[];
+  tags: TagItem[];
 };
 
 type Sort = "newest" | "oldest" | "az";
@@ -113,7 +113,7 @@ export default function DashboardClient({ bookmarks }: { bookmarks: BookmarkItem
           {bookmarks.length} bookmark{bookmarks.length !== 1 ? "s" : ""}
         </span>
         <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--accent)] bg-[var(--surface)] border border-[var(--border)] px-3 py-1.5 rounded-full">
-          <Tag size={12} />
+          <TagIcon size={12} />
           {totalTags} tag{totalTags !== 1 ? "s" : ""}
         </span>
       </div>
