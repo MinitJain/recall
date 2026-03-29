@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import BookmarkCardSkeleton from "@/components/BookmarkCardSkeleton";
 import SaveUrlForm from "@/components/SaveUrlForm";
 import Header from "@/components/Header";
-import SearchBar from "@/components/SearchBar";
 import DashboardClient from "@/components/DashboardClient";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
@@ -22,12 +21,7 @@ async function DashboardLoader({ userId }: { userId: string }) {
     createdAt: b.createdAt.toISOString(),
   }));
 
-  return (
-    <>
-      <SearchBar />
-      <DashboardClient bookmarks={serialized} />
-    </>
-  );
+  return <DashboardClient bookmarks={serialized} />;
 }
 
 function DashboardSkeleton() {
