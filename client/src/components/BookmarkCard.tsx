@@ -96,21 +96,30 @@ export default function BookmarkCard({
 
   async function removeTag(tagId: string) {
     if (removingIds.has(tagId)) return;
+    const removedIndex = localTags.findIndex((t) => t.id === tagId);
+    const removedTag = localTags[removedIndex];
+    if (removedIndex === -1 || !removedTag) return;
     setRemovingIds((prev) => new Set(prev).add(tagId));
     setError(null);
-    const snapshot = localTags;
     setLocalTags((prev) => prev.filter((t) => t.id !== tagId));
+    // Restore only this specific tag at its original position
+    const restore = (prev: Tag[]) => {
+      if (prev.some((t) => t.id === tagId)) return prev;
+      const next = [...prev];
+      next.splice(Math.min(removedIndex, next.length), 0, removedTag);
+      return next;
+    };
     try {
       const res = await fetch(`/api/bookmarks/${bookmark.id}/tags/${tagId}`, {
         method: "DELETE",
       });
       if (!res.ok) {
         setError("failed to remove tag");
-        setLocalTags(snapshot);
+        setLocalTags(restore);
       }
     } catch {
       setError("failed to remove tag");
-      setLocalTags(snapshot);
+      setLocalTags(restore);
     } finally {
       setRemovingIds((prev) => {
         const next = new Set(prev);
@@ -253,7 +262,7 @@ export default function BookmarkCard({
                 onClick={deleteBookmark}
                 disabled={deleting}
                 aria-label="Delete bookmark"
-                className="opacity-0 group-hover:opacity-100 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
+                className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-red-400/50 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
@@ -315,7 +324,7 @@ export default function BookmarkCard({
               onClick={deleteBookmark}
               disabled={deleting}
               aria-label="Delete bookmark"
-              className="opacity-0 group-hover:opacity-100 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
+              className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-red-400/50 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />

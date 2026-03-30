@@ -117,15 +117,19 @@ export default function DashboardClient({
     setCreatingCollection(false);
     setNewCollectionName("");
     setCollectionError(null);
-    const res = await fetch("/api/collections", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name }),
-    });
-    if (res.ok) {
-      const created: CollectionItem = await res.json();
-      setCollections((prev) => [...prev, created]);
-    } else {
+    try {
+      const res = await fetch("/api/collections", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      if (res.ok) {
+        const created: CollectionItem = await res.json();
+        setCollections((prev) => [...prev, created]);
+      } else {
+        setCollectionError("Failed to create collection");
+      }
+    } catch {
       setCollectionError("Failed to create collection");
     }
   }
@@ -134,8 +138,13 @@ export default function DashboardClient({
     const snapshot = collections;
     setCollections((prev) => prev.filter((c) => c.id !== id));
     if (activeCollection === id) setActiveCollection(null);
-    const res = await fetch(`/api/collections/${id}`, { method: "DELETE" });
-    if (!res.ok) {
+    try {
+      const res = await fetch(`/api/collections/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        setCollections(snapshot);
+        setCollectionError("Failed to delete collection");
+      }
+    } catch {
       setCollections(snapshot);
       setCollectionError("Failed to delete collection");
     }
@@ -150,18 +159,20 @@ export default function DashboardClient({
         next.set(bookmarkId, [...current, collectionId]);
       return next;
     });
-    const res = await fetch(`/api/collections/${collectionId}/bookmarks`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bookmarkId }),
+    const revert = () => setMemberships((prev) => {
+      const next = new Map(prev);
+      next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
+      return next;
     });
-    if (!res.ok) {
-      // revert
-      setMemberships((prev) => {
-        const next = new Map(prev);
-        next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
-        return next;
+    try {
+      const res = await fetch(`/api/collections/${collectionId}/bookmarks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookmarkId }),
       });
+      if (!res.ok) revert();
+    } catch {
+      revert();
     }
   }
 
@@ -189,42 +200,22 @@ export default function DashboardClient({
     const snapshot = memberships.get(bookmarkId) ?? [];
     setMemberships((prev) => {
       const next = new Map(prev);
-      next.set(
-        bookmarkId,
-        (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId),
-      );
+      next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
       return next;
     });
-    const res = await fetch(`/api/collections/${collectionId}/bookmarks/${bookmarkId}`, {
-      method: "DELETE",
+    const revert = () => setMemberships((prev) => {
+      const next = new Map(prev);
+      next.set(bookmarkId, snapshot);
+      return next;
     });
-    if (!res.ok) {
-      // revert
-      setMemberships((prev) => {
-        const next = new Map(prev);
-        next.set(bookmarkId, snapshot);
-        return next;
+    try {
+      const res = await fetch(`/api/collections/${collectionId}/bookmarks/${bookmarkId}`, {
+        method: "DELETE",
       });
+      if (!res.ok) revert();
+    } catch {
+      revert();
     }
-  }
-
-  if (localBookmarks.length === 0) {
-    return (
-      <div
-        className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-center"
-        style={{ padding: "48px 32px" }}
-      >
-        <Bookmark size={40} className="text-[var(--accent)]" />
-        <div>
-          <h2 className="text-xl font-semibold text-[var(--text)] mb-1">
-            Nothing saved yet
-          </h2>
-          <p className="text-sm text-[var(--text-muted)]">
-            Paste any URL above to save your first bookmark
-          </p>
-        </div>
-      </div>
-    );
   }
 
   const activeCollectionName = collections.find(
@@ -477,8 +468,8 @@ export default function DashboardClient({
         </div>
       )}
 
-      {/* Sort + view controls */}
-      <div className="flex items-center justify-between">
+      {/* Sort + view controls — only when there are bookmarks */}
+      {localBookmarks.length > 0 && <div className="flex items-center justify-between">
         <p className="text-xs text-[var(--text-dim)]">
           {filtered.length} result{filtered.length !== 1 ? "s" : ""}
           {activeCollectionName && (
@@ -565,10 +556,28 @@ export default function DashboardClient({
             </svg>
           </button>
         </div>
-      </div>
+      </div>}
+
+      {/* No bookmarks at all */}
+      {localBookmarks.length === 0 && (
+        <div
+          className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-center"
+          style={{ padding: "48px 32px" }}
+        >
+          <Bookmark size={40} className="text-[var(--accent)]" />
+          <div>
+            <h2 className="text-xl font-semibold text-[var(--text)] mb-1">
+              Nothing saved yet
+            </h2>
+            <p className="text-sm text-[var(--text-muted)]">
+              Paste any URL above to save your first bookmark
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Empty filter state */}
-      {filtered.length === 0 && (activeTag || query || activeCollection) && (
+      {localBookmarks.length > 0 && filtered.length === 0 && (activeTag || query || activeCollection) && (
         <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-center py-12">
           <p className="text-sm text-[var(--text-muted)]">
             No bookmarks found

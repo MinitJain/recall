@@ -19,7 +19,10 @@ export async function DELETE(
 
   try {
     await prisma.collection.delete({ where: { id } });
-  } catch {
+  } catch (e: unknown) {
+    if ((e as { code?: string })?.code === "P2025") {
+      return new Response(null, { status: 204 }); // already deleted — idempotent
+    }
     return Response.json({ error: "failed to delete collection" }, { status: 500 });
   }
   return new Response(null, { status: 204 });
