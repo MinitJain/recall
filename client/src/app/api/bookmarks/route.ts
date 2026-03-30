@@ -1,33 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isIP } from "net";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { bookmarkRatelimit } from "@/lib/ratelimit";
 import { generateTags } from "@/lib/gemini";
-
-function isPrivateIp(host: string): boolean {
-  if (isIP(host) === 4) {
-    const parts = host.split(".").map(Number);
-    return (
-      parts[0] === 10 ||
-      parts[0] === 127 ||
-      (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
-      (parts[0] === 192 && parts[1] === 168) ||
-      (parts[0] === 169 && parts[1] === 254)
-    );
-  }
-  if (isIP(host) === 6) {
-    const lower = host.toLowerCase();
-    return (
-      lower === "::1" ||
-      lower.startsWith("fe80:") ||
-      lower.startsWith("fc") ||
-      lower.startsWith("fd")
-    );
-  }
-  return false;
-}
+import { isPrivateIp } from "@/lib/url-validation";
 
 export async function POST(req: NextRequest) {
   const user = await getUserFromRequest(req);

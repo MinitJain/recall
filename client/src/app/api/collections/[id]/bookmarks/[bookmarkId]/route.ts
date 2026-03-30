@@ -26,7 +26,7 @@ export async function DELETE(
     });
   } catch (e: unknown) {
     if ((e as { code?: string })?.code === "P2025") {
-      return Response.json({ error: "not found" }, { status: 404 });
+      return new Response(null, { status: 204 }); // already removed — idempotent
     }
     return Response.json({ error: "failed to remove bookmark from collection" }, { status: 500 });
   }

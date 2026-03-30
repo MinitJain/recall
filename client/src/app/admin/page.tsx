@@ -2,12 +2,21 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import Header from "@/components/Header";
 
 export const metadata = { title: "Admin | Recall" };
 
-// Cache for 5 minutes — prevents hammering Supabase's admin API on every load
-export const revalidate = 300;
+// Cache only the expensive listUsers call for 5 minutes.
+// revalidate = 300 is ineffective here because cookies() forces dynamic rendering.
+const getCachedAuthUsers = unstable_cache(
+  async () => {
+    const { data, error } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+    return error ? [] : data.users;
+  },
+  ["admin-auth-users"],
+  { revalidate: 300 },
+);
 
 export default async function AdminPage() {
   // Auth check
@@ -72,9 +81,8 @@ export default async function AdminPage() {
 
   const totalUsers = uniqueUsers.length;
 
-  // Fetch emails for all user IDs from Supabase auth
-  const { data: listData, error: listError } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
-  const authUsers = listError ? [] : listData.users;
+  // Fetch emails for all user IDs from Supabase auth (cached 5 min)
+  const authUsers = await getCachedAuthUsers();
   const emailMap = new Map(authUsers.map((u) => [u.id, u.email ?? u.id]));
 
   return (

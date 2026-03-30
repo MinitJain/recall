@@ -9,19 +9,7 @@
 // called separation of concerns.
 
 import ogs from "open-graph-scraper";
-
-function isSafeThumbnailUrl(url: string): boolean {
-  try {
-    const parsed = new URL(url);
-    if (parsed.protocol !== "https:") return false;
-    const hostname = parsed.hostname;
-    // Block private/internal IP ranges
-    if (/^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(hostname)) return false;
-    return true;
-  } catch {
-    return false;
-  }
-}
+import { isSafeUrl } from "@/lib/url-validation";
 
 export async function scrapeUrl(url: string) {
   const timeout = new Promise<never>((_, reject) =>
@@ -33,7 +21,7 @@ export async function scrapeUrl(url: string) {
     return {
       title: result.ogTitle ?? result.dcTitle ?? url,
       description: result.ogDescription ?? null,
-      thumbnail: rawThumbnail && isSafeThumbnailUrl(rawThumbnail) ? rawThumbnail : null,
+      thumbnail: rawThumbnail && isSafeUrl(rawThumbnail) ? rawThumbnail : null,
     };
   });
 

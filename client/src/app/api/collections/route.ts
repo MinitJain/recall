@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
 
   const name = typeof body.name === "string" ? body.name.trim() : "";
   if (!name) return Response.json({ error: "name is required" }, { status: 400 });
+  if (name.length > 100) return Response.json({ error: "name too long" }, { status: 400 });
 
   let collection;
   try {
