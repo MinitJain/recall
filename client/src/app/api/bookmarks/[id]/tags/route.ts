@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { createClient } from "@/lib/supabase/server";
+import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { Prisma } from "@/generated/prisma";
 import { tagRatelimit } from "@/lib/ratelimit";
 
@@ -10,14 +10,13 @@ export async function POST(
 ) {
   const { id } = await params;
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getUserFromRequest(req);
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   const { success } = await tagRatelimit.limit(user.id);
   if (!success)
     return NextResponse.json(
-      { error: "too many requests — slow down" },
+      { error: "too many requests - slow down" },
       { status: 429 },
     );
 
