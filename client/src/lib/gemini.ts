@@ -15,10 +15,10 @@ export async function generateTags(
   title: string | null,
   description: string | null
 ): Promise<string[]> {
-  const raw = [title, description].filter(Boolean).join(". ");
-  if (!raw) return [];
+  const combined = [title, description].filter(Boolean).join(". ");
+  if (!combined) return [];
   // Truncate and strip newlines to prevent prompt injection
-  const text = raw.replace(/[\r\n]+/g, " ").slice(0, 500);
+  const text = combined.replace(/[\r\n]+/g, " ").slice(0, 500);
 
   const prompt = `Given this webpage title and description, generate 3 to 5 short, relevant tags (single words or short phrases). Return ONLY a JSON array of strings, no explanation.
 
