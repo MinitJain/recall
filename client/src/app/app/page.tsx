@@ -10,18 +10,27 @@ import { redirect } from "next/navigation";
 export const metadata = { title: "Your Bookmarks | Recall" };
 
 async function DashboardLoader({ userId }: { userId: string }) {
-  const bookmarks = await prisma.bookmark.findMany({
-    where: { userId },
-    orderBy: { createdAt: "desc" },
-    include: { tags: true },
-  });
+  const [bookmarks, collections] = await Promise.all([
+    prisma.bookmark.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      take: 500,
+      include: { tags: true, collections: { select: { collectionId: true } } },
+    }),
+    prisma.collection.findMany({
+      where: { userId },
+      orderBy: { createdAt: "asc" },
+      select: { id: true, name: true },
+    }),
+  ]);
 
-  const serialized = bookmarks.map((b) => ({
+  const serialized = bookmarks.map(({ collections: cols, ...b }) => ({
     ...b,
     createdAt: b.createdAt.toISOString(),
+    collectionIds: cols.map((c) => c.collectionId),
   }));
 
-  return <DashboardClient bookmarks={serialized} />;
+  return <DashboardClient bookmarks={serialized} initialCollections={collections} />;
 }
 
 function DashboardSkeleton() {

@@ -201,7 +201,7 @@ function AuthForm() {
             )}
             {slow && !error && (
               <p className="text-xs text-[var(--text-muted)]" aria-live="polite">
-                Still working — this can take a few seconds on first load…
+                Still working - this can take a few seconds on first load…
               </p>
             )}
 
