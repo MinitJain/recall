@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Geist, Syne, DM_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -21,12 +21,6 @@ const dmSans = DM_Sans({
   weight: ["400", "500"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
 export const metadata: Metadata = {
   title: "Recall | Save anything. Find everything. Nothing gets lost.",
   description:
@@ -43,12 +37,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${geist.variable} ${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${geist.variable} ${syne.variable} ${dmSans.variable} antialiased`}
       >
         {children}
         <Analytics />
