@@ -153,7 +153,7 @@ if (user) redirect("/app");
                   flex: 1, background: "var(--lp-bg-primary)",
                   borderRadius: 6, padding: "5px 12px",
                   fontSize: 11, color: "var(--lp-text-muted)",
-                  fontFamily: "var(--font-mono, monospace)",
+                  fontFamily: "monospace",
                   textAlign: "left",
                 }}>
                   recall.app/bookmarks

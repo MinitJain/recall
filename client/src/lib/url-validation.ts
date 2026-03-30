@@ -14,6 +14,11 @@ export function isPrivateIp(host: string): boolean {
   }
   if (isIP(host) === 6) {
     const lower = host.toLowerCase();
+    // IPv4-mapped IPv6 (e.g. ::ffff:127.0.0.1) — extract and check embedded IPv4
+    if (lower.startsWith("::ffff:")) {
+      const embedded = lower.slice(7);
+      if (isIP(embedded) === 4) return isPrivateIp(embedded);
+    }
     return (
       lower === "::1" ||
       lower.startsWith("fe80:") ||

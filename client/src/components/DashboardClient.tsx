@@ -135,17 +135,25 @@ export default function DashboardClient({
   }
 
   async function handleDeleteCollection(id: string) {
-    const snapshot = collections;
+    const deletedIndex = collections.findIndex((c) => c.id === id);
+    const deletedItem = collections[deletedIndex];
+    if (!deletedItem) return;
     setCollections((prev) => prev.filter((c) => c.id !== id));
     if (activeCollection === id) setActiveCollection(null);
+    const revert = () => setCollections((prev) => {
+      if (prev.some((c) => c.id === id)) return prev;
+      const next = [...prev];
+      next.splice(Math.min(deletedIndex, next.length), 0, deletedItem);
+      return next;
+    });
     try {
       const res = await fetch(`/api/collections/${id}`, { method: "DELETE" });
       if (!res.ok) {
-        setCollections(snapshot);
+        revert();
         setCollectionError("Failed to delete collection");
       }
     } catch {
-      setCollections(snapshot);
+      revert();
       setCollectionError("Failed to delete collection");
     }
   }
@@ -197,7 +205,6 @@ export default function DashboardClient({
     bookmarkId: string,
     collectionId: string,
   ) {
-    const snapshot = memberships.get(bookmarkId) ?? [];
     setMemberships((prev) => {
       const next = new Map(prev);
       next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
@@ -205,7 +212,9 @@ export default function DashboardClient({
     });
     const revert = () => setMemberships((prev) => {
       const next = new Map(prev);
-      next.set(bookmarkId, snapshot);
+      const current = next.get(bookmarkId) ?? [];
+      if (!current.includes(collectionId))
+        next.set(bookmarkId, [...current, collectionId]);
       return next;
     });
     try {
@@ -299,7 +308,7 @@ export default function DashboardClient({
               }}
               placeholder="Collection name..."
               autoFocus
-              maxLength={50}
+              maxLength={100}
               aria-label="New collection name"
               className="text-xs flex-1 rounded-lg border border-[var(--border-2)] bg-[var(--surface-2)] px-2.5 py-1.5 text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors"
             />
@@ -633,10 +642,12 @@ export default function DashboardClient({
                 <BookmarkCard
                   bookmark={{
                     ...bookmark,
+                    tags: tagOverrides.get(bookmark.id) ?? bookmark.tags,
                     collectionIds:
                       memberships.get(bookmark.id) ?? bookmark.collectionIds,
                   }}
                   view="grid"
+                  priority={i === 0}
                   collections={collections}
                   onAddToCollection={addToCollection}
                   onRemoveFromCollection={removeFromCollection}
@@ -657,10 +668,12 @@ export default function DashboardClient({
                 <BookmarkCard
                   bookmark={{
                     ...bookmark,
+                    tags: tagOverrides.get(bookmark.id) ?? bookmark.tags,
                     collectionIds:
                       memberships.get(bookmark.id) ?? bookmark.collectionIds,
                   }}
                   view="list"
+                  priority={i === 0}
                   collections={collections}
                   onAddToCollection={addToCollection}
                   onRemoveFromCollection={removeFromCollection}
