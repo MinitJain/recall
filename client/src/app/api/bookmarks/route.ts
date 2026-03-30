@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   const { success } = await bookmarkRatelimit.limit(user.id);
   if (!success)
     return NextResponse.json(
-      { error: "too many requests — slow down" },
+      { error: "too many requests - slow down" },
       { status: 429 },
     );
 
@@ -123,6 +123,7 @@ export async function GET(req: NextRequest) {
   const bookmarks = await prisma.bookmark.findMany({
     where: { userId: user.id },
     orderBy: { createdAt: "desc" },
+    take: 500, // safety cap — pagination should be added when needed
     include: { tags: true },
   });
   return NextResponse.json(bookmarks);

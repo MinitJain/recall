@@ -6,6 +6,9 @@ import Header from "@/components/Header";
 
 export const metadata = { title: "Admin | Recall" };
 
+// Cache for 5 minutes — prevents hammering Supabase's admin API on every load
+export const revalidate = 300;
+
 export default async function AdminPage() {
   // Auth check
   const supabase = await createClient();

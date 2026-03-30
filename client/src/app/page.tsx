@@ -68,27 +68,11 @@ if (user) redirect("/app");
         }} />
 
         <div style={{ maxWidth: 800, width: "100%", position: "relative", zIndex: 1 }}>
-          {/* Badge */}
-          <div style={{
-            animation: "fadeUp 0.5s ease both 0ms",
-            display: "inline-flex", alignItems: "center", gap: 6,
-            marginBottom: 32,
-          }}>
-            <span style={{
-              fontSize: 13, fontWeight: 500, color: "var(--lp-accent)",
-              padding: "6px 14px", borderRadius: 20,
-              border: "1px solid var(--lp-accent)",
-              background: "var(--lp-accent-soft)",
-              letterSpacing: "0.01em",
-            }}>
-              ✦ AI-powered bookmarking
-            </span>
-          </div>
 
           {/* Headline */}
           <h1 className="font-display" style={{
             animation: "fadeUp 0.5s ease both 60ms",
-            fontSize: "clamp(32px, 5.5vw, 64px)",
+            fontSize: "clamp(44px, 7vw, 80px)",
             fontWeight: 800, lineHeight: 1.05,
             margin: "0 0 24px",
           }}>
@@ -103,10 +87,10 @@ if (user) redirect("/app");
           {/* Subheadline */}
           <p style={{
             animation: "fadeUp 0.5s ease both 120ms",
-            fontSize: "clamp(16px, 2.5vw, 20px)", lineHeight: 1.6,
+            fontSize: "clamp(18px, 2.8vw, 24px)", lineHeight: 1.6,
             color: "var(--lp-text-secondary)", maxWidth: 560, margin: "0 auto 36px",
           }}>
-            The internet moves fast. Your saves shouldn&apos;t disappear with it. Recall bookmarks anything, tags it automatically, and brings it back when you need it — even when you&apos;ve forgotten what you saved.
+            The internet moves fast. Your saves shouldn&apos;t disappear with it. Recall bookmarks anything, tags it automatically, and brings it back when you need it - even when you&apos;ve forgotten what you saved.
           </p>
 
           {/* CTAs */}
@@ -263,7 +247,7 @@ if (user) redirect("/app");
             }}>
               I save 50 links a week. I read maybe 3. The rest just sit there, forgotten, useless. I knew I saved that article about <em>[thing]</em> but I can never find it. So I save it again. And again.
             </blockquote>
-            <p style={{ marginTop: 20, fontSize: 14, color: "var(--lp-text-muted)" }}>— Everyone who uses the internet</p>
+            <p style={{ marginTop: 20, fontSize: 14, color: "var(--lp-text-muted)" }}>- Everyone who uses the internet</p>
           </div>
 
           {/* Pain points */}
@@ -294,10 +278,10 @@ if (user) redirect("/app");
       <section style={{ padding: "100px 24px", background: "var(--lp-bg-secondary)" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div data-animate style={{ textAlign: "center", marginBottom: 60 }}>
-            <h2 className="font-display" style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 800, margin: "0 0 12px", color: "var(--lp-text-primary)" }}>
+            <h2 className="font-display" style={{ fontSize: "clamp(34px, 5.5vw, 58px)", fontWeight: 800, margin: "0 0 12px", color: "var(--lp-text-primary)" }}>
               Everything your bookmarks should do
             </h2>
-            <p style={{ fontSize: 18, color: "var(--lp-text-secondary)", margin: 0 }}>Not just save. Actually work.</p>
+            <p style={{ fontSize: 20, color: "var(--lp-text-secondary)", margin: 0 }}>Not just save. Actually work.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }} className="features-grid">
             {FEATURES.map((f, i) => (
@@ -330,7 +314,7 @@ if (user) redirect("/app");
       <section id="how" style={{ padding: "100px 24px", background: "var(--lp-bg-primary)" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div data-animate style={{ textAlign: "center", marginBottom: 72 }}>
-            <h2 className="font-display" style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 800, color: "var(--lp-text-primary)", margin: 0 }}>
+            <h2 className="font-display" style={{ fontSize: "clamp(34px, 5.5vw, 58px)", fontWeight: 800, color: "var(--lp-text-primary)", margin: 0 }}>
               How it works
             </h2>
           </div>
@@ -377,7 +361,7 @@ if (user) redirect("/app");
       }}>
         <div style={{ maxWidth: 960, margin: "0 auto", textAlign: "center" }}>
           <div data-animate style={{ marginBottom: 60 }}>
-            <h2 className="font-display" style={{ fontSize: "clamp(28px, 5vw, 56px)", fontWeight: 800, lineHeight: 1.1, margin: 0 }}>
+            <h2 className="font-display" style={{ fontSize: "clamp(34px, 5.5vw, 64px)", fontWeight: 800, lineHeight: 1.1, margin: 0 }}>
               <span style={{ color: "var(--lp-text-primary)", display: "block" }}>The internet gave it to you once.</span>
               <span style={{ color: "var(--lp-accent)", display: "block" }}>Recall gives it back.</span>
             </h2>
@@ -401,10 +385,10 @@ if (user) redirect("/app");
       {/* ── FINAL CTA ─────────────────────────────────────────────────── */}
       <section style={{ padding: "120px 24px", textAlign: "center", background: "var(--lp-bg-primary)" }}>
         <div data-animate>
-          <h2 className="font-display" style={{ fontSize: "clamp(32px, 6vw, 64px)", fontWeight: 800, color: "var(--lp-text-primary)", margin: "0 0 16px", lineHeight: 1.1 }}>
+          <h2 className="font-display" style={{ fontSize: "clamp(44px, 7vw, 76px)", fontWeight: 800, color: "var(--lp-text-primary)", margin: "0 0 16px", lineHeight: 1.1 }}>
             Stop losing what matters.
           </h2>
-          <p style={{ fontSize: 18, color: "var(--lp-text-secondary)", marginBottom: 40 }}>
+          <p style={{ fontSize: 20, color: "var(--lp-text-secondary)", marginBottom: 40 }}>
             Everything you save on the internet, finally working for you.
           </p>
           <Link href="/auth" style={{
@@ -508,7 +492,7 @@ const MOCK_BOOKMARKS = [
   {
     gradient: "linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)",
     dot: "#8B5CF6", domain: "youtube.com",
-    title: "The Art of Focus — Andrew Huberman",
+    title: "The Art of Focus - Andrew Huberman",
     tags: ["productivity", "science"],
   },
   {
@@ -538,9 +522,9 @@ const MOCK_BOOKMARKS = [
 ];
 
 const STATS = [
-  { value: "Any URL", label: "Tweet, video, article, Reddit thread — if it has a link, Recall saves it" },
+  { value: "Any URL", label: "Tweet, video, article, Reddit thread - if it has a link, Recall saves it" },
   { value: "< 3 sec", label: "Average time for AI to tag and preview a new bookmark" },
-  { value: "0 manual tags", label: "Required — AI handles it automatically, you can always add more" },
+  { value: "0 manual tags", label: "Required - AI handles it automatically, you can always add more" },
 ];
 
 const PAIN_POINTS = [
@@ -556,7 +540,7 @@ const PAIN_POINTS = [
   },
   {
     icon: "🔁", title: "The resurfacing gap",
-    desc: "No tool brings things back to you. You have to go find them — and you never do.",
+    desc: "No tool brings things back to you. You have to go find them - and you never do.",
     bg: "rgba(139,92,246,0.12)",
   },
 ];
@@ -566,13 +550,13 @@ const FEATURES = [
   { icon: "🤖", title: "AI auto-tagging", desc: "The moment you save, AI reads the content and adds relevant tags. No manual work.", tag: "Instant" },
   { icon: "🔍", title: "Fuzzy AI search", desc: "Can't remember the title? Search by feeling. 'that article about focus and music' actually works.", tag: "Natural language" },
   { icon: "📁", title: "Collections", desc: "Group bookmarks into collections manually or let AI suggest groupings based on your saves.", tag: "Organized" },
-  { icon: "✨", title: "Resurfacing", desc: "Recall brings things back to you — daily digest, random rediscovery, 'you saved this a year ago'.", tag: "Never forget" },
-  { icon: "🖼️", title: "Rich previews", desc: "Every bookmark shows title, description, and preview image — fetched automatically from OG tags.", tag: "Beautiful" },
+  { icon: "✨", title: "Resurfacing", desc: "Recall brings things back to you - daily digest, random rediscovery, 'you saved this a year ago'.", tag: "Never forget" },
+  { icon: "🖼️", title: "Rich previews", desc: "Every bookmark shows title, description, and preview image - fetched automatically from OG tags.", tag: "Beautiful" },
 ];
 
 const HOW_STEPS = [
   { num: "01", icon: "🔗", title: "Paste any URL", desc: "Copy a link from anywhere on the internet. Paste it into Recall." },
-  { num: "02", icon: "🤖", title: "AI does the rest", desc: "Title, tags, preview image, smart categorization — all automatic." },
+  { num: "02", icon: "🤖", title: "AI does the rest", desc: "Title, tags, preview image, smart categorization - all automatic." },
   { num: "03", icon: "✨", title: "Find it when you need it", desc: "Search naturally, browse collections, or let Recall surface it back to you." },
 ];
 
