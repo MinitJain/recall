@@ -21,6 +21,7 @@ type Props = {
   bookmark: Bookmark;
   view?: "list" | "grid";
   collections?: Collection[];
+  priority?: boolean;
   onAddToCollection?: (bookmarkId: string, collectionId: string) => void;
   onRemoveFromCollection?: (bookmarkId: string, collectionId: string) => void;
   onDelete?: (bookmarkId: string) => void;
@@ -31,6 +32,7 @@ export default function BookmarkCard({
   bookmark,
   view = "list",
   collections = [],
+  priority = false,
   onAddToCollection,
   onRemoveFromCollection,
   onDelete,
@@ -238,7 +240,7 @@ export default function BookmarkCard({
             width={400}
             height={128}
             className="w-full h-32 object-cover bg-[var(--surface-2)]"
-            unoptimized
+            sizes="(max-width: 640px) 100vw, 50vw"
           />
         ) : (
           <div className="w-full h-32 bg-[var(--surface-2)]" />
@@ -301,7 +303,8 @@ export default function BookmarkCard({
           width={64}
           height={64}
           className="w-16 h-16 flex-shrink-0 rounded-xl object-cover bg-[var(--surface-2)]"
-          unoptimized
+          sizes="64px"
+          priority={priority}
         />
       )}
 

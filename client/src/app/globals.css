@@ -99,7 +99,7 @@ body {
 /* ── Landing page font utilities ─────────────────────────────────────────── */
 .font-display { font-family: var(--font-display), system-ui, sans-serif; }
 .font-sans-lp { font-family: var(--font-sans), system-ui, sans-serif; }
-.font-mono-lp { font-family: var(--font-mono), monospace; }
+.font-mono-lp { font-family: monospace; }
 
 /* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fade-up {

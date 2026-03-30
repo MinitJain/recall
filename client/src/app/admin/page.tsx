@@ -12,7 +12,8 @@ export const metadata = { title: "Admin | Recall" };
 const getCachedAuthUsers = unstable_cache(
   async () => {
     const { data, error } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
-    return error ? [] : data.users;
+    if (error) { console.error("getCachedAuthUsers failed:", error); return []; }
+    return data.users;
   },
   ["admin-auth-users"],
   { revalidate: 300 },
