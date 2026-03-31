@@ -69,7 +69,7 @@ export default function SaveUrlForm() {
         </svg>
         <span className="text-xs text-[var(--text-dim)]">Save from any page —</span>
         <a
-          href={`javascript:(function(){window.open('https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href),'recall-save','width=400,height=220,toolbar=0,menubar=0,location=0')})();`}
+          href={`javascript:(function(){location.href='https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href)})();`}
           onClick={(e) => e.preventDefault()}
           draggable
           className="text-xs text-[var(--accent)] hover:underline cursor-grab active:cursor-grabbing select-none"
