@@ -68,7 +68,6 @@ export default function SaveUrlForm() {
           <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
         </svg>
         <span className="text-xs text-[var(--text-dim)]">Save from any page —</span>
-        {/* eslint-disable-next-line no-script-url */}
         <a
           href={`javascript:(function(){window.open('https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href),'recall-save','width=400,height=220,toolbar=0,menubar=0,location=0')})();`}
           onClick={(e) => e.preventDefault()}
