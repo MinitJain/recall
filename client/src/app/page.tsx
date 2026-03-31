@@ -412,7 +412,7 @@ if (user) redirect("/app");
                 Not a Chrome person? Drag this link to your bookmarks bar once. From that moment on, every browser saves to Recall in one click.
               </p>
               <a
-                href={`javascript:(function(){window.open('https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href),'recall-save','width=400,height=220,toolbar=0,menubar=0,location=0')})();`}
+                href={`javascript:(function(){location.href='https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href)})();`}
                 draggable
                 style={{
                   marginTop: "auto", display: "inline-flex", alignItems: "center", gap: 6,

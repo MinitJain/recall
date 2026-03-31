@@ -34,8 +34,6 @@ export default async function BookmarkletPage({
           <p className="text-xs text-[var(--text-muted)] mb-4">Log in to Recall first, then click the bookmarklet again.</p>
           <a
             href="/auth"
-            target="_blank"
-            rel="noopener noreferrer"
             className="text-xs px-4 py-2 rounded-lg bg-[var(--accent)] text-[var(--accent-text)] hover:opacity-90 transition-opacity"
           >
             Log in
