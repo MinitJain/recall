@@ -24,31 +24,32 @@ No manual work. No lost tabs. No graveyard of forgotten links.
 
 ## Features
 
-|    | Feature | Description | Status |
-| -- | ------- | ----------- | ------ |
-| 🔖 | **Save anything** | Any URL works. Tweet, blog post, YouTube video, image, Reddit thread, product page. | Live |
-| 🤖 | **AI auto-tagging** | The moment you save, Gemini generates 3–5 relevant tags automatically. Not satisfied? You can always add or remove tags manually too. | Live |
-| 🖼️ | **Rich previews** | Every bookmark shows title, description, and thumbnail fetched automatically from OG tags. | Live |
-| 🧩 | **Chrome extension** | Save any tab in one click or with `Alt+Shift+S` (Windows/Linux) / `Option+Shift+S` (Mac). No copy-paste needed. | Live |
-| 🔐 | **Secure auth** | Email/password + Google + GitHub via Supabase Auth. | Live |
-| ⚡ | **Rate limiting** | Per-user rate limiting via Upstash Redis to keep the service stable. | Live |
-| 🔍 | **Instant search** | Search by title, URL, or description. Filter by tag. Sort by newest, oldest, or A→Z. | Live |
-| 📁 | **Collections** | Group bookmarks into folders manually, or let AI suggest groupings based on your saves. | Coming soon |
-| ✨ | **Resurfacing** | Daily digest, random rediscovery, and "you saved this a year ago". Recall brings things back to you. | Coming soon |
+|     | Feature              | Description                                                                                                                           | Status      |
+| --- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 🔖  | **Save anything**    | Any URL works. Tweet, blog post, YouTube video, image, Reddit thread, product page.                                                   | Live        |
+| 🤖  | **AI auto-tagging**  | The moment you save, Gemini generates 3–5 relevant tags automatically. Not satisfied? You can always add or remove tags manually too. | Live        |
+| 🖼️  | **Rich previews**    | Every bookmark shows title, description, and thumbnail fetched automatically from OG tags.                                            | Live        |
+| 🧩  | **Chrome extension** | Save any tab in one click or with `Alt+Shift+S` (Windows/Linux) / `Option+Shift+S` (Mac). No copy-paste needed.                       | Live        |
+| 🔐  | **Secure auth**      | Email/password + Google + GitHub via Supabase Auth.                                                                                   | Live        |
+| ⚡  | **Rate limiting**    | Per-user rate limiting via Upstash Redis to keep the service stable.                                                                  | Live        |
+| 🔍  | **Instant search**   | Search by title, URL, or description. Filter by tag. Sort by newest, oldest, or A→Z.                                                  | Live        |
+| 📁  | **Collections**      | Group bookmarks into folders. Filter your saves by collection.                                                                        | Live        |
+| 🔗  | **Bookmarklet**      | No extension? Drag a link to your bookmarks bar — save any page from any browser in one click.                                        | Live        |
+| ✨  | **Resurfacing**      | Daily digest, random rediscovery, and "you saved this a year ago". Recall brings things back to you.                                  | Coming soon |
 
 ## Tech Stack
 
-| Layer | Technology |
-| ----- | ---------- |
-| Frontend + API | Next.js 16 (App Router) |
-| Styling | Tailwind CSS v4 |
-| Database | PostgreSQL via Supabase |
-| ORM | Prisma 7 |
-| AI Tagging | Google Gemini API |
-| Auth | Supabase Auth |
-| Deployment | Vercel |
-| Rate Limiting | Upstash Redis |
-| Analytics | Vercel Analytics + Speed Insights |
+| Layer          | Technology                        |
+| -------------- | --------------------------------- |
+| Frontend + API | Next.js 16 (App Router)           |
+| Styling        | Tailwind CSS v4                   |
+| Database       | PostgreSQL via Supabase           |
+| ORM            | Prisma 7                          |
+| AI Tagging     | Google Gemini API                 |
+| Auth           | Supabase Auth                     |
+| Deployment     | Vercel                            |
+| Rate Limiting  | Upstash Redis                     |
+| Analytics      | Vercel Analytics + Speed Insights |
 
 ## Getting Started
 
@@ -145,10 +146,10 @@ Recall will appear in your extensions list with the bookmark icon. Click the puz
 
 ### Keyboard shortcut
 
-| Shortcut | Action |
-| -------- | ------ |
+| Shortcut                        | Action                                          |
+| ------------------------------- | ----------------------------------------------- |
 | `Alt+Shift+S` (Windows / Linux) | Save the current tab instantly, no popup needed |
-| `Option+Shift+S` (Mac) | Save the current tab instantly, no popup needed |
+| `Option+Shift+S` (Mac)          | Save the current tab instantly, no popup needed |
 
 > Remap it at `chrome://extensions/shortcuts`.
 
@@ -183,21 +184,21 @@ When you search, Recall looks across titles, descriptions, and tags simultaneous
 
 ## Roadmap
 
-| Status | Item |
-| ------ | ---- |
-| ✅ | Chrome extension (save, popup, keyboard shortcut) |
-| ✅ | AI auto-tagging via Gemini |
-| ✅ | Vercel deployment at recallsave.vercel.app |
-| ✅ | OAuth (Google + GitHub) |
-| ✅ | User dashboard (web UI) |
-| ✅ | Admin dashboard |
-| ⬜ | Collections UI |
-| ⬜ | Natural language / semantic search |
-| ⬜ | Resurfacing (daily digest, random rediscovery, time capsule) |
-| ⬜ | Bookmarklet (no extension required) |
-| ⬜ | Chrome Web Store listing |
-| ⬜ | D3.js knowledge graph |
-| ⬜ | Background queue for async AI tagging |
+| Status | Item                                                         |
+| ------ | ------------------------------------------------------------ |
+| ✅     | Chrome extension (save, popup, keyboard shortcut)            |
+| ✅     | AI auto-tagging via Gemini                                   |
+| ✅     | Vercel deployment at recallsave.vercel.app                   |
+| ✅     | OAuth (Google + GitHub)                                      |
+| ✅     | User dashboard (web UI)                                      |
+| ✅     | Admin dashboard                                              |
+| ✅     | Collections UI                                               |
+| ⬜     | Natural language / semantic search                           |
+| ⬜     | Resurfacing (daily digest, random rediscovery, time capsule) |
+| ✅     | Bookmarklet (no extension required)                          |
+| ⬜     | Chrome Web Store listing                                     |
+| ⬜     | D3.js knowledge graph                                        |
+| ⬜     | Background queue for async AI tagging                        |
 
 ## Contributing
 
