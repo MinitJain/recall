@@ -1,29 +1,63 @@
 language: en
 
 reviews:
-  profile: chill
-  request_changes_workflow: false
+  profile: assertive
+  request_changes_workflow: true
   high_level_summary: true
   poem: false
   review_status: true
   auto_review:
     enabled: true
     drafts: false
+  path_filters:
+    - "!client/src/generated/**"
+    - "!client/node_modules/**"
+    - "!client/.next/**"
+    - "client/src/**"
+    - "extension/**"
 
 chat:
   auto_reply: true
 
 instructions: |
-  Recall is an AI-powered bookmark manager built with Next.js 16 (App Router),
-  TypeScript, Prisma v7, Supabase (PostgreSQL), Tailwind CSS, and Google Gemini API.
-  The Prisma client uses @prisma/adapter-pg.
+  Recall is an AI-powered bookmark manager. Stack: Next.js 16 (App Router),
+  TypeScript, Prisma v7 with @prisma/adapter-pg, Supabase (PostgreSQL + Auth),
+  Tailwind CSS v4, Google Gemini API, Upstash Redis for rate limiting.
+  Live at recallsave.vercel.app. This is a production app.
 
-  The developer is experienced with the MERN stack but is transitioning to this stack.
+  The developer is experienced with MERN but is learning this stack.
+  Explain WHY something is wrong and give the Express/Mongoose equivalent
+  when relevant.
 
-  When reviewing code:
-  - Explain issues clearly — state WHY something is wrong, not just that it is.
-  - If a concept is being used incorrectly, give the MERN/Express equivalent to bridge understanding.
-  - Flag incorrect Server vs Client component usage (Next.js App Router logic).
-  - Suggest more efficient Prisma queries (e.g., avoiding N+1 issues).
-  - Point out security issues (exposed secrets, SQL injection, XSS) explicitly.
-  - Focus on correctness and security — avoid nitpicking stylistic preferences.
+  Security rules — flag any violation as a blocking issue:
+  - Every API route must call getUserFromRequest(req) or supabase.auth.getUser()
+    before touching Prisma or any user data. No exceptions.
+  - Never trust userId from req.body — it must always come from the verified session.
+  - Any server-side URL fetch (scraper, thumbnails) must go through isSafeUrl()
+    from lib/url-validation.ts to prevent SSRF.
+  - Every POST and DELETE route must have rate limiting via bookmarkRatelimit,
+    tagRatelimit, collectionRatelimit, or a named limiter from lib/ratelimit.ts.
+  - No secret should use NEXT_PUBLIC_ prefix.
+    NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are intentionally
+    public — do not flag these.
+  - dangerouslySetInnerHTML is banned everywhere except the theme script in layout.tsx.
+
+  Prisma rules:
+  - Every findMany must have a take: limit. Flag any findMany without one.
+  - Avoid N+1: use include:{} or select:{} to fetch relations in one query.
+  - Never pass raw user input into a Prisma where clause without type-checking it first.
+
+  Accessibility rules:
+  - Every icon-only button must have an aria-label.
+  - Every input must have a label or aria-label.
+  - Buttons hidden with opacity-0 must also have focus-visible:opacity-100.
+
+  Next.js App Router rules:
+  - Flag incorrect Server vs Client component usage.
+  - Server Components must never import client-only hooks (useState, useEffect).
+  - "use client" components must never call Prisma directly.
+
+  Performance rules:
+  - No new Google Fonts without removing one.
+  - Every Next.js Image must have a sizes prop.
+  - Flag unoptimized={true} on any Image component.
