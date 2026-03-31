@@ -45,6 +45,9 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 | P2.6 Bookmarklet | ✅ Done |
 | P2.7 Daily digest email (resurfacing V1) | ⬜ Not started |
 
+**TODO after Chrome Web Store publish:**
+- Add "Add to Chrome" button to the "Save without leaving the page" section on landing page (`src/app/page.tsx` — Extension card)
+
 **P2.7 Daily Digest — implementation plan**
 - Vercel cron job hits `/api/digest` daily
 - Picks 5 oldest unvisited bookmarks per user
