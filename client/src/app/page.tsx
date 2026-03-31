@@ -352,6 +352,72 @@ if (user) redirect("/app");
         </div>
       </section>
 
+      {/* ── SAVE FROM ANYWHERE ─────────────────────────────────────────── */}
+      <section style={{ padding: "100px 24px", background: "var(--lp-bg-primary)" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div data-animate style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 className="font-display" style={{ fontSize: "clamp(34px, 5.5vw, 58px)", fontWeight: 800, color: "var(--lp-text-primary)", margin: "0 0 16px" }}>
+              Save without leaving the page
+            </h2>
+            <p style={{ fontSize: "clamp(15px, 2vw, 18px)", color: "var(--lp-text-secondary)", margin: 0 }}>
+              Three ways to save - pick what works for you.
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }} className="steps-grid">
+            {/* Web app */}
+            <div data-animate style={{
+              background: "var(--lp-bg-card)", border: "1px solid var(--lp-border)",
+              borderRadius: 20, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 12,
+            }}>
+              <span style={{ fontSize: 28 }}>🌐</span>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)", margin: 0 }}>Web app</h3>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, lineHeight: 1.6 }}>
+                Paste any URL directly into Recall. Works on every device and browser - no install needed.
+              </p>
+            </div>
+            {/* Extension */}
+            <div data-animate style={{
+              background: "var(--lp-bg-card)", border: "1px solid var(--lp-border)",
+              borderRadius: 20, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 12,
+            }}>
+              <span style={{ fontSize: 28 }}>🧩</span>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)", margin: 0 }}>Browser extension</h3>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, lineHeight: 1.6 }}>
+                Save any tab in one click - no copy-pasting. Works on Chrome, Brave, Edge, Arc, Perplexity, and all Chromium browsers.
+              </p>
+            </div>
+            {/* Bookmarklet */}
+            <div data-animate style={{
+              background: "var(--lp-bg-card)", border: "1px solid var(--lp-border)",
+              borderRadius: 20, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 12,
+            }}>
+              <span style={{ fontSize: 28 }}>🔖</span>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)", margin: 0 }}>Bookmarklet</h3>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, lineHeight: 1.6 }}>
+                On Safari, Firefox, or any browser? Drag this link to your bookmarks bar once - then save any page with one click, forever.
+              </p>
+              {/* eslint-disable-next-line no-script-url */}
+              <a
+                href={`javascript:(function(){window.open('https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href),'recall-save','width=400,height=220,toolbar=0,menubar=0,location=0')})();`}
+                onClick={(e) => e.preventDefault()}
+                draggable
+                style={{
+                  marginTop: 4, display: "inline-flex", alignItems: "center", gap: 6,
+                  fontSize: 13, fontWeight: 600, color: "var(--lp-accent)",
+                  background: "var(--lp-accent-soft)", borderRadius: 10,
+                  padding: "8px 14px", cursor: "grab", userSelect: "none",
+                  border: "1px dashed var(--lp-accent)", textDecoration: "none",
+                  alignSelf: "flex-start",
+                }}
+                title="Drag this to your bookmarks bar"
+              >
+                ← drag to bookmarks bar
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── RESURFACING CALLOUT ────────────────────────────────────────── */}
       <section style={{
         padding: "100px 24px",
