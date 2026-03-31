@@ -19,3 +19,10 @@ export const tagRatelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(30, "1 h"),
   prefix: "recall:tag",
 });
+
+// 60 collection operations per user per hour
+export const collectionRatelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(60, "1 h"),
+  prefix: "recall:collection",
+});
