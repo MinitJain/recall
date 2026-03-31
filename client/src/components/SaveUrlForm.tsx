@@ -61,6 +61,24 @@ export default function SaveUrlForm() {
         </button>
       </form>
       {error && <p className="text-xs text-[var(--error)] mt-2">{error}</p>}
+
+      {/* Bookmarklet install strip */}
+      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[var(--border)]">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-dim)] flex-shrink-0">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+        </svg>
+        <span className="text-xs text-[var(--text-dim)]">Save from any page —</span>
+        {/* eslint-disable-next-line no-script-url */}
+        <a
+          href={`javascript:(function(){window.open('https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href),'recall-save','width=400,height=220,toolbar=0,menubar=0,location=0')})();`}
+          onClick={(e) => e.preventDefault()}
+          draggable
+          className="text-xs text-[var(--accent)] hover:underline cursor-grab active:cursor-grabbing select-none"
+          title="Drag this to your bookmarks bar"
+        >
+          drag to bookmarks bar
+        </a>
+      </div>
     </div>
   );
 }
