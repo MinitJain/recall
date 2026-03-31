@@ -4,6 +4,15 @@ import BookmarkletSaver from "./BookmarkletSaver";
 
 export const metadata = { title: "Save to Recall" };
 
+function Logo() {
+  return (
+    <div className="flex items-center gap-2 mb-6">
+      <Image src="/logo.svg" alt="Recall" width={24} height={24} />
+      <span className="text-sm font-semibold text-[var(--text)]">Recall</span>
+    </div>
+  );
+}
+
 export default async function BookmarkletPage({
   searchParams,
 }: {
@@ -15,13 +24,6 @@ export default async function BookmarkletPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const Logo = () => (
-    <div className="flex items-center gap-2 mb-6">
-      <Image src="/logo.svg" alt="Recall" width={24} height={24} />
-      <span className="text-sm font-semibold text-[var(--text)]">Recall</span>
-    </div>
-  );
 
   if (!user) {
     return (
