@@ -27,9 +27,16 @@ Content: ${text}
 Example output: ["javascript", "tutorial", "web dev"]`;
 
   const response = await getClient().models.generateContent({
-    model: "gemini-2.0-flash",
-    contents: prompt,
+    model: "gemini-2.5-flash",
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { responseMimeType: "application/json" },
   });
+
+  const finishReason = response.candidates?.[0]?.finishReason;
+  if (finishReason && finishReason !== "STOP") {
+    console.warn("Gemini tag generation blocked, finishReason:", finishReason);
+    return [];
+  }
 
   const raw = response.text ?? "";
   const match = raw.match(/\[[\s\S]*?\]/);
