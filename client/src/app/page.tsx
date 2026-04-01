@@ -121,7 +121,7 @@ if (user) redirect("/app");
           </div>
 
           <p style={{ fontSize: 12, color: "var(--lp-text-muted)", animation: "fadeUp 0.5s ease both 200ms" }}>
-            No account needed to try · Works with any URL · Free forever for basics
+            Free to sign up · Works with any URL · Free forever for basics
           </p>
 
           {/* Hero mockup */}
@@ -352,6 +352,74 @@ if (user) redirect("/app");
         </div>
       </section>
 
+      {/* ── SAVE FROM ANYWHERE ─────────────────────────────────────────── */}
+      <section style={{ padding: "100px 24px", background: "var(--lp-bg-secondary)", borderTop: "1px solid var(--lp-border)" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div data-animate style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 className="font-display" style={{ fontSize: "clamp(34px, 5.5vw, 58px)", fontWeight: 800, color: "var(--lp-text-primary)", margin: "0 0 16px" }}>
+              Your browser. Your way.
+            </h2>
+            <p style={{ fontSize: "clamp(15px, 2vw, 18px)", color: "var(--lp-text-secondary)", margin: 0 }}>
+              Pick how you save. Or use all three.
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }} className="steps-grid">
+            {/* Web app */}
+            <div data-animate className="save-card" style={{
+              background: "var(--lp-bg-card)", border: "1px solid var(--lp-border)",
+              borderRadius: 20, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 12,
+              transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
+            }}>
+              <span style={{ fontSize: 36 }}>🌐</span>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)", margin: 0 }}>Web app</h3>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, lineHeight: 1.65 }}>
+                At your desk, on your phone, on someone else&apos;s laptop. Open Recall, drop the link. Done.
+              </p>
+              <span style={{
+                marginTop: "auto", fontSize: 11, fontWeight: 500,
+                color: "var(--lp-accent)", padding: "3px 10px",
+                background: "var(--lp-accent-soft)", borderRadius: 20,
+                alignSelf: "flex-start",
+              }}>works everywhere</span>
+            </div>
+            {/* Extension */}
+            <div data-animate className="save-card" style={{
+              background: "var(--lp-bg-card)", border: "1px solid var(--lp-border)",
+              borderRadius: 20, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 12,
+              transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
+            }}>
+              <span style={{ fontSize: 36 }}>🧩</span>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)", margin: 0 }}>Browser extension</h3>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, lineHeight: 1.65 }}>
+                Reading something good? Hit the button. Saved before you finish the thought. No tab switching, no copy-paste, no friction.
+              </p>
+              <span style={{
+                marginTop: "auto", fontSize: 11, fontWeight: 500,
+                color: "var(--lp-accent)", padding: "3px 10px",
+                background: "var(--lp-accent-soft)", borderRadius: 20,
+                alignSelf: "flex-start",
+              }}>1-click save</span>
+            </div>
+            {/* Bookmarklet */}
+            <div data-animate className="save-card" style={{
+              background: "var(--lp-bg-card)", border: "1px solid var(--lp-border)",
+              borderRadius: 20, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 12,
+              transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
+            }}>
+              <span style={{ fontSize: 36 }}>🔖</span>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "var(--lp-text-primary)", margin: 0 }}>Bookmarklet</h3>
+              <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, lineHeight: 1.65 }}>
+                Not a Chrome person? Drag this link to your bookmarks bar once. From that moment on, every browser saves to Recall in one click.
+              </p>
+              {/* dangerouslySetInnerHTML is required here — React sanitizes javascript: hrefs,
+                  replacing them with an error string. This is the only way to render a
+                  draggable bookmarklet link. The content is entirely static and server-generated. */}
+              <span dangerouslySetInnerHTML={{ __html: `<a href="javascript:(function(){location.href='${process.env.NEXT_PUBLIC_APP_URL ?? "https://recallsave.vercel.app"}/bookmarklet?url='+encodeURIComponent(location.href)})();" draggable title="Drag this to your bookmarks bar" style="margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--lp-accent);background:var(--lp-accent-soft);border-radius:20px;padding:4px 12px;cursor:grab;user-select:none;border:1px dashed var(--lp-accent);text-decoration:none;align-self:flex-start;">← drag to bookmarks bar</a>` }} />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── RESURFACING CALLOUT ────────────────────────────────────────── */}
       <section style={{
         padding: "100px 24px",
@@ -458,7 +526,7 @@ if (user) redirect("/app");
         .steps-grid { grid-template-columns: repeat(3, 1fr); }
         .resurface-grid { grid-template-columns: repeat(3, 1fr); }
         .steps-line { display: block; }
-        .feature-card:hover {
+        .feature-card:hover, .save-card:hover {
           border-color: var(--lp-accent) !important;
           box-shadow: var(--lp-shadow-glow) !important;
           transform: translateY(-2px) !important;
