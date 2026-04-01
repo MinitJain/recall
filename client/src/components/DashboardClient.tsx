@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Bookmark } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
 
@@ -59,6 +59,29 @@ export default function DashboardClient({
   const [membershipOverrides, setMembershipOverrides] = useState<Map<string, string[]>>(
     new Map(),
   );
+
+  // Reconcile membershipOverrides when fresh bookmarks arrive (React setState-during-render pattern):
+  // remove stale keys and clear overrides where canonical data has caught up.
+  const [prevBookmarks, setPrevBookmarks] = useState(bookmarks);
+  if (prevBookmarks !== bookmarks) {
+    setPrevBookmarks(bookmarks);
+    const bookmarkIds = new Set(bookmarks.map((b) => b.id));
+    setMembershipOverrides((prev) => {
+      let changed = false;
+      const next = new Map(prev);
+      for (const [id, override] of prev) {
+        // Remove entry for deleted bookmarks
+        if (!bookmarkIds.has(id)) { next.delete(id); changed = true; continue; }
+        // Clear entry when canonical data matches the override (server caught up)
+        const canonical = bookmarks.find((b) => b.id === id)?.collectionIds ?? [];
+        const same =
+          override.length === canonical.length &&
+          override.every((c) => canonical.includes(c));
+        if (same) { next.delete(id); changed = true; }
+      }
+      return changed ? next : prev;
+    });
+  }
 
   const TAG_LIMIT = 8;
 
@@ -204,7 +227,16 @@ export default function DashboardClient({
     });
   }
 
+  // Snapshots membershipOverrides for bookmarks being optimistically deleted,
+  // so handleDeleteFailed can restore them if the API call fails.
+  const pendingDeletedOverrides = useRef<Map<string, string[]>>(new Map());
+
   function handleDeleteBookmark(bookmarkId: string) {
+    // Snapshot the override (if any) before clearing it
+    const snapshot = membershipOverrides.get(bookmarkId);
+    if (snapshot !== undefined) {
+      pendingDeletedOverrides.current = new Map(pendingDeletedOverrides.current).set(bookmarkId, snapshot);
+    }
     setDeletedIds((prev) => new Set(prev).add(bookmarkId));
     setMembershipOverrides((prev) => {
       const next = new Map(prev);
@@ -214,11 +246,26 @@ export default function DashboardClient({
   }
 
   function handleDeleteFailed(bookmarkId: string) {
+    // Restore deleted ID so the card reappears
     setDeletedIds((prev) => {
       const next = new Set(prev);
       next.delete(bookmarkId);
       return next;
     });
+    // Restore the membership override snapshot if there was one
+    const snapshot = pendingDeletedOverrides.current.get(bookmarkId);
+    if (snapshot !== undefined) {
+      pendingDeletedOverrides.current = new Map(pendingDeletedOverrides.current);
+      pendingDeletedOverrides.current.delete(bookmarkId);
+      setMembershipOverrides((prev) => {
+        const next = new Map(prev);
+        next.set(bookmarkId, snapshot);
+        return next;
+      });
+    } else {
+      pendingDeletedOverrides.current = new Map(pendingDeletedOverrides.current);
+      pendingDeletedOverrides.current.delete(bookmarkId);
+    }
   }
 
   async function removeFromCollection(

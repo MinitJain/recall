@@ -25,7 +25,7 @@ type Props = {
   onAddToCollection?: (bookmarkId: string, collectionId: string) => void;
   onRemoveFromCollection?: (bookmarkId: string, collectionId: string) => void;
   onDelete?: (bookmarkId: string) => void;
-  onDeleteFailed?: (bookmarkId: string) => void;
+  onDeleteFailed?: (bookmarkId: string, error: string) => void;
   onTagsChange?: (bookmarkId: string, tags: Tag[]) => void;
 };
 
@@ -136,18 +136,15 @@ export default function BookmarkCard({
   async function deleteBookmark() {
     if (deleting) return;
     setDeleting(true);
-    onDelete?.(bookmark.id); // optimistic — remove immediately
+    onDelete?.(bookmark.id); // optimistic — component will unmount here
     try {
       const res = await fetch(`/api/bookmarks/${bookmark.id}`, { method: "DELETE" });
       if (!res.ok) {
-        onDeleteFailed?.(bookmark.id); // restore the card
-        setDeleting(false);
-        setError("failed to delete");
+        // Component is unmounted; delegate error display to parent via callback
+        onDeleteFailed?.(bookmark.id, "failed to delete");
       }
     } catch {
-      onDeleteFailed?.(bookmark.id); // restore the card
-      setDeleting(false);
-      setError("failed to delete");
+      onDeleteFailed?.(bookmark.id, "failed to delete");
     }
   }
 
