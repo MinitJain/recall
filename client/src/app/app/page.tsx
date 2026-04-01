@@ -14,7 +14,7 @@ async function DashboardLoader({ userId }: { userId: string }) {
     prisma.bookmark.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
-      take: 500,
+      take: 100,
       include: { tags: true, collections: { select: { collectionId: true } } },
     }),
     prisma.collection.findMany({

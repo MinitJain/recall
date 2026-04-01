@@ -42,15 +42,22 @@ export default function DashboardClient({
   const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
   const [collectionError, setCollectionError] = useState<string | null>(null);
 
-  // Local bookmarks state — updated optimistically on delete
-  const [localBookmarks, setLocalBookmarks] = useState(bookmarks);
+  // IDs that have been optimistically deleted — bookmarks prop flows in from parent on refresh
+  const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set());
+
+  // Derived: prop list minus optimistic deletes — automatically includes new bookmarks after refresh
+  const localBookmarks = useMemo(
+    () => bookmarks.filter((b) => !deletedIds.has(b.id)),
+    [bookmarks, deletedIds],
+  );
 
   // Tag overrides — bookmarkId → Tag[] — kept in sync via onTagsChange from BookmarkCard
   const [tagOverrides, setTagOverrides] = useState<Map<string, TagItem[]>>(new Map());
 
-  // Memberships state — bookmarkId → collectionIds[] — updated optimistically
-  const [memberships, setMemberships] = useState<Map<string, string[]>>(
-    () => new Map(bookmarks.map((b) => [b.id, b.collectionIds])),
+  // Membership overrides — only entries that have been changed optimistically
+  // Falls back to b.collectionIds from props for untouched bookmarks
+  const [membershipOverrides, setMembershipOverrides] = useState<Map<string, string[]>>(
+    new Map(),
   );
 
   const TAG_LIMIT = 8;
@@ -78,12 +85,12 @@ export default function DashboardClient({
       .map(([name]) => name);
   }, [localBookmarks, tagOverrides]);
 
-  // Filtered + sorted list — uses memberships for collection filtering
+  // Filtered + sorted list — uses membershipOverrides for collection filtering
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
     let list = localBookmarks.filter((b) => {
-      const ids = memberships.get(b.id) ?? b.collectionIds;
+      const ids = membershipOverrides.get(b.id) ?? b.collectionIds;
       const matchesCollection = activeCollection
         ? ids.includes(activeCollection)
         : true;
@@ -108,7 +115,7 @@ export default function DashboardClient({
       );
 
     return list;
-  }, [localBookmarks, memberships, tagOverrides, activeCollection, activeTag, sort, query]);
+  }, [localBookmarks, membershipOverrides, tagOverrides, activeCollection, activeTag, sort, query]);
 
   // Collection CRUD
   async function handleCreateCollection() {
@@ -159,17 +166,22 @@ export default function DashboardClient({
   }
 
   // Bookmark ↔ collection membership (optimistic)
+  function getMembership(bookmarkId: string): string[] {
+    const b = bookmarks.find((bk) => bk.id === bookmarkId);
+    return membershipOverrides.get(bookmarkId) ?? b?.collectionIds ?? [];
+  }
+
   async function addToCollection(bookmarkId: string, collectionId: string) {
-    setMemberships((prev) => {
+    const current = getMembership(bookmarkId);
+    if (current.includes(collectionId)) return;
+    setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      const current = next.get(bookmarkId) ?? [];
-      if (!current.includes(collectionId))
-        next.set(bookmarkId, [...current, collectionId]);
+      next.set(bookmarkId, [...current, collectionId]);
       return next;
     });
-    const revert = () => setMemberships((prev) => {
+    const revert = () => setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
+      next.set(bookmarkId, current);
       return next;
     });
     try {
@@ -193,8 +205,8 @@ export default function DashboardClient({
   }
 
   function handleDeleteBookmark(bookmarkId: string) {
-    setLocalBookmarks((prev) => prev.filter((b) => b.id !== bookmarkId));
-    setMemberships((prev) => {
+    setDeletedIds((prev) => new Set(prev).add(bookmarkId));
+    setMembershipOverrides((prev) => {
       const next = new Map(prev);
       next.delete(bookmarkId);
       return next;
@@ -205,16 +217,15 @@ export default function DashboardClient({
     bookmarkId: string,
     collectionId: string,
   ) {
-    setMemberships((prev) => {
+    const current = getMembership(bookmarkId);
+    setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
+      next.set(bookmarkId, current.filter((id) => id !== collectionId));
       return next;
     });
-    const revert = () => setMemberships((prev) => {
+    const revert = () => setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      const current = next.get(bookmarkId) ?? [];
-      if (!current.includes(collectionId))
-        next.set(bookmarkId, [...current, collectionId]);
+      next.set(bookmarkId, current);
       return next;
     });
     try {
@@ -644,7 +655,7 @@ export default function DashboardClient({
                     ...bookmark,
                     tags: tagOverrides.get(bookmark.id) ?? bookmark.tags,
                     collectionIds:
-                      memberships.get(bookmark.id) ?? bookmark.collectionIds,
+                      membershipOverrides.get(bookmark.id) ?? bookmark.collectionIds,
                   }}
                   view="grid"
                   priority={i === 0}
@@ -670,7 +681,7 @@ export default function DashboardClient({
                     ...bookmark,
                     tags: tagOverrides.get(bookmark.id) ?? bookmark.tags,
                     collectionIds:
-                      memberships.get(bookmark.id) ?? bookmark.collectionIds,
+                      membershipOverrides.get(bookmark.id) ?? bookmark.collectionIds,
                   }}
                   view="list"
                   priority={i === 0}

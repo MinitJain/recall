@@ -134,17 +134,15 @@ export default function BookmarkCard({
   async function deleteBookmark() {
     if (deleting) return;
     setDeleting(true);
+    onDelete?.(bookmark.id); // optimistic — remove immediately
     try {
       const res = await fetch(`/api/bookmarks/${bookmark.id}`, { method: "DELETE" });
       if (!res.ok) {
-        setError("failed to delete");
-        setDeleting(false);
-        return;
+        // Component is likely unmounted; error is silent but rare
+        console.error("Failed to delete bookmark", bookmark.id);
       }
-      onDelete?.(bookmark.id); // only called on success
     } catch {
-      setError("failed to delete");
-      setDeleting(false);
+      console.error("Failed to delete bookmark", bookmark.id);
     }
   }
 
@@ -240,7 +238,8 @@ export default function BookmarkCard({
             width={400}
             height={128}
             className="w-full h-32 object-cover bg-[var(--surface-2)]"
-            sizes="(max-width: 640px) 100vw, 50vw"
+            sizes="(max-width: 640px) calc(100vw - 32px), 320px"
+            priority={priority}
           />
         ) : (
           <div className="w-full h-32 bg-[var(--surface-2)]" />
