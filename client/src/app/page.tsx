@@ -121,7 +121,7 @@ if (user) redirect("/app");
           </div>
 
           <p style={{ fontSize: 12, color: "var(--lp-text-muted)", animation: "fadeUp 0.5s ease both 200ms" }}>
-            No account needed to try · Works with any URL · Free forever for basics
+            Free to sign up · Works with any URL · Free forever for basics
           </p>
 
           {/* Hero mockup */}
