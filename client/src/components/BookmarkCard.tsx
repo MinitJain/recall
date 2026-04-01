@@ -25,6 +25,7 @@ type Props = {
   onAddToCollection?: (bookmarkId: string, collectionId: string) => void;
   onRemoveFromCollection?: (bookmarkId: string, collectionId: string) => void;
   onDelete?: (bookmarkId: string) => void;
+  onDeleteFailed?: (bookmarkId: string, error: string) => void;
   onTagsChange?: (bookmarkId: string, tags: Tag[]) => void;
 };
 
@@ -36,6 +37,7 @@ export default function BookmarkCard({
   onAddToCollection,
   onRemoveFromCollection,
   onDelete,
+  onDeleteFailed,
   onTagsChange,
 }: Props) {
   const [localTags, setLocalTags] = useState(bookmark.tags);
@@ -134,17 +136,15 @@ export default function BookmarkCard({
   async function deleteBookmark() {
     if (deleting) return;
     setDeleting(true);
+    onDelete?.(bookmark.id); // optimistic — component will unmount here
     try {
       const res = await fetch(`/api/bookmarks/${bookmark.id}`, { method: "DELETE" });
       if (!res.ok) {
-        setError("failed to delete");
-        setDeleting(false);
-        return;
+        // Component is unmounted; delegate error display to parent via callback
+        onDeleteFailed?.(bookmark.id, "failed to delete");
       }
-      onDelete?.(bookmark.id); // only called on success
     } catch {
-      setError("failed to delete");
-      setDeleting(false);
+      onDeleteFailed?.(bookmark.id, "failed to delete");
     }
   }
 
@@ -240,7 +240,8 @@ export default function BookmarkCard({
             width={400}
             height={128}
             className="w-full h-32 object-cover bg-[var(--surface-2)]"
-            sizes="(max-width: 640px) 100vw, 50vw"
+            sizes="(max-width: 640px) calc(100vw - 32px), 320px"
+            priority={priority}
           />
         ) : (
           <div className="w-full h-32 bg-[var(--surface-2)]" />

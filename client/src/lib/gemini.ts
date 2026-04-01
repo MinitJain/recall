@@ -27,7 +27,7 @@ Content: ${text}
 Example output: ["javascript", "tutorial", "web dev"]`;
 
   const response = await getClient().models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-2.0-flash",
     contents: prompt,
   });
 
