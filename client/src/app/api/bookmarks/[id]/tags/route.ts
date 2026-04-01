@@ -31,6 +31,9 @@ export async function POST(
   if (!name) {
     return NextResponse.json({ error: "name is required" }, { status: 400 });
   }
+  if (name.length > 50) {
+    return NextResponse.json({ error: "tag name too long" }, { status: 400 });
+  }
 
   let bookmark;
   try {
