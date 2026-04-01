@@ -213,6 +213,14 @@ export default function DashboardClient({
     });
   }
 
+  function handleDeleteFailed(bookmarkId: string) {
+    setDeletedIds((prev) => {
+      const next = new Set(prev);
+      next.delete(bookmarkId);
+      return next;
+    });
+  }
+
   async function removeFromCollection(
     bookmarkId: string,
     collectionId: string,
@@ -663,6 +671,7 @@ export default function DashboardClient({
                   onAddToCollection={addToCollection}
                   onRemoveFromCollection={removeFromCollection}
                   onDelete={handleDeleteBookmark}
+                  onDeleteFailed={handleDeleteFailed}
                   onTagsChange={handleTagsChange}
                 />
               </div>
@@ -689,6 +698,7 @@ export default function DashboardClient({
                   onAddToCollection={addToCollection}
                   onRemoveFromCollection={removeFromCollection}
                   onDelete={handleDeleteBookmark}
+                  onDeleteFailed={handleDeleteFailed}
                   onTagsChange={handleTagsChange}
                 />
               </div>

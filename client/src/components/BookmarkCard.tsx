@@ -25,6 +25,7 @@ type Props = {
   onAddToCollection?: (bookmarkId: string, collectionId: string) => void;
   onRemoveFromCollection?: (bookmarkId: string, collectionId: string) => void;
   onDelete?: (bookmarkId: string) => void;
+  onDeleteFailed?: (bookmarkId: string) => void;
   onTagsChange?: (bookmarkId: string, tags: Tag[]) => void;
 };
 
@@ -36,6 +37,7 @@ export default function BookmarkCard({
   onAddToCollection,
   onRemoveFromCollection,
   onDelete,
+  onDeleteFailed,
   onTagsChange,
 }: Props) {
   const [localTags, setLocalTags] = useState(bookmark.tags);
@@ -138,11 +140,14 @@ export default function BookmarkCard({
     try {
       const res = await fetch(`/api/bookmarks/${bookmark.id}`, { method: "DELETE" });
       if (!res.ok) {
-        // Component is likely unmounted; error is silent but rare
-        console.error("Failed to delete bookmark", bookmark.id);
+        onDeleteFailed?.(bookmark.id); // restore the card
+        setDeleting(false);
+        setError("failed to delete");
       }
     } catch {
-      console.error("Failed to delete bookmark", bookmark.id);
+      onDeleteFailed?.(bookmark.id); // restore the card
+      setDeleting(false);
+      setError("failed to delete");
     }
   }
 
