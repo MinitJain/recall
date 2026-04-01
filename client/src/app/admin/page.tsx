@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
 import { unstable_cache } from "next/cache";
 import Header from "@/components/Header";
@@ -11,7 +11,7 @@ export const metadata = { title: "Admin | Recall" };
 // revalidate = 300 is ineffective here because cookies() forces dynamic rendering.
 const getCachedAuthUsers = unstable_cache(
   async () => {
-    const { data, error } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+    const { data, error } = await getSupabaseAdmin().auth.admin.listUsers({ perPage: 1000 });
     if (error) { console.error("getCachedAuthUsers failed:", error); return []; }
     return data.users;
   },
