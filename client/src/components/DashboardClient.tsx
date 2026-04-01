@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Bookmark } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
 
@@ -42,16 +42,46 @@ export default function DashboardClient({
   const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
   const [collectionError, setCollectionError] = useState<string | null>(null);
 
-  // Local bookmarks state — updated optimistically on delete
-  const [localBookmarks, setLocalBookmarks] = useState(bookmarks);
+  // IDs that have been optimistically deleted — bookmarks prop flows in from parent on refresh
+  const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set());
+
+  // Derived: prop list minus optimistic deletes — automatically includes new bookmarks after refresh
+  const localBookmarks = useMemo(
+    () => bookmarks.filter((b) => !deletedIds.has(b.id)),
+    [bookmarks, deletedIds],
+  );
 
   // Tag overrides — bookmarkId → Tag[] — kept in sync via onTagsChange from BookmarkCard
   const [tagOverrides, setTagOverrides] = useState<Map<string, TagItem[]>>(new Map());
 
-  // Memberships state — bookmarkId → collectionIds[] — updated optimistically
-  const [memberships, setMemberships] = useState<Map<string, string[]>>(
-    () => new Map(bookmarks.map((b) => [b.id, b.collectionIds])),
+  // Membership overrides — only entries that have been changed optimistically
+  // Falls back to b.collectionIds from props for untouched bookmarks
+  const [membershipOverrides, setMembershipOverrides] = useState<Map<string, string[]>>(
+    new Map(),
   );
+
+  // Reconcile membershipOverrides when fresh bookmarks arrive (React setState-during-render pattern):
+  // remove stale keys and clear overrides where canonical data has caught up.
+  const [prevBookmarks, setPrevBookmarks] = useState(bookmarks);
+  if (prevBookmarks !== bookmarks) {
+    setPrevBookmarks(bookmarks);
+    const bookmarkIds = new Set(bookmarks.map((b) => b.id));
+    setMembershipOverrides((prev) => {
+      let changed = false;
+      const next = new Map(prev);
+      for (const [id, override] of prev) {
+        // Remove entry for deleted bookmarks
+        if (!bookmarkIds.has(id)) { next.delete(id); changed = true; continue; }
+        // Clear entry when canonical data matches the override (server caught up)
+        const canonical = bookmarks.find((b) => b.id === id)?.collectionIds ?? [];
+        const same =
+          override.length === canonical.length &&
+          override.every((c) => canonical.includes(c));
+        if (same) { next.delete(id); changed = true; }
+      }
+      return changed ? next : prev;
+    });
+  }
 
   const TAG_LIMIT = 8;
 
@@ -78,12 +108,12 @@ export default function DashboardClient({
       .map(([name]) => name);
   }, [localBookmarks, tagOverrides]);
 
-  // Filtered + sorted list — uses memberships for collection filtering
+  // Filtered + sorted list — uses membershipOverrides for collection filtering
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
     let list = localBookmarks.filter((b) => {
-      const ids = memberships.get(b.id) ?? b.collectionIds;
+      const ids = membershipOverrides.get(b.id) ?? b.collectionIds;
       const matchesCollection = activeCollection
         ? ids.includes(activeCollection)
         : true;
@@ -108,7 +138,7 @@ export default function DashboardClient({
       );
 
     return list;
-  }, [localBookmarks, memberships, tagOverrides, activeCollection, activeTag, sort, query]);
+  }, [localBookmarks, membershipOverrides, tagOverrides, activeCollection, activeTag, sort, query]);
 
   // Collection CRUD
   async function handleCreateCollection() {
@@ -159,17 +189,22 @@ export default function DashboardClient({
   }
 
   // Bookmark ↔ collection membership (optimistic)
+  function getMembership(bookmarkId: string): string[] {
+    const b = bookmarks.find((bk) => bk.id === bookmarkId);
+    return membershipOverrides.get(bookmarkId) ?? b?.collectionIds ?? [];
+  }
+
   async function addToCollection(bookmarkId: string, collectionId: string) {
-    setMemberships((prev) => {
+    const current = getMembership(bookmarkId);
+    if (current.includes(collectionId)) return;
+    setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      const current = next.get(bookmarkId) ?? [];
-      if (!current.includes(collectionId))
-        next.set(bookmarkId, [...current, collectionId]);
+      next.set(bookmarkId, [...current, collectionId]);
       return next;
     });
-    const revert = () => setMemberships((prev) => {
+    const revert = () => setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
+      next.set(bookmarkId, current);
       return next;
     });
     try {
@@ -192,29 +227,60 @@ export default function DashboardClient({
     });
   }
 
+  // Snapshots membershipOverrides for bookmarks being optimistically deleted,
+  // so handleDeleteFailed can restore them if the API call fails.
+  const pendingDeletedOverrides = useRef<Map<string, string[]>>(new Map());
+
   function handleDeleteBookmark(bookmarkId: string) {
-    setLocalBookmarks((prev) => prev.filter((b) => b.id !== bookmarkId));
-    setMemberships((prev) => {
+    // Snapshot the override (if any) before clearing it
+    const snapshot = membershipOverrides.get(bookmarkId);
+    if (snapshot !== undefined) {
+      pendingDeletedOverrides.current = new Map(pendingDeletedOverrides.current).set(bookmarkId, snapshot);
+    }
+    setDeletedIds((prev) => new Set(prev).add(bookmarkId));
+    setMembershipOverrides((prev) => {
       const next = new Map(prev);
       next.delete(bookmarkId);
       return next;
     });
   }
 
+  function handleDeleteFailed(bookmarkId: string) {
+    // Restore deleted ID so the card reappears
+    setDeletedIds((prev) => {
+      const next = new Set(prev);
+      next.delete(bookmarkId);
+      return next;
+    });
+    // Restore the membership override snapshot if there was one
+    const snapshot = pendingDeletedOverrides.current.get(bookmarkId);
+    if (snapshot !== undefined) {
+      pendingDeletedOverrides.current = new Map(pendingDeletedOverrides.current);
+      pendingDeletedOverrides.current.delete(bookmarkId);
+      setMembershipOverrides((prev) => {
+        const next = new Map(prev);
+        next.set(bookmarkId, snapshot);
+        return next;
+      });
+    } else {
+      pendingDeletedOverrides.current = new Map(pendingDeletedOverrides.current);
+      pendingDeletedOverrides.current.delete(bookmarkId);
+    }
+  }
+
   async function removeFromCollection(
     bookmarkId: string,
     collectionId: string,
   ) {
-    setMemberships((prev) => {
+    const current = getMembership(bookmarkId);
+    setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      next.set(bookmarkId, (next.get(bookmarkId) ?? []).filter((id) => id !== collectionId));
+      next.set(bookmarkId, current.filter((id) => id !== collectionId));
       return next;
     });
-    const revert = () => setMemberships((prev) => {
+    const revert = () => setMembershipOverrides((prev) => {
       const next = new Map(prev);
-      const current = next.get(bookmarkId) ?? [];
-      if (!current.includes(collectionId))
-        next.set(bookmarkId, [...current, collectionId]);
+      next.set(bookmarkId, current);
       return next;
     });
     try {
@@ -644,7 +710,7 @@ export default function DashboardClient({
                     ...bookmark,
                     tags: tagOverrides.get(bookmark.id) ?? bookmark.tags,
                     collectionIds:
-                      memberships.get(bookmark.id) ?? bookmark.collectionIds,
+                      membershipOverrides.get(bookmark.id) ?? bookmark.collectionIds,
                   }}
                   view="grid"
                   priority={i === 0}
@@ -652,6 +718,7 @@ export default function DashboardClient({
                   onAddToCollection={addToCollection}
                   onRemoveFromCollection={removeFromCollection}
                   onDelete={handleDeleteBookmark}
+                  onDeleteFailed={handleDeleteFailed}
                   onTagsChange={handleTagsChange}
                 />
               </div>
@@ -670,7 +737,7 @@ export default function DashboardClient({
                     ...bookmark,
                     tags: tagOverrides.get(bookmark.id) ?? bookmark.tags,
                     collectionIds:
-                      memberships.get(bookmark.id) ?? bookmark.collectionIds,
+                      membershipOverrides.get(bookmark.id) ?? bookmark.collectionIds,
                   }}
                   view="list"
                   priority={i === 0}
@@ -678,6 +745,7 @@ export default function DashboardClient({
                   onAddToCollection={addToCollection}
                   onRemoveFromCollection={removeFromCollection}
                   onDelete={handleDeleteBookmark}
+                  onDeleteFailed={handleDeleteFailed}
                   onTagsChange={handleTagsChange}
                 />
               </div>
