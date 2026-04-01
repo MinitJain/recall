@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SaveUrlForm() {
@@ -8,6 +8,17 @@ export default function SaveUrlForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const bookmarkletRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (bookmarkletRef.current) {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://recallsave.vercel.app";
+      bookmarkletRef.current.setAttribute(
+        "href",
+        `javascript:(function(){location.href='${appUrl}/bookmarklet?url='+encodeURIComponent(location.href)})();`
+      );
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -69,7 +80,8 @@ export default function SaveUrlForm() {
         </svg>
         <span className="text-xs text-[var(--text-dim)]">Save from any page —</span>
         <a
-          href={`javascript:(function(){location.href='https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href)})();`}
+          ref={bookmarkletRef}
+          href="#"
           onClick={(e) => e.preventDefault()}
           draggable
           className="text-xs text-[var(--accent)] hover:underline cursor-grab active:cursor-grabbing select-none"

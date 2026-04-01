@@ -411,21 +411,10 @@ if (user) redirect("/app");
               <p style={{ fontSize: 14, color: "var(--lp-text-secondary)", margin: 0, lineHeight: 1.65 }}>
                 Not a Chrome person? Drag this link to your bookmarks bar once. From that moment on, every browser saves to Recall in one click.
               </p>
-              <a
-                href={`javascript:(function(){location.href='https://recallsave.vercel.app/bookmarklet?url='+encodeURIComponent(location.href)})();`}
-                draggable
-                style={{
-                  marginTop: "auto", display: "inline-flex", alignItems: "center", gap: 6,
-                  fontSize: 12, fontWeight: 600, color: "var(--lp-accent)",
-                  background: "var(--lp-accent-soft)", borderRadius: 20,
-                  padding: "4px 12px", cursor: "grab", userSelect: "none",
-                  border: "1px dashed var(--lp-accent)", textDecoration: "none",
-                  alignSelf: "flex-start",
-                }}
-                title="Drag this to your bookmarks bar"
-              >
-                ← drag to bookmarks bar
-              </a>
+              {/* dangerouslySetInnerHTML is required here — React sanitizes javascript: hrefs,
+                  replacing them with an error string. This is the only way to render a
+                  draggable bookmarklet link. The content is entirely static and server-generated. */}
+              <span dangerouslySetInnerHTML={{ __html: `<a href="javascript:(function(){location.href='${process.env.NEXT_PUBLIC_APP_URL ?? "https://recallsave.vercel.app"}/bookmarklet?url='+encodeURIComponent(location.href)})();" draggable title="Drag this to your bookmarks bar" style="margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--lp-accent);background:var(--lp-accent-soft);border-radius:20px;padding:4px 12px;cursor:grab;user-select:none;border:1px dashed var(--lp-accent);text-decoration:none;align-self:flex-start;">← drag to bookmarks bar</a>` }} />
             </div>
           </div>
         </div>
