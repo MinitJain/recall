@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SaveUrlForm() {
@@ -8,6 +8,17 @@ export default function SaveUrlForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const bookmarkletRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (bookmarkletRef.current) {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://recallsave.vercel.app";
+      bookmarkletRef.current.setAttribute(
+        "href",
+        `javascript:(function(){location.href='${appUrl}/bookmarklet?url='+encodeURIComponent(location.href)})();`
+      );
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -61,6 +72,24 @@ export default function SaveUrlForm() {
         </button>
       </form>
       {error && <p className="text-xs text-[var(--error)] mt-2">{error}</p>}
+
+      {/* Bookmarklet install strip */}
+      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[var(--border)]">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-dim)] flex-shrink-0">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+        </svg>
+        <span className="text-xs text-[var(--text-dim)]">Save from any page —</span>
+        <a
+          ref={bookmarkletRef}
+          href="#"
+          onClick={(e) => e.preventDefault()}
+          draggable
+          className="text-xs text-[var(--accent)] hover:underline cursor-grab active:cursor-grabbing select-none"
+          title="Drag this to your bookmarks bar"
+        >
+          drag to bookmarks bar
+        </a>
+      </div>
     </div>
   );
 }
