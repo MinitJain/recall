@@ -11,9 +11,14 @@ export const metadata = { title: "Admin | Recall" };
 // revalidate = 300 is ineffective here because cookies() forces dynamic rendering.
 const getCachedAuthUsers = unstable_cache(
   async () => {
-    const { data, error } = await getSupabaseAdmin().auth.admin.listUsers({ perPage: 1000 });
-    if (error) { console.error("getCachedAuthUsers failed:", error); return []; }
-    return data.users;
+    try {
+      const { data, error } = await getSupabaseAdmin().auth.admin.listUsers({ perPage: 1000 });
+      if (error) { console.error("getCachedAuthUsers failed:", error); return []; }
+      return data.users;
+    } catch (err) {
+      console.error("getCachedAuthUsers failed:", err);
+      return [];
+    }
   },
   ["admin-auth-users"],
   { revalidate: 300 },
