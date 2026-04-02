@@ -10,13 +10,14 @@ import { Eye, EyeOff } from "lucide-react";
 function AuthForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [mode, setMode] = useState<"login" | "signup">(
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">(
     searchParams.get("mode") === "signup" ? "signup" : "login"
   );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<"google" | "github" | null>(null);
 
   useEffect(() => {
@@ -84,6 +85,27 @@ function AuthForm() {
     }
   }
 
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      });
+      if (error) {
+        setError(error.message);
+        return;
+      }
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-[var(--bg)] flex items-center justify-center px-4">
       <div className="w-full max-w-sm animate-fade-up">
@@ -102,11 +124,45 @@ function AuthForm() {
 
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
           <h2 className="text-sm font-semibold text-[var(--text)] mb-5">
-            {mode === "login" ? "Welcome back" : "Create your account"}
+            {mode === "login" ? "Welcome back" : mode === "signup" ? "Create your account" : "Reset your password"}
           </h2>
 
+          {/* Forgot password form */}
+          {mode === "forgot" && (
+            sent ? (
+              <p className="text-sm text-[var(--text-muted)] text-center py-4">
+                Check your email — we sent a reset link to <strong className="text-[var(--text)]">{email}</strong>.
+              </p>
+            ) : (
+              <form onSubmit={handleForgotPassword} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="forgot-email-input" className="text-xs font-medium text-[var(--text-muted)]">Email</label>
+                  <input
+                    id="forgot-email-input"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+                  />
+                </div>
+                {error && (
+                  <p role="alert" aria-live="polite" className="text-xs text-[var(--error)] bg-[var(--error-bg)] rounded-lg px-3 py-2">{error}</p>
+                )}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--accent-text)] hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-colors duration-100 active:scale-95"
+                >
+                  {loading ? "Sending…" : "Send reset link"}
+                </button>
+              </form>
+            )
+          )}
+
           {/* OAuth buttons */}
-          <div className="flex flex-col gap-2 mb-5">
+          {mode !== "forgot" && <div className="flex flex-col gap-2 mb-5">
             <button
               type="button"
               onClick={() => handleOAuth("google")}
@@ -135,103 +191,112 @@ function AuthForm() {
               </svg>
               {oauthLoading === "github" ? "Redirecting…" : "Continue with GitHub"}
             </button>
-          </div>
+          </div>}
 
-          {/* Divider */}
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px bg-[var(--border)]" />
-            <span className="text-xs text-[var(--text-dim)]">or</span>
-            <div className="flex-1 h-px bg-[var(--border)]" />
-          </div>
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="email-input"
-                className="text-xs font-medium text-[var(--text-muted)]"
-              >
-                Email
-              </label>
-              <input
-                id="email-input"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
-              />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="password-input"
-                className="text-xs font-medium text-[var(--text-muted)]"
-              >
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password-input"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 pr-9 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((v) => !v)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors duration-100"
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+          {/* Divider + email/password form — hidden in forgot mode */}
+          {mode !== "forgot" && (
+            <>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="flex-1 h-px bg-[var(--border)]" />
+                <span className="text-xs text-[var(--text-dim)]">or</span>
+                <div className="flex-1 h-px bg-[var(--border)]" />
               </div>
-            </div>
 
-            {error && (
-              <p
-                role="alert"
-                aria-live="polite"
-                className="text-xs text-[var(--error)] bg-[var(--error-bg)] rounded-lg px-3 py-2"
-              >
-                {error}
-              </p>
-            )}
-            {slow && !error && (
-              <p className="text-xs text-[var(--text-muted)]" aria-live="polite">
-                Still working - this can take a few seconds on first load…
-              </p>
-            )}
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="email-input" className="text-xs font-medium text-[var(--text-muted)]">
+                    Email
+                  </label>
+                  <input
+                    id="email-input"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="password-input" className="text-xs font-medium text-[var(--text-muted)]">
+                      Password
+                    </label>
+                    {mode === "login" && (
+                      <button
+                        type="button"
+                        onClick={() => { setMode("forgot"); setError(null); setSlow(false); }}
+                        className="text-xs text-[var(--accent)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded"
+                      >
+                        Forgot password?
+                      </button>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      id="password-input"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 pr-9 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors duration-100"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--accent-text)] hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-colors duration-100 active:scale-95 mt-1"
-            >
-              {loading
-                ? "Please wait…"
-                : mode === "login"
-                  ? "Log in"
-                  : "Sign up"}
-            </button>
-          </form>
+                {error && (
+                  <p role="alert" aria-live="polite" className="text-xs text-[var(--error)] bg-[var(--error-bg)] rounded-lg px-3 py-2">
+                    {error}
+                  </p>
+                )}
+                {slow && !error && (
+                  <p className="text-xs text-[var(--text-muted)]" aria-live="polite">
+                    Still working - this can take a few seconds on first load…
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--accent-text)] hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-colors duration-100 active:scale-95 mt-1"
+                >
+                  {loading ? "Please wait…" : mode === "login" ? "Log in" : "Sign up"}
+                </button>
+              </form>
+            </>
+          )}
 
           <p className="text-xs text-[var(--text-muted)] mt-4 text-center">
-            {mode === "login"
-              ? "Don't have an account?"
-              : "Already have an account?"}{" "}
-            <button
-              onClick={() => {
-                setMode(mode === "login" ? "signup" : "login");
-                setError(null);
-                setPassword("");
-              }}
-              className="text-[var(--accent)] hover:underline font-medium"
-            >
-              {mode === "login" ? "Sign up" : "Log in"}
-            </button>
+            {mode === "forgot" ? (
+              <>
+                Remember it?{" "}
+                <button
+                  onClick={() => { setMode("login"); setError(null); setSent(false); }}
+                  className="text-[var(--accent)] hover:underline font-medium"
+                >
+                  Log in
+                </button>
+              </>
+            ) : (
+              <>
+                {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
+                <button
+                  onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(null); setPassword(""); }}
+                  className="text-[var(--accent)] hover:underline font-medium"
+                >
+                  {mode === "login" ? "Sign up" : "Log in"}
+                </button>
+              </>
+            )}
           </p>
         </div>
 
