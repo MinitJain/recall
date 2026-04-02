@@ -35,7 +35,7 @@ No manual work. No lost tabs. No graveyard of forgotten links.
 | 🔍  | **Instant search**   | Search by title, URL, or description. Filter by tag. Sort by newest, oldest, or A→Z.                                                  | Live        |
 | 📁  | **Collections**      | Group bookmarks into folders. Filter your saves by collection.                                                                        | Live        |
 | 🔗  | **Bookmarklet**      | No extension? Drag a link to your bookmarks bar — save any page from any browser in one click.                                        | Live        |
-| ✨  | **Resurfacing**      | Daily digest, random rediscovery, and "you saved this a year ago". Recall brings things back to you.                                  | Coming soon |
+| ✨  | **Resurfacing**      | Daily digest email, random rediscovery ("Surprise me"), and unsubscribe flow. Recall brings things back to you.                       | Live        |
 
 ## Tech Stack
 
@@ -194,7 +194,7 @@ When you search, Recall looks across titles, descriptions, and tags simultaneous
 | ✅     | Admin dashboard                                              |
 | ✅     | Collections UI                                               |
 | ⬜     | Natural language / semantic search                           |
-| ⬜     | Resurfacing (daily digest, random rediscovery, time capsule) |
+| ✅     | Resurfacing (daily digest, random rediscovery, unsubscribe)  |
 | ✅     | Bookmarklet (no extension required)                          |
 | ⬜     | Chrome Web Store listing                                     |
 | ⬜     | D3.js knowledge graph                                        |
