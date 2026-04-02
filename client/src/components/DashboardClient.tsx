@@ -33,6 +33,9 @@ export default function DashboardClient({
   const [sort, setSort] = useState<Sort>("newest");
   const [view, setView] = useState<View>("list");
   const [showAllTags, setShowAllTags] = useState(false);
+  const [surpriseBookmark, setSurpriseBookmark] = useState<BookmarkItem | null>(null);
+  const [surpriseLoading, setSurpriseLoading] = useState(false);
+  const [surpriseError, setSurpriseError] = useState<string | null>(null);
 
   // Collections state
   const [collections, setCollections] =
@@ -268,6 +271,27 @@ export default function DashboardClient({
     }
   }
 
+  async function handleSurpriseMe() {
+    setSurpriseLoading(true);
+    setSurpriseError(null);
+    try {
+      const res = await fetch("/api/bookmarks/random");
+      if (res.status === 404) {
+        setSurpriseError("No bookmarks yet — save some first!");
+        return;
+      }
+      if (!res.ok) {
+        setSurpriseError("Something went wrong. Try again.");
+        return;
+      }
+      setSurpriseBookmark(await res.json());
+    } catch {
+      setSurpriseError("Network error. Try again.");
+    } finally {
+      setSurpriseLoading(false);
+    }
+  }
+
   async function removeFromCollection(
     bookmarkId: string,
     collectionId: string,
@@ -333,14 +357,26 @@ export default function DashboardClient({
         )}
       </div>
 
-      {/* Stats — plain text, not interactive */}
-      <p className="text-xs text-[var(--text-dim)]">
-        {localBookmarks.length} bookmark{localBookmarks.length !== 1 ? "s" : ""}{" "}
-        <span className="mx-1.5 opacity-40">·</span>{" "}
-        {totalTags} tag{totalTags !== 1 ? "s" : ""}{" "}
-        <span className="mx-1.5 opacity-40">·</span>{" "}
-        {collections.length} collection{collections.length !== 1 ? "s" : ""}
-      </p>
+      {/* Stats + Surprise me */}
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-[var(--text-dim)]">
+          {localBookmarks.length} bookmark{localBookmarks.length !== 1 ? "s" : ""}{" "}
+          <span className="mx-1.5 opacity-40">·</span>{" "}
+          {totalTags} tag{totalTags !== 1 ? "s" : ""}{" "}
+          <span className="mx-1.5 opacity-40">·</span>{" "}
+          {collections.length} collection{collections.length !== 1 ? "s" : ""}
+        </p>
+        {localBookmarks.length > 0 && (
+          <button
+            onClick={handleSurpriseMe}
+            disabled={surpriseLoading}
+            aria-label="Show a random saved bookmark"
+            className="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-40 transition-all duration-100 inline-flex items-center gap-1.5"
+          >
+            {surpriseLoading ? "…" : "🎲 Surprise me"}
+          </button>
+        )}
+      </div>
 
       {/* Collections */}
       <div className="flex flex-col gap-3">
@@ -752,6 +788,45 @@ export default function DashboardClient({
             ))}
           </div>
         ))}
+      {/* Surprise me modal */}
+      {(surpriseBookmark || surpriseError) && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => { setSurpriseBookmark(null); setSurpriseError(null); }}
+        >
+          <div
+            className="w-full max-w-lg rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-semibold text-[var(--text)]">🎲 Rediscovered</span>
+              <button
+                onClick={() => { setSurpriseBookmark(null); setSurpriseError(null); }}
+                className="text-[var(--text-dim)] hover:text-[var(--text)] transition-colors text-xl leading-none"
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            {surpriseError ? (
+              <p className="text-sm text-[var(--text-muted)] text-center py-4">{surpriseError}</p>
+            ) : surpriseBookmark && (
+              <BookmarkCard
+                bookmark={surpriseBookmark}
+                view="list"
+                collections={[]}
+              />
+            )}
+            <button
+              onClick={handleSurpriseMe}
+              disabled={surpriseLoading}
+              className="mt-4 w-full text-xs py-2.5 rounded-xl border border-[var(--border-2)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-40 transition-all duration-100"
+            >
+              {surpriseLoading ? "Finding…" : "Try another"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
