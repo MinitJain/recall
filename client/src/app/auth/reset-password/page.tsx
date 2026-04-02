@@ -27,9 +27,13 @@ export default function ResetPasswordPage() {
       return;
     }
     const supabase = createClient();
-    supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-      setStatus(error ? "invalid" : "ready");
-    });
+    supabase.auth.exchangeCodeForSession(code)
+      .then(({ error }) => {
+        setStatus(error ? "invalid" : "ready");
+      })
+      .catch(() => {
+        setStatus("invalid");
+      });
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
