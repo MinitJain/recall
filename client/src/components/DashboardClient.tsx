@@ -274,6 +274,7 @@ export default function DashboardClient({
   async function handleSurpriseMe() {
     setSurpriseLoading(true);
     setSurpriseError(null);
+    setSurpriseBookmark(null);
     try {
       const res = await fetch("/api/bookmarks/random");
       if (res.status === 404) {
@@ -789,10 +790,14 @@ export default function DashboardClient({
           </div>
         ))}
       {/* Surprise me modal */}
-      {(surpriseBookmark || surpriseError) && (
+      {(surpriseBookmark || surpriseError || surpriseLoading) && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Rediscovered bookmark"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
           onClick={() => { setSurpriseBookmark(null); setSurpriseError(null); }}
+          onKeyDown={(e) => { if (e.key === "Escape") { setSurpriseBookmark(null); setSurpriseError(null); } }}
         >
           <div
             className="w-full max-w-lg rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 shadow-2xl"
@@ -810,11 +815,22 @@ export default function DashboardClient({
             </div>
             {surpriseError ? (
               <p className="text-sm text-[var(--text-muted)] text-center py-4">{surpriseError}</p>
+            ) : surpriseLoading ? (
+              <p className="text-sm text-[var(--text-muted)] text-center py-4">Finding something…</p>
             ) : surpriseBookmark && (
               <BookmarkCard
-                bookmark={surpriseBookmark}
+                bookmark={{
+                  ...surpriseBookmark,
+                  tags: tagOverrides.get(surpriseBookmark.id) ?? surpriseBookmark.tags,
+                  collectionIds: membershipOverrides.get(surpriseBookmark.id) ?? surpriseBookmark.collectionIds,
+                }}
                 view="list"
-                collections={[]}
+                collections={collections}
+                onAddToCollection={addToCollection}
+                onRemoveFromCollection={removeFromCollection}
+                onDelete={(id) => { handleDeleteBookmark(id); setSurpriseBookmark(null); }}
+                onDeleteFailed={handleDeleteFailed}
+                onTagsChange={handleTagsChange}
               />
             )}
             <button

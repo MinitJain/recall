@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHmac } from "crypto";
 import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
-
-function unsubscribeToken(email: string): string {
-  return createHmac("sha256", process.env.CRON_SECRET!)
-    .update(email)
-    .digest("hex");
-}
+import { unsubscribeToken } from "@/lib/unsubscribe-token";
 
 type BookmarkWithTags = {
   url: string;
@@ -172,31 +166,41 @@ export async function POST(req: NextRequest) {
       continue;
     }
 
-    const count = await prisma.bookmark.count({ where: { userId: user.id } });
-    if (count === 0) {
-      skipped++;
-      continue;
-    }
-
-    const take = Math.min(5, count);
-    const skip = count <= 5 ? 0 : Math.floor(Math.random() * (count - take));
-    const bookmarks = await prisma.bookmark.findMany({
-      where: { userId: user.id },
-      skip,
-      take,
-      include: { tags: true },
-    });
-
     try {
-      await resend.emails.send({
+      const count = await prisma.bookmark.count({ where: { userId: user.id } });
+      if (count === 0) {
+        skipped++;
+        continue;
+      }
+
+      const take = Math.min(5, count);
+      const skip = count <= 5 ? 0 : Math.floor(Math.random() * (count - take + 1));
+      const bookmarks = await prisma.bookmark.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: "asc" },
+        skip,
+        take,
+        include: { tags: true },
+      });
+
+      const date = new Date().toISOString().slice(0, 10);
+      const idempotencyKey = `digest-${user.id}-${date}`;
+
+      const result = await resend.emails.send({
         from: "Recall <onboarding@resend.dev>",
         to: user.email,
         subject: "Good morning. Here's your Recall digest.",
         html: buildDigestHtml(bookmarks, user.email),
-      });
-      sent++;
+      }, { idempotencyKey });
+
+      if (result.error) {
+        console.error(`Digest: Resend error for ${user.email}:`, result.error);
+        errors++;
+      } else {
+        sent++;
+      }
     } catch (err) {
-      console.error(`Digest: failed to send to ${user.email}:`, err);
+      console.error(`Digest: unexpected error for user ${user.id}:`, err);
       errors++;
     }
   }

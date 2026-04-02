@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHmac } from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
-
-function unsubscribeToken(email: string): string {
-  return createHmac("sha256", process.env.CRON_SECRET!)
-    .update(email)
-    .digest("hex");
-}
+import { unsubscribeToken } from "@/lib/unsubscribe-token";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -22,19 +16,30 @@ export async function GET(req: NextRequest) {
   }
 
   const admin = getSupabaseAdmin();
-  const { data, error } = await admin.auth.admin.listUsers({ perPage: 1000 });
-  if (error) {
-    return new NextResponse("Something went wrong. Please try again.", { status: 500 });
+  let foundUser = null;
+  let page = 1;
+  const perPage = 1000;
+  while (true) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage });
+    if (error) {
+      return new NextResponse("Something went wrong. Please try again.", { status: 500 });
+    }
+    foundUser = data.users.find((u) => u.email === email) ?? null;
+    if (foundUser || data.users.length < perPage) break;
+    page++;
   }
 
-  const user = data.users.find((u) => u.email === email);
-  if (!user) {
+  if (!foundUser) {
     return new NextResponse("No account found for this email.", { status: 404 });
   }
 
-  await admin.auth.admin.updateUserById(user.id, {
-    user_metadata: { ...user.user_metadata, digest_opt_out: true },
+  const { error: updateError } = await admin.auth.admin.updateUserById(foundUser.id, {
+    user_metadata: { ...foundUser.user_metadata, digest_opt_out: true },
   });
+
+  if (updateError) {
+    return new NextResponse("Something went wrong. Please try again.", { status: 500 });
+  }
 
   return new NextResponse(
     `<!DOCTYPE html>
