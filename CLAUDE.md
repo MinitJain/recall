@@ -23,6 +23,7 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 - **Never delete files** without asking first.
 - All `npm` commands run from `client/` — the repo root has no package.json.
 - Prisma commands (`npx prisma generate`, `npx prisma db push`) also run from `client/`.
+- **Never write more than 30–50 lines of code without stopping to explain** what was written and why, before continuing.
 
 ## Current State
 
