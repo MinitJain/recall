@@ -44,7 +44,7 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 | P2.4 AI auto-tagging via Gemini | ✅ Done |
 | P2.5 Text search UI improvements | ✅ Done |
 | P2.6 Bookmarklet | ✅ Done |
-| P2.7 Daily digest email (resurfacing V1) | ⬜ Not started |
+| P2.7 Daily digest email (resurfacing V1) | ✅ Done |
 
 **TODO after Chrome Web Store publish:**
 - Add "Add to Chrome" button to the "Save without leaving the page" section on landing page (`src/app/page.tsx` — Extension card)
