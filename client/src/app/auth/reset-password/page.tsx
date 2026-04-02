@@ -10,6 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 export default function ResetPasswordPage() {
   const router = useRouter();
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +34,10 @@ export default function ResetPasswordPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -111,6 +116,22 @@ export default function ResetPasswordPage() {
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="confirm-password-input" className="text-xs font-medium text-[var(--text-muted)]">
+                  Confirm new password
+                </label>
+                <input
+                  id="confirm-password-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+                />
               </div>
 
               {error && (
