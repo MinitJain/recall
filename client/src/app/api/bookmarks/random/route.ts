@@ -23,8 +23,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "not found" }, { status: 404 });
 
   return NextResponse.json({
-    ...bookmark,
+    id: bookmark.id,
+    url: bookmark.url,
+    title: bookmark.title,
+    description: bookmark.description,
+    thumbnail: bookmark.thumbnail,
+    userId: bookmark.userId,
     createdAt: bookmark.createdAt.toISOString(),
+    tags: bookmark.tags,
     collectionIds: bookmark.collections.map((c) => c.collectionId),
   });
 }
