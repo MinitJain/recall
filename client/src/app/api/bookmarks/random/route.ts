@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
   const skip = Math.floor(Math.random() * count);
   const bookmark = await prisma.bookmark.findFirst({
     where: { userId: user.id },
+    orderBy: { createdAt: "asc" },
     skip,
     include: { tags: true },
   });
