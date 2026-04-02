@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { timingSafeEqual } from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { unsubscribeToken } from "@/lib/unsubscribe-token";
 
@@ -11,7 +12,13 @@ export async function GET(req: NextRequest) {
     return new NextResponse("Invalid unsubscribe link.", { status: 400 });
   }
 
-  if (token !== unsubscribeToken(email)) {
+  const expected = unsubscribeToken(email);
+  const expectedBuf = Buffer.from(expected);
+  const providedBuf = Buffer.from(token);
+  const valid =
+    expectedBuf.length === providedBuf.length &&
+    timingSafeEqual(expectedBuf, providedBuf);
+  if (!valid) {
     return new NextResponse("Invalid unsubscribe link.", { status: 400 });
   }
 

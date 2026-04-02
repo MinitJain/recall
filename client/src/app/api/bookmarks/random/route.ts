@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     where: { userId: user.id },
     orderBy: { createdAt: "asc" },
     skip,
-    include: { tags: true },
+    include: { tags: true, collections: true },
   });
 
   if (!bookmark)
@@ -25,6 +25,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     ...bookmark,
     createdAt: bookmark.createdAt.toISOString(),
-    collectionIds: [],
+    collectionIds: bookmark.collections.map((c) => c.collectionId),
   });
 }
