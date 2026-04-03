@@ -278,7 +278,7 @@ export default function DashboardClient({
     try {
       const res = await fetch("/api/bookmarks/random");
       if (res.status === 404) {
-        setSurpriseError("No bookmarks yet — save some first!");
+        setSurpriseError("No bookmarks yet. Save some first!");
         return;
       }
       if (!res.ok) {

@@ -16,6 +16,12 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 | Rate Limiting | Upstash Redis |
 | Analytics | Vercel Analytics + Speed Insights |
 
+## UI Writing Rules
+
+- **No em dashes (—) in user-facing text** — use a period or rewrite the sentence
+- **No hyphens as punctuation in UI copy** — rewrite instead
+- **No emojis in UI** unless they already exist in a specific place or the user explicitly requests one
+
 ## Key Rules
 
 - **Never push to remote** without asking first.

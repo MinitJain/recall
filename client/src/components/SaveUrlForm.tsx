@@ -78,7 +78,7 @@ export default function SaveUrlForm() {
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-dim)] flex-shrink-0">
           <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
         </svg>
-        <span className="text-xs text-[var(--text-dim)]">Save from any page —</span>
+        <span className="text-xs text-[var(--text-dim)]">Save from any page using the</span>
         <a
           ref={bookmarkletRef}
           href="#"

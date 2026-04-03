@@ -25,7 +25,7 @@ export default function BookmarkletSaver({ url }: { url: string }) {
           setStatus("error");
         }
       } catch {
-        setErrorMsg("Network error — are you online?");
+        setErrorMsg("Network error. Are you online?");
         setStatus("error");
       }
     }
