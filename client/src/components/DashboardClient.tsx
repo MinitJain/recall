@@ -374,7 +374,19 @@ export default function DashboardClient({
             aria-label="Show a random saved bookmark"
             className="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-40 transition-all duration-100 inline-flex items-center gap-1.5"
           >
-            {surpriseLoading ? "…" : "🎲 Surprise me"}
+            {surpriseLoading ? "…" : (
+              <>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="3" ry="3" />
+                  <circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none" />
+                </svg>
+                Surprise me
+              </>
+            )}
           </button>
         )}
       </div>
@@ -804,7 +816,17 @@ export default function DashboardClient({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-semibold text-[var(--text)]">🎲 Rediscovered</span>
+              <span className="text-sm font-semibold text-[var(--text)] inline-flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="3" ry="3" />
+                  <circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none" />
+                </svg>
+                Rediscovered
+              </span>
               <button
                 onClick={() => { setSurpriseBookmark(null); setSurpriseError(null); }}
                 className="text-[var(--text-dim)] hover:text-[var(--text)] transition-colors text-xl leading-none"
