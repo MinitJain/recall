@@ -18,18 +18,13 @@ export default function ResetPasswordPage() {
   const [status, setStatus] = useState<"checking" | "ready" | "invalid">("checking");
 
   useEffect(() => {
-    // Supabase appends ?code=... to the redirectTo URL (PKCE flow).
-    // We extract it and exchange it for a session here on the client.
-    // If there is no code (e.g. a logged-in user navigating directly), we treat it as invalid.
-    const code = new URLSearchParams(window.location.search).get("code");
-    if (!code) {
-      setStatus("invalid");
-      return;
-    }
+    // The callback route (/auth/callback) already exchanged the code and established
+    // the session server-side before redirecting here. We just need to confirm a
+    // valid recovery session exists — no code exchange needed on the client.
     const supabase = createClient();
-    supabase.auth.exchangeCodeForSession(code)
-      .then(({ error }) => {
-        setStatus(error ? "invalid" : "ready");
+    supabase.auth.getUser()
+      .then(({ data, error }) => {
+        setStatus(data.user && !error ? "ready" : "invalid");
       })
       .catch(() => {
         setStatus("invalid");
