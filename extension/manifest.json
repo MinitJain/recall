@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Recall",
   "version": "1.0.0",
-  "description": "Save anything. Find everything.",
+  "description": "Bookmark manager to save anything from the web in one click. AI tags it automatically. Search and resurface your saves anytime.",
 
   "icons": {
     "16": "icon16.png",
