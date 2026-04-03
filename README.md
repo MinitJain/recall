@@ -47,6 +47,8 @@ Search is there too. Find anything across titles, descriptions, and tags without
 
 ## Screenshots
 
+<div align="center">
+
 **Dashboard** - every save, tagged and searchable
 ![Dashboard](docs/screenshots/dashboard.png)
 
@@ -58,6 +60,8 @@ Search is there too. Find anything across titles, descriptions, and tags without
 
 **Random rediscovery** - surface something you forgot you saved
 ![Random rediscovery](docs/screenshots/rediscover.png)
+
+</div>
 
 ## Tech Stack
 
