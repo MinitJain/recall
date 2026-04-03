@@ -131,7 +131,7 @@ function AuthForm() {
           {mode === "forgot" && (
             sent ? (
               <p className="text-sm text-[var(--text-muted)] text-center py-4">
-                Check your email — we sent a reset link to <strong className="text-[var(--text)]">{email}</strong>.
+                Check your email. We sent a reset link to <strong className="text-[var(--text)]">{email}</strong>.
               </p>
             ) : (
               <form onSubmit={handleForgotPassword} className="flex flex-col gap-4">
