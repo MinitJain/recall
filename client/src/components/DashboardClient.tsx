@@ -4,6 +4,40 @@ import { useState, useMemo, useRef } from "react";
 import { Bookmark } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
 
+function DiceIcon({
+  width = 16,
+  height = 16,
+  className,
+  "aria-hidden": ariaHidden,
+}: {
+  width?: number;
+  height?: number;
+  className?: string;
+  "aria-hidden"?: boolean | "true" | "false";
+}) {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden={ariaHidden}
+    >
+      <rect x="2" y="2" width="20" height="20" rx="3" ry="3" />
+      <circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 type TagItem = { id: string; name: string };
 type CollectionItem = { id: string; name: string };
 type BookmarkItem = {
@@ -376,14 +410,7 @@ export default function DashboardClient({
           >
             {surpriseLoading ? "…" : (
               <>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="3" ry="3" />
-                  <circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none" />
-                </svg>
+                <DiceIcon width={12} height={12} aria-hidden="true" />
                 Surprise me
               </>
             )}
@@ -817,14 +844,7 @@ export default function DashboardClient({
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-semibold text-[var(--text)] inline-flex items-center gap-1.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="3" ry="3" />
-                  <circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none" />
-                  <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none" />
-                </svg>
+                <DiceIcon width={14} height={14} aria-hidden="true" />
                 Rediscovered
               </span>
               <button
