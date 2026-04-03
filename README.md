@@ -4,9 +4,9 @@
 
 # Recall
 
-**Save anything. Find everything. Nothing gets lost.**
+**Save it once. Recall brings it back.**
 
-The internet moves fast. Your saves shouldn't disappear with it.
+Most bookmark managers help you save things. Recall helps you actually use them.
 
 [![Live](https://img.shields.io/badge/live-recallsave.vercel.app-F0A500?style=flat-square&logo=vercel&logoColor=black)](https://recallsave.vercel.app)
 [![Build](https://img.shields.io/github/actions/workflow/status/MinitJain/recall/ci.yml?style=flat-square&label=build)](https://github.com/MinitJain/recall/actions)
@@ -14,28 +14,65 @@ The internet moves fast. Your saves shouldn't disappear with it.
 [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=flat-square)](https://github.com/MinitJain/recall/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/MinitJain/recall/pulls)
 
+<br/>
+
+<img src="docs/screenshots/demo.gif" alt="Recall demo - paste a URL, AI tags it instantly" width="720" />
+
+<br/>
+
+**[Try it live](https://recallsave.vercel.app)** · **[Download Extension](https://github.com/MinitJain/recall/releases/latest/download/recall-extension-v1.0.0.zip)**
+
 </div>
 
 ## What is Recall?
 
-Recall is a bookmark manager that actually works. Paste any URL — tweet, article, video, Reddit thread, product page — and Recall fetches the title, description, and preview automatically. Google Gemini tags it instantly. You search it later in plain English and find it.
+Recall is a bookmark manager that doesn't let things disappear. Save any URL and Gemini tags it automatically. Then Recall works in the background. A daily digest resurfaces things you forgot you saved. The Surprise me button pulls up a random save on demand. You don't have to remember to look. Recall remembers for you.
 
-No manual work. No lost tabs. No graveyard of forgotten links.
+Search is there too. Find anything across titles, descriptions, and tags without remembering the exact URL.
 
 ## Features
 
-|     | Feature              | Description                                                                                                                           | Status      |
-| --- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 🔖  | **Save anything**    | Any URL works. Tweet, blog post, YouTube video, image, Reddit thread, product page.                                                   | Live        |
-| 🤖  | **AI auto-tagging**  | The moment you save, Gemini generates 3–5 relevant tags automatically. Not satisfied? You can always add or remove tags manually too. | Live        |
-| 🖼️  | **Rich previews**    | Every bookmark shows title, description, and thumbnail fetched automatically from OG tags.                                            | Live        |
-| 🧩  | **Chrome extension** | Save any tab in one click or with `Alt+Shift+S` (Windows/Linux) / `Option+Shift+S` (Mac). No copy-paste needed.                       | Live        |
-| 🔐  | **Secure auth**      | Email/password + Google + GitHub via Supabase Auth.                                                                                   | Live        |
-| ⚡  | **Rate limiting**    | Per-user rate limiting via Upstash Redis to keep the service stable.                                                                  | Live        |
-| 🔍  | **Instant search**   | Search by title, URL, or description. Filter by tag. Sort by newest, oldest, or A→Z.                                                  | Live        |
-| 📁  | **Collections**      | Group bookmarks into folders. Filter your saves by collection.                                                                        | Live        |
-| 🔗  | **Bookmarklet**      | No extension? Drag a link to your bookmarks bar — save any page from any browser in one click.                                        | Live        |
-| ✨  | **Resurfacing**      | Daily digest email, random rediscovery ("Surprise me"), and unsubscribe flow. Recall brings things back to you.                       | Live        |
+|     | Feature              | Description                                                                                                                           | Status |
+| --- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 🔖  | **Save anything**    | Any URL works. Tweet, blog post, YouTube video, image, Reddit thread, product page.                                                   | Live   |
+| 🤖  | **AI auto-tagging**  | The moment you save, Gemini generates 3–5 relevant tags automatically. Not satisfied? You can always add or remove tags manually too. | Live   |
+| 🖼️  | **Rich previews**    | Every bookmark shows title, description, and thumbnail fetched automatically from OG tags.                                            | Live   |
+| 🧩  | **Chrome extension** | Save any tab in one click or with `Alt+Shift+S` (Windows/Linux) / `Option+Shift+S` (Mac). No copy-paste needed.                       | Live   |
+| 🔐  | **Secure auth**      | Email/password + Google + GitHub via Supabase Auth.                                                                                   | Live   |
+| ⚡  | **Rate limiting**    | Per-user rate limiting via Upstash Redis to keep the service stable.                                                                  | Live   |
+| 🔍  | **Instant search**   | Search by title, URL, or description. Filter by tag. Sort by newest, oldest, or A→Z.                                                  | Live   |
+| 📁  | **Collections**      | Group bookmarks into folders. Filter your saves by collection.                                                                        | Live   |
+| 🔗  | **Bookmarklet**      | No extension? Drag a link to your bookmarks bar to save any page from any browser in one click.                                       | Live   |
+| ✨  | **Resurfacing**      | Daily digest email, random rediscovery ("Surprise me"), and unsubscribe flow. Recall brings things back to you.                       | Live   |
+
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/dashboard.png" alt="Dashboard" />
+      <br/>
+      <sub><b>Dashboard</b> - every save, tagged and searchable</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/bookmark_popup.png" alt="Chrome extension" />
+      <br/>
+      <sub><b>Chrome extension</b> - save any tab in one click</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/gmail_digest.png" alt="Daily digest email" />
+      <br/>
+      <sub><b>Daily digest</b> - resurfaced in your inbox every morning</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/rediscover.png" alt="Random rediscovery" />
+      <br/>
+      <sub><b>Random rediscovery</b> - surface something you forgot you saved</sub>
+    </td>
+  </tr>
+</table>
 
 ## Tech Stack
 
@@ -55,7 +92,7 @@ No manual work. No lost tabs. No graveyard of forgotten links.
 
 ### Use the web app
 
-Visit **[recallsave.vercel.app](https://recallsave.vercel.app)** — no setup required. Sign up with Google, GitHub, or email and start saving immediately.
+Visit **[recallsave.vercel.app](https://recallsave.vercel.app)** - no setup required. Sign up with Google, GitHub, or email and start saving immediately.
 
 ### Run it locally
 
@@ -100,13 +137,16 @@ App runs at `http://localhost:3000`.
 
 ### From the Chrome Web Store
 
-> **Coming soon.** The extension is not yet listed on the Chrome Web Store. Use the manual install below in the meantime.
+> **Coming soon.** The extension is not yet listed on the Chrome Web Store. Download the latest release from the link at the top of this page, then follow the manual install instructions below.
 
 ### Manual Install (Load Unpacked)
 
+<details>
+<summary>Manual install instructions</summary>
+
 No ZIP download needed. Just clone the repo and point Chrome at the `extension/` folder.
 
-**Step 1 — Clone the repo**
+**Step 1 - Clone the repo**
 
 ```bash
 git clone https://github.com/MinitJain/recall.git
@@ -114,35 +154,27 @@ git clone https://github.com/MinitJain/recall.git
 
 Keep this folder somewhere permanent on your computer. Chrome needs it to stay there.
 
-**Step 2 — Open Chrome Extensions**
+**Step 2 - Open Chrome Extensions**
 
 In Chrome, navigate to `chrome://extensions` or go to Menu (⋮) > More tools > Extensions.
 
-<!-- screenshot: chrome-extensions-page -->
-
-**Step 3 — Enable Developer Mode**
+**Step 3 - Enable Developer Mode**
 
 Toggle **Developer mode** on in the top-right corner of the Extensions page.
 
-<!-- screenshot: developer-mode-toggle -->
-
-**Step 4 — Load the extension**
+**Step 4 - Load the extension**
 
 Click **Load unpacked** in the top-left corner.
 
-<!-- screenshot: load-unpacked-button -->
-
-**Step 5 — Select the extension folder**
+**Step 5 - Select the extension folder**
 
 In the file picker, navigate into the cloned repo and select the `extension/` folder. Select the folder itself, not a file inside it.
 
-<!-- screenshot: folder-picker -->
+**Step 6 - Done**
 
-**Step 6 — Done**
+Recall will appear in your extensions list with the bookmark icon. Click the puzzle piece in the Chrome toolbar and pin Recall to keep it visible.
 
-Recall will appear in your extensions list with the bookmark icon. Click the puzzle piece (🧩) in the Chrome toolbar and pin Recall to keep it visible.
-
-<!-- screenshot: extension-pinned-toolbar -->
+</details>
 
 ### Keyboard shortcut
 
@@ -178,27 +210,32 @@ When you search, Recall looks across titles, descriptions, and tags simultaneous
 
 ## Architecture
 
+<details>
+<summary>Architecture diagrams</summary>
+
 ![Architecture](docs/recall-architecture.svg)
 
 ![Database Schema](docs/recall-db-schema.svg)
 
+</details>
+
 ## Roadmap
 
-| Status | Item                                                         |
-| ------ | ------------------------------------------------------------ |
-| ✅     | Chrome extension (save, popup, keyboard shortcut)            |
-| ✅     | AI auto-tagging via Gemini                                   |
-| ✅     | Vercel deployment at recallsave.vercel.app                   |
-| ✅     | OAuth (Google + GitHub)                                      |
-| ✅     | User dashboard (web UI)                                      |
-| ✅     | Admin dashboard                                              |
-| ✅     | Collections UI                                               |
-| ⬜     | Natural language / semantic search                           |
-| ✅     | Resurfacing (daily digest, random rediscovery, unsubscribe)  |
-| ✅     | Bookmarklet (no extension required)                          |
-| ⬜     | Chrome Web Store listing                                     |
-| ⬜     | D3.js knowledge graph                                        |
-| ⬜     | Background queue for async AI tagging                        |
+| Status | Item                                                        |
+| ------ | ----------------------------------------------------------- |
+| ✅     | Chrome extension (save, popup, keyboard shortcut)           |
+| ✅     | AI auto-tagging via Gemini                                  |
+| ✅     | Vercel deployment at recallsave.vercel.app                  |
+| ✅     | OAuth (Google + GitHub)                                     |
+| ✅     | User dashboard (web UI)                                     |
+| ✅     | Admin dashboard                                             |
+| ✅     | Collections UI                                              |
+| ⬜     | Natural language / semantic search                          |
+| ✅     | Resurfacing (daily digest, random rediscovery, unsubscribe) |
+| ✅     | Bookmarklet (no extension required)                         |
+| ⬜     | Chrome Web Store listing                                    |
+| ⬜     | D3.js knowledge graph                                       |
+| ⬜     | Background queue for async AI tagging                       |
 
 ## Contributing
 
@@ -224,7 +261,7 @@ Have an idea? [Start a discussion](https://github.com/MinitJain/recall/discussio
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT. See [LICENSE](LICENSE) for details.
 
 ## Acknowledgements
 
