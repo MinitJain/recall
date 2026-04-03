@@ -14,6 +14,10 @@ The internet moves fast. Your saves shouldn't disappear with it.
 [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=flat-square)](https://github.com/MinitJain/recall/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/MinitJain/recall/pulls)
 
+<br/>
+
+<img src="docs/screenshots/demo.gif" alt="Recall demo — paste a URL, AI tags it instantly" width="720" />
+
 </div>
 
 ## What is Recall?
@@ -36,6 +40,30 @@ No manual work. No lost tabs. No graveyard of forgotten links.
 | 📁  | **Collections**      | Group bookmarks into folders. Filter your saves by collection.                                                                        | Live        |
 | 🔗  | **Bookmarklet**      | No extension? Drag a link to your bookmarks bar — save any page from any browser in one click.                                        | Live        |
 | ✨  | **Resurfacing**      | Daily digest email, random rediscovery ("Surprise me"), and unsubscribe flow. Recall brings things back to you.                       | Live        |
+
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/dashboard.png" alt="Dashboard" />
+      <br/>
+      <sub><b>Dashboard</b> — every save, tagged and searchable</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/bookmark_popup.png" alt="Chrome extension" />
+      <br/>
+      <sub><b>Chrome extension</b> — save any tab in one click</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="docs/screenshots/gmail_digest.png" alt="Daily digest email" />
+      <br/>
+      <sub><b>Daily digest</b> — resurfaced in your inbox every morning</sub>
+    </td>
+  </tr>
+</table>
 
 ## Tech Stack
 
