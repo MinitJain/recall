@@ -47,32 +47,17 @@ Search is there too. Find anything across titles, descriptions, and tags without
 
 ## Screenshots
 
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <img src="docs/screenshots/dashboard.png" alt="Dashboard" />
-      <br/>
-      <sub><b>Dashboard</b> - every save, tagged and searchable</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="docs/screenshots/bookmark_popup.png" alt="Chrome extension" />
-      <br/>
-      <sub><b>Chrome extension</b> - save any tab in one click</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="docs/screenshots/gmail_digest.png" alt="Daily digest email" />
-      <br/>
-      <sub><b>Daily digest</b> - resurfaced in your inbox every morning</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="docs/screenshots/rediscover.png" alt="Random rediscovery" />
-      <br/>
-      <sub><b>Random rediscovery</b> - surface something you forgot you saved</sub>
-    </td>
-  </tr>
-</table>
+**Dashboard** - every save, tagged and searchable
+![Dashboard](docs/screenshots/dashboard.png)
+
+**Chrome extension** - save any tab in one click
+![Chrome extension](docs/screenshots/bookmark_popup.png)
+
+**Daily digest** - resurfaced in your inbox every morning
+![Daily digest email](docs/screenshots/gmail_digest.png)
+
+**Random rediscovery** - surface something you forgot you saved
+![Random rediscovery](docs/screenshots/rediscover.png)
 
 ## Tech Stack
 
