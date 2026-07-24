@@ -27,7 +27,10 @@ export async function POST(
     return NextResponse.json({ error: "invalid json" }, { status: 400 });
   }
 
-  const name = typeof body.name === "string" ? body.name.trim() : "";
+  // Lowercase to match generateTags()'s output (client/src/lib/gemini.ts) —
+  // otherwise "Javascript" (manual) and "javascript" (AI-tagged) coexist as
+  // separate rows under the case-sensitive @@unique([bookmarkId, name]).
+  const name = typeof body.name === "string" ? body.name.trim().toLowerCase() : "";
   if (!name) {
     return NextResponse.json({ error: "name is required" }, { status: 400 });
   }
