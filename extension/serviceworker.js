@@ -37,6 +37,9 @@ chrome.commands.onCommand.addListener(async (command) => {
     });
 
     if (res.ok) {
+      // Invalidate the ticker's cache so the new bookmark shows up on the
+      // next page load instead of waiting out the TTL.
+      chrome.storage.local.remove(["bookmarks_cache", "bookmarks_cache_at"]);
       if (tabId !== undefined) {
         chrome.action.setBadgeText({ text: "✓", tabId }).catch(() => {});
         chrome.action.setBadgeBackgroundColor({ color: "#F59E0B", tabId }).catch(() => {});

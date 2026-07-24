@@ -34,6 +34,16 @@
     }
   },
 
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "exclude_matches": ["https://recallsave.vercel.app/*", "http://localhost:3000/*", "http://localhost:3001/*"],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+
   "permissions": ["activeTab", "storage"],
 
   "host_permissions": ["http://localhost:3000/*", "http://localhost:3001/*", "https://gfdwrzaeofehgpwuulvr.supabase.co/*", "https://recallsave.vercel.app/*"]

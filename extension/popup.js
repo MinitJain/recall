@@ -36,7 +36,21 @@ function saveSession(access_token, user_email) {
 
 function clearSession() {
   return new Promise((resolve) => {
-    chrome.storage.local.remove(["access_token", "user_email"], resolve);
+    // Also drop the ticker's bookmark cache — otherwise the next person to
+    // log in on this browser would briefly see the previous user's bookmarks.
+    chrome.storage.local.remove(
+      ["access_token", "user_email", "bookmarks_cache", "bookmarks_cache_at"],
+      resolve
+    );
+  });
+}
+
+function updateBookmarksCache(bookmarks) {
+  return new Promise((resolve) => {
+    chrome.storage.local.set(
+      { bookmarks_cache: bookmarks, bookmarks_cache_at: Date.now() },
+      resolve
+    );
   });
 }
 
@@ -199,6 +213,9 @@ function renderBookmarks(bookmarks) {
           bookmarksList.innerHTML =
             '<p class="empty-state">No bookmarks yet.</p>';
         }
+        // Invalidate rather than recompute — the popup doesn't hold the full
+        // list as an array, only rendered DOM. Next ticker load refetches.
+        await chrome.storage.local.remove(["bookmarks_cache", "bookmarks_cache_at"]);
       } catch (e) {
         console.error(e);
       }
@@ -215,6 +232,7 @@ async function init() {
     try {
       const bookmarks = await loadBookmarks(access_token);
       renderBookmarks(bookmarks);
+      await updateBookmarksCache(bookmarks);
     } catch (e) {
       if (e.status === 401) {
         // Token expired — force re-login
@@ -243,6 +261,7 @@ loginBtn.addEventListener("click", async () => {
     showMainView(user_email);
     const bookmarks = await loadBookmarks(access_token);
     renderBookmarks(bookmarks);
+    await updateBookmarksCache(bookmarks);
   } catch (e) {
     showAuthError(e.message);
   } finally {
@@ -292,6 +311,7 @@ saveBtn.addEventListener("click", async () => {
     }
     const bookmarks = await loadBookmarks(access_token);
     renderBookmarks(bookmarks);
+    await updateBookmarksCache(bookmarks);
   } catch (e) {
     showSaveStatus(e.message, "error-text");
   } finally {
