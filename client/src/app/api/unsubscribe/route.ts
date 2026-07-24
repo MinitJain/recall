@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { unsubscribeToken } from "@/lib/unsubscribe-token";
+import { escapeHtml } from "@/lib/html-escape";
 
 const STYLES = `
   body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
@@ -46,8 +47,8 @@ export async function GET(req: NextRequest) {
       <h1>Unsubscribe from digest?</h1>
       <p>You won't receive any more daily digest emails from Recall.</p>
       <form method="POST">
-        <input type="hidden" name="email" value="${email}" />
-        <input type="hidden" name="token" value="${token}" />
+        <input type="hidden" name="email" value="${escapeHtml(email)}" />
+        <input type="hidden" name="token" value="${escapeHtml(token)}" />
         <button type="submit">Yes, unsubscribe me</button>
       </form>
     </div>

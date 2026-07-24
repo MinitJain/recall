@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { unsubscribeToken } from "@/lib/unsubscribe-token";
+import { escapeHtml } from "@/lib/html-escape";
 
 type BookmarkWithTags = {
   url: string;
@@ -10,15 +11,6 @@ type BookmarkWithTags = {
   description: string | null;
   tags: Array<{ name: string }>;
 };
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 function safeHostname(url: string): string {
   try {
