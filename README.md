@@ -197,6 +197,14 @@ tagged, previewed, and searchable
 
 When you search, Recall looks across titles, descriptions, and tags simultaneously. You don't need to remember the exact title. Searching _"focus music productivity"_ will surface bookmarks tagged with any of those concepts.
 
+## Metadata extraction
+
+Recall automatically extracts metadata (title, description, and preview image) using Open Graph and other publicly available metadata.
+
+Some websites intentionally prevent automated metadata access through mechanisms such as bot protection, authentication requirements, JavaScript-only rendering, or robots policies. In those cases, Recall falls back to the information that is available, such as the page URL or basic metadata.
+
+This behavior is expected and helps ensure Recall remains reliable and respectful of website policies.
+
 ## Architecture
 
 <details>
