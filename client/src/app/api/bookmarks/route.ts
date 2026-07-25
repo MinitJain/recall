@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
-import { bookmarkRatelimit } from "@/lib/ratelimit";
+import { bookmarkRatelimit, checkRatelimit } from "@/lib/ratelimit";
 import { generateTags } from "@/lib/gemini";
 import { isPrivateIp } from "@/lib/url-validation";
 
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!user)
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const { success } = await bookmarkRatelimit.limit(user.id);
+  const { success } = await checkRatelimit(bookmarkRatelimit, user.id);
   if (!success)
     return NextResponse.json(
       { error: "too many requests - slow down" },

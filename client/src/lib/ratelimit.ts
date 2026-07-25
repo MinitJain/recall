@@ -1,6 +1,23 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
+// Rate limiting is abuse prevention, not a security boundary — if Upstash
+// itself is unreachable, fail open (allow the request) rather than crashing
+// every mutating route. `success === false` from a normal limiter response
+// still returns 429 exactly as before.
+export async function checkRatelimit(
+  limiter: Ratelimit,
+  identifier: string,
+): Promise<{ success: boolean }> {
+  try {
+    const { success } = await limiter.limit(identifier);
+    return { success };
+  } catch (err) {
+    console.error("Rate limiter unreachable, failing open:", err);
+    return { success: true };
+  }
+}
+
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
