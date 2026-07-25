@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
-import { collectionRatelimit } from "@/lib/ratelimit";
+import { collectionRatelimit, checkRatelimit } from "@/lib/ratelimit";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET /api/collections — list all collections for the user
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const user = await getUserFromRequest(req);
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const { success } = await collectionRatelimit.limit(user.id);
+  const { success } = await checkRatelimit(collectionRatelimit, user.id);
   if (!success)
     return NextResponse.json({ error: "too many requests - slow down" }, { status: 429 });
 
