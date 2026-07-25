@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Bookmark } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
 
@@ -61,6 +62,29 @@ export default function DashboardClient({
   bookmarks: BookmarkItem[];
   initialCollections: CollectionItem[];
 }) {
+  const router = useRouter();
+
+  // A bookmark saved elsewhere (extension, bookmarklet, another tab) won't
+  // appear here until this server-rendered data is re-fetched. Refresh on
+  // return-to-tab rather than polling — cheap, and the reconciliation logic
+  // above already handles a fresh `bookmarks` prop arriving cleanly.
+  useEffect(() => {
+    let lastRefresh = 0;
+    function refreshIfVisible() {
+      if (document.visibilityState !== "visible") return;
+      const now = Date.now();
+      if (now - lastRefresh < 1000) return; // dedupe focus+visibilitychange firing together
+      lastRefresh = now;
+      router.refresh();
+    }
+    document.addEventListener("visibilitychange", refreshIfVisible);
+    window.addEventListener("focus", refreshIfVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", refreshIfVisible);
+      window.removeEventListener("focus", refreshIfVisible);
+    };
+  }, [router]);
+
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeCollection, setActiveCollection] = useState<string | null>(null);
