@@ -233,6 +233,9 @@ This behavior is expected and helps ensure Recall remains reliable and respectfu
 | ⬜     | Chrome Web Store listing                                    |
 | ⬜     | D3.js knowledge graph                                       |
 | ⬜     | Background queue for async AI tagging                       |
+| ⬜     | Save notes and photos, not just links                       |
+| ⬜     | Save via Telegram bot (query in natural language too)        |
+| ⬜     | Resurfacing on save (shown a similar past save immediately) |
 
 ## Contributing
 
