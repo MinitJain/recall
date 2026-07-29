@@ -92,6 +92,7 @@ Build order agreed: P3.16 (schema) → P3.8 (Telegram) → P3.3 (resurfacing on 
 - Photo uploads use Supabase Storage (free tier 1GB). Gemini tags photos directly (multimodal), same pipeline as text tagging
 - v1 scope: links (any kind) + text notes + photo upload. Video upload deferred — bigger storage cost, lower use frequency
 - This must land before P3.8, since the Telegram ingest path needs the generalized model to accept photos/notes, not just URLs
+- **Generic channel adapter** — `sourceChannel` shouldn't be a hardcoded enum tied to Telegram/WhatsApp only. Design the ingest path so a new platform (X/Twitter DM, Discord, Signal, etc.) plugs in as just another adapter feeding the same `/api/items` endpoint, not a rebuild of the ingest logic each time
 
 **Save-via-chat platform comparison — easiest to hardest**
 
@@ -123,6 +124,7 @@ Build order agreed: P3.16 (schema) → P3.8 (Telegram) → P3.3 (resurfacing on 
 - Better version: pgvector similarity on page content (needs P3.1 first)
 - Extension checks current page against saved bookmarks on load, shows popup above a similarity threshold
 - Trigger point: **browsing** — user lands on a page similar to a past save, popup fires unprompted, e.g. "hey, you saved this a while ago"
+- **Popup is primary, digest (P2.7) is fallback** — when the extension is installed and active, the in-browser popup is the intended notification for browse-time matches, decided over relying on digest email for this case. Digest still runs for its own purpose (daily list of oldest-unvisited + resurfaced matches for users without the extension active), but it isn't the primary channel for "you're browsing something similar right now" — that's real-time, a popup fits, a once-daily email doesn't
 
 **P3.17 retrieval-time follow-up — notes**
 - Trigger point: **retrieving** — different from P3.3 (fires on save) and P3.10 (fires on browse)
