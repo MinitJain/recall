@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.46.0",
-    "@prisma/adapter-pg": "^7.5.0",
+    "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.7.0",
     "@supabase/ssr": "^0.10.0",
     "@supabase/supabase-js": "^2.101.1",
