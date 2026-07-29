@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@google/genai": "^1.46.0",
+    "@google/genai": "^2.13.0",
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.7.0",
     "@supabase/ssr": "^0.10.0",
