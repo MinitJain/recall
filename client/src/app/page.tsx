@@ -95,7 +95,7 @@ export default async function LandingPage() {
                 Add the extension
               </a>
             </div>
-            <p className="mt-6 text-sm text-[var(--text-dim)]">Free and open source. No ads, no tracking.</p>
+            <p className="mt-6 text-sm text-[var(--text-dim)]">Free and open source. No ads, no tracking cookies.</p>
           </div>
           <div className="min-w-0 md:col-span-5">
             <ReturnSlip today={new Date()} />
