@@ -27,4 +27,6 @@ async function handler(req: Request) {
   return NextResponse.json({ tags: tagNames.length });
 }
 
-export const POST = verifySignatureAppRouter(handler);
+// Wrapped per request: building the verifier at import reads the signing keys,
+// which breaks `next build` wherever they aren't set (CI, preview builds)
+export const POST = (req: Request) => verifySignatureAppRouter(handler)(req);
