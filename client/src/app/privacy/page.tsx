@@ -46,10 +46,11 @@ export default function PrivacyPage() {
         </li>
       </ul>
       <p>
-        <strong>The browser extension</strong> stores your login token, your email address and a
-        short-lived list of your recent saves in the extension&apos;s local storage on your device.
-        It reads the address of the current tab only when you click save or use its keyboard
-        shortcut.
+        <strong>The browser extension</strong> stores your login tokens and email address in the
+        extension&apos;s local storage on your device until you log out, which also ends the session
+        on our auth provider. It doesn&apos;t keep a copy of your saves. It reads the address of the
+        current tab only when you click save or use its keyboard shortcut, and it doesn&apos;t run on
+        the pages you visit.
       </p>
       <p>Ritro does not sell your data, show ads, or use advertising or cross-site tracking.</p>
 

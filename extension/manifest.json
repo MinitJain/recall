@@ -3,13 +3,11 @@
   "name": "Ritro",
   "version": "0.0.1",
   "description": "Bookmark manager to save anything from the web in one click. AI tags it automatically. Search and resurface your saves anytime.",
-
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
   },
-
   "action": {
     "default_popup": "popup.html",
     "default_title": "Ritro",
@@ -19,11 +17,9 @@
       "128": "icon128.png"
     }
   },
-
   "background": {
     "service_worker": "serviceworker.js"
   },
-
   "commands": {
     "save-bookmark": {
       "suggested_key": {
@@ -33,18 +29,12 @@
       "description": "Save current page to Ritro"
     }
   },
-
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "exclude_matches": ["https://ritro.vercel.app/*", "http://localhost:3000/*", "http://localhost:3001/*"],
-      "js": ["content.js"],
-      "run_at": "document_end",
-      "all_frames": false
-    }
+  "permissions": [
+    "activeTab",
+    "storage"
   ],
-
-  "permissions": ["activeTab", "storage"],
-
-  "host_permissions": ["http://localhost:3000/*", "http://localhost:3001/*", "https://gfdwrzaeofehgpwuulvr.supabase.co/*", "https://ritro.vercel.app/*"]
+  "host_permissions": [
+    "https://gfdwrzaeofehgpwuulvr.supabase.co/*",
+    "https://ritro.vercel.app/*"
+  ]
 }
