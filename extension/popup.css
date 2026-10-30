@@ -12,6 +12,7 @@
   --surface-2: #EDE6DA;
   --border: #E2D9CA;
   --border-2: #CFC4B2;
+  --field-border: #8C8170; /* 3:1 against paper, for input outlines */
   --text: #1F1B16;
   --text-muted: #5E5548;
   --text-dim: #766B5C;
@@ -32,6 +33,7 @@
     --surface-2: #2A2620;
     --border: rgba(244, 239, 230, 0.09);
     --border-2: rgba(244, 239, 230, 0.17);
+    --field-border: #7A7164;
     --text: #F1EBDF;
     --text-muted: #B5AB9B;
     --text-dim: #958B7B;
@@ -94,7 +96,7 @@ input {
   padding: 0 12px;
   margin-bottom: 8px;
   background: var(--surface);
-  border: 1px solid var(--border-2);
+  border: 1px solid var(--field-border);
   border-radius: 6px;
   color: var(--text);
   caret-color: var(--accent);
