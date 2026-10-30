@@ -35,6 +35,8 @@ async function requestToken(grantType, body) {
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: SUPABASE_ANON_KEY },
     body: JSON.stringify(body),
+    // Bounded so login, refresh and the refresh inside signOut() can't hang
+    signal: AbortSignal.timeout(10000),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
