@@ -48,6 +48,8 @@ Example output: ["javascript", "tutorial", "web dev"]`;
     return tags
       .filter((t): t is string => typeof t === "string")
       .map((t) => t.toLowerCase().trim())
+      // An empty tag would make the worker treat the bookmark as tagged and skip it
+      .filter((t) => t.length > 0)
       .slice(0, 5);
   } catch {
     return [];
