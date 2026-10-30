@@ -2,20 +2,9 @@
 
 Work through this in order. Nothing here publishes anything until the last section.
 
-## 1. Merge the open work (in this order)
+## 1. Merge the open work: done
 
-- [ ] #54 Background tagging queue
-- [ ] #55 Rename to Ritro
-- [ ] #60 Self-hosted fonts
-- [ ] #61 Cleanup, digest fix, dependency updates (then close Dependabot #52, #56, #57, #58, #59 as superseded)
-- [ ] #62 Privacy policy, terms, notices (**after legal review**, see section 4)
-- [ ] #63 Account export and deletion
-- [ ] #64 Extension popup only
-- [ ] #65 SSRF fix, tests, CI
-- [ ] Redesign PR
-- [ ] #66 Extension restyle
-
-Stacked PRs retarget to `main` automatically when their base merges. CodeRabbit only reviews PRs that target `main`, so read its comments as each one retargets.
+All merged on 30–31 October 2026: #54 queue, #55 rename, #60 fonts, #61 cleanup, #62 legal pages, #63 account export and deletion, #64 popup-only extension, #65 SSRF fix and tests, #66 extension restyle, #68 redesign, and dependency updates #70, #72, #73, #76 and #77. Every PR passed CI, Vercel, CodeQL and CodeRabbit before merging.
 
 ## 2. Production configuration (Vercel → Settings → Environment Variables)
 
@@ -44,10 +33,11 @@ Store every key, token and password as **Secret**.
 - [ ] **Lawyer review** of `/privacy` and `/terms`, especially the minimum age (18), Indian governing law, and the Gemini free-tier disclosure
 - [ ] **Gemini billing:** on the free tier, Google may use page titles and descriptions to improve its products. Enabling billing avoids that, and the privacy policy would need updating to match.
 - [ ] **Branch protection on `main`:** require CI and one review before merging
-- [ ] **GitHub security features (free for public repos):** turn on secret scanning with push protection, Dependabot security updates, and CodeQL default setup (Settings → Code security)
+- [x] **GitHub security features:** secret scanning with push protection, Dependabot alerts and security updates, private vulnerability reporting and CodeQL default setup are on
 - [ ] **Google/GitHub sign-in in the extension:** needs a fixed extension ID (manifest `key`) registered as a Supabase redirect URL
 
 ## 5. Publish (only with explicit approval)
 
+- [ ] Restyle the digest email and unsubscribe page to the new design (they still use the old amber look)
 - [ ] Tag `v0.0.1` on `main` and create a GitHub release with `ritro-extension-v0.0.1.zip` (zip of `extension/`)
 - [ ] Chrome Web Store: new listing with the privacy policy URL, a justification for `activeTab` and `storage`, and screenshots of the popup
