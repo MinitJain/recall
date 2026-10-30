@@ -5,3 +5,15 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      # One PR for routine bumps instead of one per package; majors still come separately
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+      prisma:
+        patterns: ["prisma", "@prisma/*"]
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
