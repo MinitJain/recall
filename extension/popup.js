@@ -44,26 +44,25 @@ function showMainView(email) {
 }
 
 function showAuthError(msg) {
+  authError.setAttribute("role", "alert");
   authError.textContent = msg;
   authError.className = "error";
 }
 
 function showAuthSuccess(msg) {
+  authError.setAttribute("role", "status");
   authError.textContent = msg;
-  authError.className = "error";
-  authError.style.cssText =
-    "color:#4ade80;border-color:#166534;background:#052e16;display:block";
+  authError.className = "error notice-success";
 }
 
 function hideAuthMessage() {
   authError.className = "error hidden";
-  authError.style.cssText = "";
 }
 
 function showSaveStatus(msg, type = "") {
-  saveStatus.textContent = msg;
   saveStatus.className = `status ${type}`;
-  setTimeout(() => (saveStatus.className = "status hidden"), 3000);
+  saveStatus.textContent = msg;
+  setTimeout(() => (saveStatus.textContent = ""), 3000);
 }
 
 // ── BOOKMARKS ─────────────────────────────────────────────────────────────────
@@ -110,7 +109,7 @@ function escapeHtml(str) {
 
 function renderBookmarks(bookmarks) {
   if (bookmarks.length === 0) {
-    bookmarksList.innerHTML = '<p class="empty-state">No bookmarks yet.</p>';
+    bookmarksList.innerHTML = '<p class="empty-state">Nothing saved yet. Save this page to start.</p>';
     return;
   }
   bookmarksList.innerHTML = bookmarks
@@ -129,7 +128,7 @@ function renderBookmarks(bookmarks) {
         </a>
         <span class="bookmark-url">${escapeHtml(hostname)}</span>
       </div>
-      <button class="delete-btn" data-id="${escapeHtml(b.id)}">×</button>
+      <button class="delete-btn" data-id="${escapeHtml(b.id)}" aria-label="Delete ${escapeHtml(b.title || b.url)}"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>`;
     })
     .join("");
@@ -141,7 +140,7 @@ function renderBookmarks(bookmarks) {
         btn.closest(".bookmark-item").remove();
         if (bookmarksList.children.length === 0) {
           bookmarksList.innerHTML =
-            '<p class="empty-state">No bookmarks yet.</p>';
+            '<p class="empty-state">Nothing saved yet. Save this page to start.</p>';
         }
       } catch (e) {
         if (e.status === 401) return showAuthView();
@@ -163,8 +162,13 @@ async function init() {
 
 // Loads the list into the main view. Errors show there too, not in the hidden login form.
 async function refreshList() {
+  const { user_email: requestedFor } = await getSession();
   try {
-    renderBookmarks(await loadBookmarks());
+    const bookmarks = await loadBookmarks();
+    // Logged out or switched account while loading: never show the previous account's saves
+    const { user_email: current } = await getSession();
+    if (current !== requestedFor) return;
+    renderBookmarks(bookmarks);
   } catch (e) {
     // apiFetch already tried a refresh; a 401 here means the session is gone
     if (e.status === 401) return showAuthView();
@@ -174,6 +178,7 @@ async function refreshList() {
 
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 loginBtn.addEventListener("click", async () => {
+  passwordInput.autocomplete = "current-password";
   hideAuthMessage();
   const email = emailInput.value.trim();
   const password = passwordInput.value;
@@ -196,6 +201,7 @@ loginBtn.addEventListener("click", async () => {
 });
 
 signupBtn.addEventListener("click", async () => {
+  passwordInput.autocomplete = "new-password";
   hideAuthMessage();
   const email = emailInput.value.trim();
   const password = passwordInput.value;

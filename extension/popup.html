@@ -15,11 +15,11 @@
       </div>
       <p class="tagline">Save anything. Find everything.</p>
 
-      <div id="auth-error" class="error hidden"></div>
+      <div id="auth-error" class="error hidden" role="alert"></div>
 
-      <input id="email" type="email" placeholder="Email" />
+      <input id="email" type="email" placeholder="Email" aria-label="Email" autocomplete="email" />
       <div class="password-wrap">
-        <input id="password" type="password" placeholder="Password" />
+        <input id="password" type="password" placeholder="Password" aria-label="Password" autocomplete="current-password" />
         <button id="toggle-password" type="button" class="eye-btn" aria-label="Toggle password visibility">
           <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -40,13 +40,14 @@
     <!-- MAIN VIEW: shown when logged in -->
     <div id="main-view" class="hidden">
       <div class="header">
+        <span class="header-brand">Ritro</span>
         <span id="user-email" class="user-email"></span>
         <button id="logout-btn" class="ghost">Log out</button>
       </div>
 
       <button id="save-btn">Save this page</button>
-      <a href="https://ritro.vercel.app/app" target="_blank" rel="noopener noreferrer" class="manage-link">Manage your bookmarks →</a>
-      <div id="save-status" class="status hidden"></div>
+      <a href="https://ritro.vercel.app/app" target="_blank" rel="noopener noreferrer" class="manage-link">Open your archive</a>
+      <div id="save-status" class="status" role="status"></div>
 
       <div id="bookmarks-list"></div>
     </div>
