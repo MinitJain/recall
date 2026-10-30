@@ -78,8 +78,8 @@ export default function TermsPage() {
 
       <h2>Ending your use</h2>
       <p>
-        You can stop using Ritro at any time and ask for your account to be deleted by emailing{" "}
-        <a href={`mailto:${CONTACT}`}>{CONTACT}</a>.
+        You can stop using Ritro at any time, export your data and delete your account from
+        Settings in the app.
       </p>
 
       <h2>Changes to these terms</h2>
