@@ -7,9 +7,14 @@ import { generateTags } from "@/lib/gemini";
 async function handler(req: Request) {
   const { bookmarkId } = await req.json();
 
-  const bookmark = await prisma.bookmark.findUnique({ where: { id: bookmarkId } });
+  const bookmark = await prisma.bookmark.findUnique({
+    where: { id: bookmarkId },
+    include: { _count: { select: { tags: true } } },
+  });
   // Deleted before the job ran: nothing to tag, and a retry won't change that
   if (!bookmark) return NextResponse.json({ skipped: true });
+  // Already tagged by an earlier delivery of this job: don't pay for Gemini twice
+  if (bookmark._count.tags > 0) return NextResponse.json({ skipped: true });
 
   const tagNames = await generateTags(bookmark.title, bookmark.description);
   if (tagNames.length > 0) {

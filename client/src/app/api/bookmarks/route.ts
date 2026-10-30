@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { bookmarkRatelimit, checkRatelimit } from "@/lib/ratelimit";
-import { Client } from "@upstash/qstash";
+import { queueTagging } from "@/lib/tag-queue";
 import { isPrivateIp } from "@/lib/url-validation";
 
 export async function POST(req: NextRequest) {
@@ -76,11 +76,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await new Client().publishJSON({
-      url: `${req.nextUrl.origin}/api/jobs/tag-bookmark`,
-      body: { bookmarkId: bookmark.id },
-    });
+    await queueTagging(bookmark.id);
   } catch (err) {
+    // The daily /api/jobs/requeue-untagged cron picks this bookmark up again
     console.error("Failed to queue AI tagging (non-fatal):", err);
   }
 
