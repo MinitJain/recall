@@ -1,6 +1,6 @@
 export default function robots() {
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: "https://recallsave.vercel.app/sitemap.xml",
+    sitemap: "https://ritro.vercel.app/sitemap.xml",
   };
 }

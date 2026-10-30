@@ -43,9 +43,9 @@ export async function GET(req: NextRequest) {
 
   return html(`
     <div class="card">
-      <div class="brand">recall<span class="dot">.</span></div>
+      <div class="brand">ritro<span class="dot">.</span></div>
       <h1>Unsubscribe from digest?</h1>
-      <p>You won't receive any more daily digest emails from Recall.</p>
+      <p>You won't receive any more daily digest emails from Ritro.</p>
       <form method="POST">
         <input type="hidden" name="email" value="${escapeHtml(email)}" />
         <input type="hidden" name="token" value="${escapeHtml(token)}" />
@@ -93,10 +93,10 @@ export async function POST(req: NextRequest) {
 
   return html(`
     <div class="card">
-      <div class="brand">recall<span class="dot">.</span></div>
+      <div class="brand">ritro<span class="dot">.</span></div>
       <h1>You're unsubscribed.</h1>
-      <p>You won't receive any more digest emails from Recall.</p>
-      <a href="https://recallsave.vercel.app">Go back to Recall</a>
+      <p>You won't receive any more digest emails from Ritro.</p>
+      <a href="https://ritro.vercel.app">Go back to Ritro</a>
     </div>
   `);
 }

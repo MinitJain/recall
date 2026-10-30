@@ -22,7 +22,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Recall | Save anything. Find everything. Nothing gets lost.",
+  title: "Ritro | Save anything. Find everything. Nothing gets lost.",
   description:
     "The smart bookmarking app that saves anything from the internet, tags it automatically with AI, and resurfaces it back to you when you need it.",
   icons: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 // Runs before React hydrates — prevents flash of wrong theme on load
-const themeScript = `(function(){try{var t=localStorage.getItem('recall-theme'),d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(!t&&d))document.documentElement.classList.add('dark')}catch(e){}})();`;
+const themeScript = `(function(){try{var t=localStorage.getItem('ritro-theme'),d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(!t&&d))document.documentElement.classList.add('dark')}catch(e){}})();`;
 
 export default function RootLayout({
   children,

@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://gfdwrzaeofehgpwuulvr.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_PLZj21S_KtFVCz1-jiq5PQ_3WNyg3dQ";
-const API_BASE = "https://recallsave.vercel.app";
+const API_BASE = "https://ritro.vercel.app";
 
 function getSession() {
   return new Promise((resolve) => {

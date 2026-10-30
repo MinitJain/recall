@@ -6,7 +6,7 @@ if (window !== window.top) {
 }
 
 // ── CONFIG ───────────────────────────────────────────────────────────────────
-const API_BASE = "https://recallsave.vercel.app";
+const API_BASE = "https://ritro.vercel.app";
 const BAR_HEIGHT = 36; // px — matches browser bookmark bar height
 const CACHE_TTL_MS = 60_000; // ticker is decorative, not critical path — 60s staleness is fine
 
@@ -66,7 +66,7 @@ function escapeHtml(str) {
 // The host page's CSS cannot affect our bar; our CSS cannot affect the page.
 function createBar() {
   const host = document.createElement("div");
-  host.id = "__recall_ticker_host__";
+  host.id = "__ritro_ticker_host__";
   host.style.cssText = [
     "position:fixed",
     "top:0",
@@ -203,7 +203,7 @@ function createBar() {
       <div id="track-wrap">
         <ul id="track" aria-label="Your saved bookmarks" role="list"></ul>
       </div>
-      <button id="dismiss" aria-label="Dismiss Recall bar" title="Dismiss">×</button>
+      <button id="dismiss" aria-label="Dismiss Ritro bar" title="Dismiss">×</button>
     </div>
   `;
 

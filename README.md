@@ -1,32 +1,28 @@
 <div align="center">
 
-<img src="client/public/logo.svg" alt="Recall" width="64" height="64" />
+<img src="client/public/logo.svg" alt="Ritro" width="64" height="64" />
 
-# Recall
+# Ritro
 
-**Save it once. Recall brings it back.**
+**Save it once. Ritro brings it back.**
 
-Most bookmark managers help you save things. Recall helps you actually use them.
+Most bookmark managers help you save things. Ritro helps you actually use them.
 
-[![Live](https://img.shields.io/badge/live-recallsave.vercel.app-F0A500?style=flat-square&logo=vercel&logoColor=black)](https://recallsave.vercel.app)
-[![Build](https://img.shields.io/github/actions/workflow/status/MinitJain/recall/ci.yml?style=flat-square&label=build)](https://github.com/MinitJain/recall/actions)
+[![Live](https://img.shields.io/badge/live-ritro.vercel.app-F0A500?style=flat-square&logo=vercel&logoColor=black)](https://ritro.vercel.app)
+[![Build](https://img.shields.io/github/actions/workflow/status/ritrolabs/ritro/ci.yml?style=flat-square&label=build)](https://github.com/ritrolabs/ritro/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=flat-square)](https://github.com/MinitJain/recall/releases)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/MinitJain/recall/pulls)
+[![Version](https://img.shields.io/badge/version-0.0.1-brightgreen?style=flat-square)](https://github.com/ritrolabs/ritro/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/ritrolabs/ritro/pulls)
 
 <br/>
 
-<img src="docs/screenshots/demo.gif" alt="Recall demo - paste a URL, AI tags it instantly" width="720" />
-
-<br/>
-
-**[Try it live](https://recallsave.vercel.app)** · **[Download Extension](https://github.com/MinitJain/recall/releases/latest/download/recall-extension-v1.0.0.zip)**
+**[Try it live](https://ritro.vercel.app)** · **[Download Extension](https://github.com/ritrolabs/ritro/releases/latest)**
 
 </div>
 
-## What is Recall?
+## What is Ritro?
 
-Recall is a bookmark manager that doesn't let things disappear. Save any URL and Gemini tags it automatically. Then Recall works in the background. A daily digest resurfaces things you forgot you saved. The Surprise me button pulls up a random save on demand. You don't have to remember to look. Recall remembers for you.
+Ritro is a bookmark manager that doesn't let things disappear. Save any URL and Gemini tags it automatically. Then Ritro works in the background. A daily digest resurfaces things you forgot you saved. The Surprise me button pulls up a random save on demand. You don't have to remember to look. Ritro remembers for you.
 
 Search is there too. Find anything across titles, descriptions, and tags without remembering the exact URL.
 
@@ -43,25 +39,7 @@ Search is there too. Find anything across titles, descriptions, and tags without
 | 🔍  | **Instant search**   | Search by title, URL, or description. Filter by tag. Sort by newest, oldest, or A→Z.                                                  | Live   |
 | 📁  | **Collections**      | Group bookmarks into folders. Filter your saves by collection.                                                                        | Live   |
 | 🔗  | **Bookmarklet**      | No extension? Drag a link to your bookmarks bar to save any page from any browser in one click.                                       | Live   |
-| ✨  | **Resurfacing**      | Daily digest email, random rediscovery ("Surprise me"), and unsubscribe flow. Recall brings things back to you.                       | Live   |
-
-## Screenshots
-
-<div align="center">
-
-**Dashboard** - every save, tagged and searchable
-![Dashboard](docs/screenshots/dashboard.png)
-
-**Chrome extension** - save any tab in one click
-![Chrome extension](docs/screenshots/bookmark_popup.png)
-
-**Daily digest** - resurfaced in your inbox every morning
-![Daily digest email](docs/screenshots/gmail_digest.png)
-
-**Random rediscovery** - surface something you forgot you saved
-![Random rediscovery](docs/screenshots/rediscover.png)
-
-</div>
+| ✨  | **Resurfacing**      | Daily digest email, random rediscovery ("Surprise me"), and unsubscribe flow. Ritro brings things back to you.                       | Live   |
 
 ## Tech Stack
 
@@ -81,7 +59,7 @@ Search is there too. Find anything across titles, descriptions, and tags without
 
 ### Use the web app
 
-Visit **[recallsave.vercel.app](https://recallsave.vercel.app)** - no setup required. Sign up with Google, GitHub, or email and start saving immediately.
+Visit **[ritro.vercel.app](https://ritro.vercel.app)** - no setup required. Sign up with Google, GitHub, or email and start saving immediately.
 
 ### Run it locally
 
@@ -95,8 +73,8 @@ Visit **[recallsave.vercel.app](https://recallsave.vercel.app)** - no setup requ
 **Setup**
 
 ```bash
-git clone https://github.com/MinitJain/recall.git
-cd recall/client
+git clone https://github.com/ritrolabs/ritro.git
+cd ritro/client
 npm install
 ```
 
@@ -110,6 +88,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 GEMINI_API_KEY=your_gemini_api_key
 UPSTASH_REDIS_REST_URL=your_upstash_redis_url
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+AI tagging runs through a [QStash](https://upstash.com/docs/qstash) queue. Start the local QStash server in a second terminal, then add the four `QSTASH_*` values it prints (`QSTASH_URL`, `QSTASH_TOKEN`, `QSTASH_CURRENT_SIGNING_KEY`, `QSTASH_NEXT_SIGNING_KEY`) to `.env.local`:
+
+```bash
+npx @upstash/qstash-cli dev
 ```
 
 ```bash
@@ -118,7 +103,7 @@ npx prisma db push
 npm run dev
 ```
 
-App runs at `http://localhost:3000`.
+App runs at `http://localhost:3000`. Without the QStash values, bookmarks still save but don't get AI tags.
 
 > All `npm` and `npx prisma` commands must be run from the `client/` directory.
 
@@ -138,7 +123,7 @@ No ZIP download needed. Just clone the repo and point Chrome at the `extension/`
 **Step 1 - Clone the repo**
 
 ```bash
-git clone https://github.com/MinitJain/recall.git
+git clone https://github.com/ritrolabs/ritro.git
 ```
 
 Keep this folder somewhere permanent on your computer. Chrome needs it to stay there.
@@ -161,7 +146,7 @@ In the file picker, navigate into the cloned repo and select the `extension/` fo
 
 **Step 6 - Done**
 
-Recall will appear in your extensions list with the bookmark icon. Click the puzzle piece in the Chrome toolbar and pin Recall to keep it visible.
+Ritro will appear in your extensions list with the bookmark icon. Click the puzzle piece in the Chrome toolbar and pin Ritro to keep it visible.
 
 </details>
 
@@ -179,9 +164,9 @@ Recall will appear in your extensions list with the bookmark icon. Click the puz
 ```
 You find something worth saving
         ↓
-Click the Recall extension icon (or press Alt+Shift+S)
+Click the Ritro extension icon (or press Alt+Shift+S)
         ↓
-Recall sends the URL to the API at recallsave.vercel.app
+Ritro sends the URL to the API at ritro.vercel.app
         ↓
 The server scrapes the page and fetches title, description, thumbnail
         ↓
@@ -189,32 +174,21 @@ Google Gemini reads the content and generates 3–5 tags
         ↓
 Everything is saved to your account in the database
         ↓
-Open recallsave.vercel.app/app and your bookmark is there,
+Open ritro.vercel.app/app and your bookmark is there,
 tagged, previewed, and searchable
 ```
 
 **The search side**
 
-When you search, Recall looks across titles, descriptions, and tags simultaneously. You don't need to remember the exact title. Searching _"focus music productivity"_ will surface bookmarks tagged with any of those concepts.
+When you search, Ritro looks across titles, descriptions, and tags simultaneously. You don't need to remember the exact title. Searching _"focus music productivity"_ will surface bookmarks tagged with any of those concepts.
 
 ## Metadata extraction
 
-Recall automatically extracts metadata (title, description, and preview image) using Open Graph and other publicly available metadata.
+Ritro automatically extracts metadata (title, description, and preview image) using Open Graph and other publicly available metadata.
 
-Some websites intentionally prevent automated metadata access through mechanisms such as bot protection, authentication requirements, JavaScript-only rendering, or robots policies. In those cases, Recall falls back to the information that is available, such as the page URL or basic metadata.
+Some websites intentionally prevent automated metadata access through mechanisms such as bot protection, authentication requirements, JavaScript-only rendering, or robots policies. In those cases, Ritro falls back to the information that is available, such as the page URL or basic metadata.
 
-This behavior is expected and helps ensure Recall remains reliable and respectful of website policies.
-
-## Architecture
-
-<details>
-<summary>Architecture diagrams</summary>
-
-![Architecture](docs/recall-architecture.svg)
-
-![Database Schema](docs/recall-db-schema.svg)
-
-</details>
+This behavior is expected and helps ensure Ritro remains reliable and respectful of website policies.
 
 ## Roadmap
 
@@ -222,7 +196,7 @@ This behavior is expected and helps ensure Recall remains reliable and respectfu
 | ------ | ----------------------------------------------------------- |
 | ✅     | Chrome extension (save, popup, keyboard shortcut)           |
 | ✅     | AI auto-tagging via Gemini                                  |
-| ✅     | Vercel deployment at recallsave.vercel.app                  |
+| ✅     | Vercel deployment at ritro.vercel.app                  |
 | ✅     | OAuth (Google + GitHub)                                     |
 | ✅     | User dashboard (web UI)                                     |
 | ✅     | Admin dashboard                                             |
@@ -251,13 +225,13 @@ Please don't open PRs that add unrelated dependencies, change the deployment con
 
 ## Bug Reports
 
-Found something broken? [Open an issue](https://github.com/MinitJain/recall/issues/new?template=bug_report.md) on GitHub.
+Found something broken? [Open an issue](https://github.com/ritrolabs/ritro/issues/new?template=bug_report.md) on GitHub.
 
 Please include what you did, what you expected, what actually happened, and your browser + OS for extension bugs.
 
 ## Feature Requests
 
-Have an idea? [Start a discussion](https://github.com/MinitJain/recall/discussions) or [open an issue](https://github.com/MinitJain/recall/issues/new?template=feature_request.md) with the `enhancement` label.
+Have an idea? [Start a discussion](https://github.com/ritrolabs/ritro/discussions) or [open an issue](https://github.com/ritrolabs/ritro/issues/new?template=feature_request.md) with the `enhancement` label.
 
 ## License
 
@@ -269,6 +243,6 @@ Built with [Next.js](https://nextjs.org), [Supabase](https://supabase.com), [Goo
 
 <div align="center">
 
-**[recallsave.vercel.app](https://recallsave.vercel.app)** · Built for everyone who saves things and can never find them again.
+**[ritro.vercel.app](https://ritro.vercel.app)** · Built for everyone who saves things and can never find them again.
 
 </div>

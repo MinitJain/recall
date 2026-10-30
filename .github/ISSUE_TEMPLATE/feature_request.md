@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for Recall
+about: Suggest an idea for Ritro
 title: ""
 labels: enhancement
 ---

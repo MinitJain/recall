@@ -16,4 +16,4 @@ labels: bug
 
 **Environment**
 - Browser/OS:
-- Recall version (web / extension):
+- Ritro version (web / extension):

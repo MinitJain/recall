@@ -22,7 +22,7 @@ export default function ThemeToggle() {
     const next = !dark;
     document.documentElement.classList.toggle("dark", next);
     try {
-      localStorage.setItem("recall-theme", next ? "dark" : "light");
+      localStorage.setItem("ritro-theme", next ? "dark" : "light");
     } catch {}
   }
 

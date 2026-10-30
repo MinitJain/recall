@@ -61,9 +61,9 @@ export default function ResetPasswordPage() {
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex flex-col items-center gap-4 group">
             <div className="inline-flex items-center justify-center w-12 h-12">
-              <Image src="/logo.svg" alt="Recall" width={48} height={48} priority />
+              <Image src="/logo.svg" alt="Ritro" width={48} height={48} priority />
             </div>
-            <h1 className="text-xl font-semibold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-100">Recall</h1>
+            <h1 className="text-xl font-semibold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-100">Ritro</h1>
           </Link>
           <p className="text-sm text-[var(--text-muted)] mt-1">Choose a new password</p>
         </div>
