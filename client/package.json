@@ -28,7 +28,7 @@
     "react-dom": "19.3.1",
     "resend": "^6.10.0",
     "server-only": "^0.0.1",
-    "undici": "^7.29.0"
+    "undici": "^7.30.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -41,6 +41,6 @@
     "prisma": "^7.10.1",
     "tailwindcss": "^4",
     "typescript": "^6",
-    "vitest": "^3.2.7"
+    "vitest": "^5.0.5"
   }
 }
