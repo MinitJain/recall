@@ -40,7 +40,8 @@ export function isPrivateIp(host: string): boolean {
     return (
       ip === "::" ||
       ip === "::1" ||
-      ip.startsWith("fe80:") ||
+      // fe80::/10 link-local covers fe80 to febf
+      /^fe[89ab]/.test(ip) ||
       ip.startsWith("fc") ||
       ip.startsWith("fd") ||
       ip.startsWith("ff")

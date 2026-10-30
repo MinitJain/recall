@@ -9,21 +9,50 @@
 // called separation of concerns.
 
 import ogs from "open-graph-scraper";
-import { isSafeUrl } from "@/lib/url-validation";
+import { isPublicHost, isSafeUrl } from "@/lib/url-validation";
+
+const MAX_REDIRECTS = 5;
+
+// A readable fallback title without the query string, which can carry tokens or personal data
+export function titleFromUrl(url: string) {
+  const { hostname, pathname } = new URL(url);
+  return hostname + (pathname === "/" ? "" : pathname);
+}
+
+// Follows redirects one hop at a time, checking each destination is public before
+// fetching it, so a public link can't bounce the server to an internal address.
+async function resolvePublicUrl(url: string): Promise<string> {
+  let current = url;
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    const res = await fetch(current, { redirect: "manual", signal: AbortSignal.timeout(4000) });
+    await res.body?.cancel();
+    const location = res.headers.get("location");
+    if (res.status < 300 || res.status >= 400 || !location) return current;
+
+    const next = new URL(location, current);
+    if (next.protocol !== "http:" && next.protocol !== "https:") throw new Error("unsafe redirect");
+    if (!(await isPublicHost(next.hostname))) throw new Error("redirect to a private address");
+    current = next.href;
+  }
+  throw new Error("too many redirects");
+}
 
 export async function scrapeUrl(url: string) {
   const timeout = new Promise<never>((_, reject) =>
-    setTimeout(() => reject(new Error("scrape timeout")), 5000),
+    setTimeout(() => reject(new Error("scrape timeout")), 8000),
   );
 
-  const scrape = ogs({ url }).then(({ result }) => {
-    const rawThumbnail = result.ogImage?.[0]?.url ?? null;
-    return {
-      title: result.ogTitle ?? result.dcTitle ?? url,
-      description: result.ogDescription ?? null,
-      thumbnail: rawThumbnail && isSafeUrl(rawThumbnail) ? rawThumbnail : null,
-    };
-  });
+  const scrape = resolvePublicUrl(url).then((finalUrl) =>
+    // The final URL was checked above; any further redirect would skip that check
+    ogs({ url: finalUrl, fetchOptions: { redirect: "error" } }).then(({ result }) => {
+      const rawThumbnail = result.ogImage?.[0]?.url ?? null;
+      return {
+        title: result.ogTitle ?? result.dcTitle ?? titleFromUrl(url),
+        description: result.ogDescription ?? null,
+        thumbnail: rawThumbnail && isSafeUrl(rawThumbnail) ? rawThumbnail : null,
+      };
+    }),
+  );
 
   return Promise.race([scrape, timeout]);
 }

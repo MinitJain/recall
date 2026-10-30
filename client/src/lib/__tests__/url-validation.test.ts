@@ -97,3 +97,10 @@ describe("isSafeUrl", () => {
     "not a url",
   ])("rejects %s", (url) => expect(isSafeUrl(url)).toBe(false));
 });
+
+describe("isPrivateIp link-local range", () => {
+  it.each(["fe80::1", "fe90::1", "fea0::1", "febf::1"])("blocks %s (fe80::/10)", (ip) =>
+    expect(isPrivateIp(ip)).toBe(true),
+  );
+  it("does not block fec0::1 (outside fe80::/10)", () => expect(isPrivateIp("fec0::1")).toBe(false));
+});

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { scrapeUrl } from "@/lib/scraper";
+import { scrapeUrl, titleFromUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { bookmarkRatelimit, checkRatelimit } from "@/lib/ratelimit";
 import { queueTagging } from "@/lib/tag-queue";
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   const normalizedUrl = parsedUrl.href;
 
   const metadata = await scrapeUrl(normalizedUrl).catch(() => ({
-    title: normalizedUrl,
+    title: titleFromUrl(normalizedUrl),
     description: null,
     thumbnail: null,
   }));
@@ -75,7 +75,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await queueTagging(bookmark.id);
+    // Bounded: a hung publish must not hold up the save; the daily requeue covers a miss
+    await Promise.race([
+      queueTagging(bookmark.id),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("queue publish timeout")), 3000)),
+    ]);
   } catch (err) {
     // The daily /api/jobs/requeue-untagged cron picks this bookmark up again
     console.error("Failed to queue AI tagging (non-fatal):", err);
