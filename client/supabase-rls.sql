@@ -8,6 +8,8 @@ ALTER TABLE "Bookmark" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Tag" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Collection" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "CollectionBookmark" ENABLE ROW LEVEL SECURITY;
+-- Prisma internal table; no policies, so it stays closed to the REST API
+ALTER TABLE "_prisma_migrations" ENABLE ROW LEVEL SECURITY;
 
 -- ── Bookmark ─────────────────────────────────────────────────
 CREATE POLICY "Users can view own bookmarks"

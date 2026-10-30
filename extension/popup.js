@@ -303,12 +303,8 @@ saveBtn.addEventListener("click", async () => {
       active: true,
       currentWindow: true,
     });
-    const data = await saveBookmark(tab.url, access_token);
-    if (data.aiTagsFailed) {
-      showSaveStatus("Saved — add tags manually", "success");
-    } else {
-      showSaveStatus("Saved!", "success");
-    }
+    await saveBookmark(tab.url, access_token);
+    showSaveStatus("Saved!", "success");
     const bookmarks = await loadBookmarks(access_token);
     renderBookmarks(bookmarks);
     await updateBookmarksCache(bookmarks);
