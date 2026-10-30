@@ -75,10 +75,12 @@ function refreshSession() {
 
 // Sign out on the server too, so the stored refresh token can't be used again
 async function signOut() {
+  // Bounded, so a stalled request can't keep the user signed in locally
   const logout = (token) =>
     fetch(`${SUPABASE_URL}/auth/v1/logout`, {
       method: "POST",
       headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(5000),
     });
   try {
     const { access_token } = await getSession();
@@ -91,9 +93,10 @@ async function signOut() {
       }
     }
   } catch {
-    // Offline: the local session is still cleared below
+    // Offline or timed out: the local session is still cleared below
+  } finally {
+    await clearSession();
   }
-  await clearSession();
 }
 
 class UnauthorizedError extends Error {
