@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { queueTagging } from "@/lib/tag-queue";
+import { queueTaggingBatch } from "@/lib/tag-queue";
+
+const MAX_PER_RUN = 100;
 
 // Daily safety net: re-queue bookmarks whose tag job never reached QStash.
 export async function GET(req: NextRequest) {
@@ -21,9 +23,12 @@ export async function GET(req: NextRequest) {
       },
     },
     select: { id: true },
+    // Oldest first, so bookmarks about to leave the window go before newer ones
+    orderBy: { createdAt: "asc" },
+    // shortcut: a backlog above this waits for the next daily run; raise it or paginate if that happens
+    take: MAX_PER_RUN,
   });
 
-  const results = await Promise.allSettled(untagged.map((b) => queueTagging(b.id)));
-  const failed = results.filter((r) => r.status === "rejected").length;
-  return NextResponse.json({ queued: untagged.length - failed, failed });
+  if (untagged.length > 0) await queueTaggingBatch(untagged.map((b) => b.id));
+  return NextResponse.json({ queued: untagged.length });
 }
