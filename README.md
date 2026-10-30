@@ -88,6 +88,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 GEMINI_API_KEY=your_gemini_api_key
 UPSTASH_REDIS_REST_URL=your_upstash_redis_url
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+AI tagging runs through a [QStash](https://upstash.com/docs/qstash) queue. Start the local QStash server in a second terminal, then add the four `QSTASH_*` values it prints (`QSTASH_URL`, `QSTASH_TOKEN`, `QSTASH_CURRENT_SIGNING_KEY`, `QSTASH_NEXT_SIGNING_KEY`) to `.env.local`:
+
+```bash
+npx @upstash/qstash-cli dev
 ```
 
 ```bash
@@ -96,7 +103,7 @@ npx prisma db push
 npm run dev
 ```
 
-App runs at `http://localhost:3000`.
+App runs at `http://localhost:3000`. Without the QStash values, bookmarks still save but don't get AI tags.
 
 > All `npm` and `npx prisma` commands must be run from the `client/` directory.
 
