@@ -1,22 +1,15 @@
-const SUPABASE_URL = "https://gfdwrzaeofehgpwuulvr.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_PLZj21S_KtFVCz1-jiq5PQ_3WNyg3dQ";
-const API_BASE = "https://ritro.vercel.app";
+importScripts("auth.js");
 
-function getSession() {
-  return new Promise((resolve) => {
-    chrome.storage.local.get(["access_token", "user_email"], resolve);
-  });
+function flashBadge(tabId, text, color, ms) {
+  if (tabId === undefined) return;
+  chrome.action.setBadgeText({ text, tabId }).catch(() => {});
+  chrome.action.setBadgeBackgroundColor({ color, tabId }).catch(() => {});
+  setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }).catch(() => {}), ms);
 }
 
+// Alt+Shift+S: save the current tab without opening the popup
 chrome.commands.onCommand.addListener(async (command) => {
   if (command !== "save-bookmark") return;
-
-  const { access_token } = await getSession();
-  if (!access_token) {
-    // Not logged in — open the popup so they can sign in
-    chrome.action.openPopup().catch(() => {});
-    return;
-  }
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab?.url) return;
@@ -27,38 +20,16 @@ chrome.commands.onCommand.addListener(async (command) => {
   const tabId = typeof tab.id === "number" ? tab.id : undefined;
 
   try {
-    const res = await fetch(`${API_BASE}/api/bookmarks`, {
+    const res = await apiFetch("/api/bookmarks", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${access_token}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url: tab.url }),
     });
-
-    if (res.ok) {
-      // Invalidate the ticker's cache so the new bookmark shows up on the
-      // next page load instead of waiting out the TTL.
-      chrome.storage.local.remove(["bookmarks_cache", "bookmarks_cache_at"]);
-      if (tabId !== undefined) {
-        chrome.action.setBadgeText({ text: "✓", tabId }).catch(() => {});
-        chrome.action.setBadgeBackgroundColor({ color: "#F59E0B", tabId }).catch(() => {});
-        setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }).catch(() => {}), 2000);
-      }
-    } else if (res.status === 401) {
-      chrome.action.openPopup().catch(() => {});
-    } else {
-      if (tabId !== undefined) {
-        chrome.action.setBadgeText({ text: "✖", tabId }).catch(() => {});
-        chrome.action.setBadgeBackgroundColor({ color: "#EF4444", tabId }).catch(() => {});
-        setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }).catch(() => {}), 3000);
-      }
-    }
-  } catch {
-    if (tabId !== undefined) {
-      chrome.action.setBadgeText({ text: "✖", tabId }).catch(() => {});
-      chrome.action.setBadgeBackgroundColor({ color: "#EF4444", tabId }).catch(() => {});
-      setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }).catch(() => {}), 3000);
-    }
+    if (res.ok) flashBadge(tabId, "✓", "#F59E0B", 2000);
+    else flashBadge(tabId, "✖", "#EF4444", 3000);
+  } catch (e) {
+    // Not logged in, or the session couldn't be refreshed: open the popup so they can sign in
+    if (e.status === 401) chrome.action.openPopup().catch(() => {});
+    else flashBadge(tabId, "✖", "#EF4444", 3000);
   }
 });

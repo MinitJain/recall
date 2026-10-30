@@ -1,9 +1,4 @@
-// ── CONFIG ──────────────────────────────────────────────────────────────────
-// These are your public Supabase keys — safe to include here.
-// Find them in your .env.local as NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
-const SUPABASE_URL = "https://gfdwrzaeofehgpwuulvr.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_PLZj21S_KtFVCz1-jiq5PQ_3WNyg3dQ";
-const API_BASE = "https://ritro.vercel.app";
+// Config, session storage and apiFetch live in auth.js, loaded before this file.
 
 // ── DOM REFS ─────────────────────────────────────────────────────────────────
 const authView = document.getElementById("auth-view");
@@ -20,58 +15,7 @@ const saveStatus = document.getElementById("save-status");
 const bookmarksList = document.getElementById("bookmarks-list");
 const userEmailSpan = document.getElementById("user-email");
 
-// ── STORAGE HELPERS ───────────────────────────────────────────────────────────
-// chrome.storage.local uses callbacks, so we wrap in Promises for cleaner code.
-function getSession() {
-  return new Promise((resolve) => {
-    chrome.storage.local.get(["access_token", "user_email"], resolve);
-  });
-}
-
-function saveSession(access_token, user_email) {
-  return new Promise((resolve) => {
-    chrome.storage.local.set({ access_token, user_email }, resolve);
-  });
-}
-
-function clearSession() {
-  return new Promise((resolve) => {
-    // Also drop the ticker's bookmark cache — otherwise the next person to
-    // log in on this browser would briefly see the previous user's bookmarks.
-    chrome.storage.local.remove(
-      ["access_token", "user_email", "bookmarks_cache", "bookmarks_cache_at"],
-      resolve
-    );
-  });
-}
-
-function updateBookmarksCache(bookmarks) {
-  return new Promise((resolve) => {
-    chrome.storage.local.set(
-      { bookmarks_cache: bookmarks, bookmarks_cache_at: Date.now() },
-      resolve
-    );
-  });
-}
-
 // ── SUPABASE AUTH ─────────────────────────────────────────────────────────────
-// We call Supabase's REST API directly — no npm package needed.
-// MERN equivalent: calling your Express /auth/login route with fetch.
-async function login(email, password) {
-  const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  const data = await res.json();
-  if (!res.ok)
-    throw new Error(data.error_description || data.msg || "Login failed");
-  return { access_token: data.access_token, user_email: data.user.email };
-}
-
 async function signup(email, password) {
   const res = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
     method: "POST",
@@ -123,40 +67,27 @@ function showSaveStatus(msg, type = "") {
 }
 
 // ── BOOKMARKS ─────────────────────────────────────────────────────────────────
-async function loadBookmarks(access_token) {
-  const res = await fetch(`${API_BASE}/api/bookmarks`, {
-    headers: { Authorization: `Bearer ${access_token}` },
-  });
-  if (res.status === 401) {
-    const err = new Error("Unauthorized");
-    err.status = 401;
-    throw err;
-  }
+async function loadBookmarks() {
+  const res = await apiFetch("/api/bookmarks");
   if (!res.ok) throw new Error("Failed to load bookmarks");
   return res.json();
 }
 
-async function saveBookmark(url, access_token) {
-  const res = await fetch(`${API_BASE}/api/bookmarks`, {
+async function saveBookmark(url) {
+  const res = await apiFetch("/api/bookmarks", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${access_token}`,
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ url }),
   });
   if (!res.ok) {
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
     throw new Error(data.error || "Failed to save");
   }
   return res.json();
 }
 
-async function deleteBookmark(id, access_token) {
-  const res = await fetch(`${API_BASE}/api/bookmarks/${id}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${access_token}` },
-  });
+async function deleteBookmark(id) {
+  const res = await apiFetch(`/api/bookmarks/${id}`, { method: "DELETE" });
   if (res.status !== 204 && !res.ok) throw new Error("Failed to delete");
 }
 
@@ -205,18 +136,15 @@ function renderBookmarks(bookmarks) {
 
   bookmarksList.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
-      const { access_token } = await getSession();
       try {
-        await deleteBookmark(btn.dataset.id, access_token);
+        await deleteBookmark(btn.dataset.id);
         btn.closest(".bookmark-item").remove();
         if (bookmarksList.children.length === 0) {
           bookmarksList.innerHTML =
             '<p class="empty-state">No bookmarks yet.</p>';
         }
-        // Invalidate rather than recompute — the popup doesn't hold the full
-        // list as an array, only rendered DOM. Next ticker load refetches.
-        await chrome.storage.local.remove(["bookmarks_cache", "bookmarks_cache_at"]);
       } catch (e) {
+        if (e.status === 401) return showAuthView();
         console.error(e);
       }
     });
@@ -227,22 +155,20 @@ function renderBookmarks(bookmarks) {
 // Runs when the popup opens. Checks if we already have a stored session.
 async function init() {
   const { access_token, user_email } = await getSession();
-  if (access_token) {
-    showMainView(user_email);
-    try {
-      const bookmarks = await loadBookmarks(access_token);
-      renderBookmarks(bookmarks);
-      await updateBookmarksCache(bookmarks);
-    } catch (e) {
-      if (e.status === 401) {
-        // Token expired — force re-login
-        await clearSession();
-        showAuthView();
-      }
-      // Network errors / server errors: stay logged in, show empty list
-    }
-  } else {
-    showAuthView();
+  if (!access_token) return showAuthView();
+
+  showMainView(user_email);
+  await refreshList();
+}
+
+// Loads the list into the main view. Errors show there too, not in the hidden login form.
+async function refreshList() {
+  try {
+    renderBookmarks(await loadBookmarks());
+  } catch (e) {
+    // apiFetch already tried a refresh; a 401 here means the session is gone
+    if (e.status === 401) return showAuthView();
+    showSaveStatus("Couldn't load your saves. Check your connection and reopen.", "error-text");
   }
 }
 
@@ -256,18 +182,17 @@ loginBtn.addEventListener("click", async () => {
   loginBtn.textContent = "Logging in...";
   loginBtn.disabled = true;
   try {
-    const { access_token, user_email } = await login(email, password);
-    await saveSession(access_token, user_email);
-    showMainView(user_email);
-    const bookmarks = await loadBookmarks(access_token);
-    renderBookmarks(bookmarks);
-    await updateBookmarksCache(bookmarks);
+    const session = await requestToken("password", { email, password });
+    await saveSession(session);
+    showMainView(session.user.email);
   } catch (e) {
     showAuthError(e.message);
+    return;
   } finally {
     loginBtn.textContent = "Log in";
     loginBtn.disabled = false;
   }
+  await refreshList();
 });
 
 signupBtn.addEventListener("click", async () => {
@@ -290,12 +215,11 @@ signupBtn.addEventListener("click", async () => {
 });
 
 logoutBtn.addEventListener("click", async () => {
-  await clearSession();
+  await signOut();
   showAuthView();
 });
 
 saveBtn.addEventListener("click", async () => {
-  const { access_token } = await getSession();
   saveBtn.textContent = "Saving...";
   saveBtn.disabled = true;
   try {
@@ -303,12 +227,11 @@ saveBtn.addEventListener("click", async () => {
       active: true,
       currentWindow: true,
     });
-    await saveBookmark(tab.url, access_token);
+    await saveBookmark(tab.url);
     showSaveStatus("Saved!", "success");
-    const bookmarks = await loadBookmarks(access_token);
-    renderBookmarks(bookmarks);
-    await updateBookmarksCache(bookmarks);
+    await refreshList();
   } catch (e) {
+    if (e.status === 401) return showAuthView();
     showSaveStatus(e.message, "error-text");
   } finally {
     saveBtn.textContent = "Save this page";
