@@ -28,30 +28,72 @@ function clearSession() {
   ]);
 }
 
-// POST to Supabase's token endpoint (password login or refresh)
+// POST to Supabase's token endpoint (password login or refresh).
+// The error carries the HTTP status so callers can tell a revoked token from a blip.
 async function requestToken(grantType, body) {
   const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=${grantType}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: SUPABASE_ANON_KEY },
     body: JSON.stringify(body),
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error_description || data.msg || "Login failed");
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(data.error_description || data.msg || "Login failed");
+    err.status = res.status;
+    throw err;
+  }
   return data;
 }
 
 // Access tokens last about an hour; the refresh token keeps the user signed in.
-async function refreshSession() {
-  const { refresh_token } = await getSession();
-  if (!refresh_token) return null;
+// One refresh at a time per context: Supabase rotates refresh tokens, so two parallel
+// refreshes would race and the loser would sign the user out.
+let refreshing = null;
+
+function refreshSession() {
+  refreshing ??= (async () => {
+    const { refresh_token } = await getSession();
+    if (!refresh_token) return null;
+    try {
+      const data = await requestToken("refresh_token", { refresh_token });
+      await saveSession(data);
+      return data.access_token;
+    } catch (e) {
+      // Only a rejected token (400/401) ends the session. Network errors, 429 and 5xx keep it
+      // so the next attempt can succeed.
+      if (e.status === 400 || e.status === 401) {
+        await clearSession();
+        return null;
+      }
+      throw e;
+    }
+  })().finally(() => {
+    refreshing = null;
+  });
+  return refreshing;
+}
+
+// Sign out on the server too, so the stored refresh token can't be used again
+async function signOut() {
+  const logout = (token) =>
+    fetch(`${SUPABASE_URL}/auth/v1/logout`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+    });
   try {
-    const data = await requestToken("refresh_token", { refresh_token });
-    await saveSession(data);
-    return data.access_token;
+    const { access_token } = await getSession();
+    if (access_token) {
+      const res = await logout(access_token);
+      // An expired access token can't sign out (Supabase answers 401 or 403); refresh once and retry
+      if (res.status === 401 || res.status === 403) {
+        const fresh = await refreshSession();
+        if (fresh) await logout(fresh);
+      }
+    }
   } catch {
-    await clearSession();
-    return null;
+    // Offline: the local session is still cleared below
   }
+  await clearSession();
 }
 
 class UnauthorizedError extends Error {
@@ -74,7 +116,9 @@ async function apiFetch(path, options = {}) {
 
   let res = await send(access_token);
   if (res.status === 401) {
-    const fresh = await refreshSession();
+    // Another context (popup or service worker) may have refreshed already: use its token
+    const { access_token: current } = await getSession();
+    const fresh = current && current !== access_token ? current : await refreshSession();
     if (!fresh) throw new UnauthorizedError();
     res = await send(fresh);
   }

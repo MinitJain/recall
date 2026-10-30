@@ -158,12 +158,17 @@ async function init() {
   if (!access_token) return showAuthView();
 
   showMainView(user_email);
+  await refreshList();
+}
+
+// Loads the list into the main view. Errors show there too, not in the hidden login form.
+async function refreshList() {
   try {
     renderBookmarks(await loadBookmarks());
   } catch (e) {
     // apiFetch already tried a refresh; a 401 here means the session is gone
-    if (e.status === 401) showAuthView();
-    // Network or server errors: stay logged in, show an empty list
+    if (e.status === 401) return showAuthView();
+    showSaveStatus("Couldn't load your saves. Check your connection and reopen.", "error-text");
   }
 }
 
@@ -180,13 +185,14 @@ loginBtn.addEventListener("click", async () => {
     const session = await requestToken("password", { email, password });
     await saveSession(session);
     showMainView(session.user.email);
-    renderBookmarks(await loadBookmarks());
   } catch (e) {
     showAuthError(e.message);
+    return;
   } finally {
     loginBtn.textContent = "Log in";
     loginBtn.disabled = false;
   }
+  await refreshList();
 });
 
 signupBtn.addEventListener("click", async () => {
@@ -209,7 +215,7 @@ signupBtn.addEventListener("click", async () => {
 });
 
 logoutBtn.addEventListener("click", async () => {
-  await clearSession();
+  await signOut();
   showAuthView();
 });
 
@@ -223,7 +229,7 @@ saveBtn.addEventListener("click", async () => {
     });
     await saveBookmark(tab.url);
     showSaveStatus("Saved!", "success");
-    renderBookmarks(await loadBookmarks());
+    await refreshList();
   } catch (e) {
     if (e.status === 401) return showAuthView();
     showSaveStatus(e.message, "error-text");
