@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",
@@ -38,6 +39,7 @@
     "eslint-config-next": "16.2.2",
     "prisma": "^7.10.1",
     "tailwindcss": "^4",
-    "typescript": "^6"
+    "typescript": "^6",
+    "vitest": "^3.2.7"
   }
 }

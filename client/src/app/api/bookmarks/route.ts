@@ -4,7 +4,7 @@ import { scrapeUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { bookmarkRatelimit, checkRatelimit } from "@/lib/ratelimit";
 import { queueTagging } from "@/lib/tag-queue";
-import { isPrivateIp } from "@/lib/url-validation";
+import { isPublicHost } from "@/lib/url-validation";
 
 export async function POST(req: NextRequest) {
   const user = await getUserFromRequest(req);
@@ -42,9 +42,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid url" }, { status: 400 });
   }
 
-  const blockedHosts = new Set(["localhost", "127.0.0.1", "::1", "0.0.0.0"]);
-  const host = parsedUrl.hostname.toLowerCase();
-  if (blockedHosts.has(host) || host.endsWith(".local") || isPrivateIp(host)) {
+  // The scraper fetches this URL from our server, so it must not point at internal addresses
+  if (!(await isPublicHost(parsedUrl.hostname))) {
     return NextResponse.json({ error: "invalid url" }, { status: 400 });
   }
 
