@@ -114,18 +114,17 @@ export default function PrivacyPage() {
 
       <h2>How long it&apos;s kept</h2>
       <p>
-        Your account and saves are kept until you delete them or ask for your account to be
-        deleted. Deleted bookmarks are removed from the database straight away. Rate-limit counters
+        Your account and saves are kept until you delete them or delete your account. Deleted bookmarks are removed from the database straight away. Rate-limit counters
         expire within an hour. Server logs are kept for the period set by the hosting provider.
       </p>
 
       <h2>Your rights</h2>
       <p>
-        Wherever you live, you can ask to access, correct, export or delete your data, and to
-        withdraw consent or object to processing. Email{" "}
-        <a href={`mailto:${CONTACT}`}>{CONTACT}</a> from the address on your account and you&apos;ll
-        get a reply within 30 days. There is no in-app account deletion yet, so email is the way to
-        delete your account and everything in it.
+        Wherever you live, you can access, correct, export or delete your data, and withdraw consent
+        or object to processing. You can download all your data or delete your account and
+        everything in it yourself, from <strong>Settings</strong> in the app. For anything else,
+        email <a href={`mailto:${CONTACT}`}>{CONTACT}</a> from the address on your account and
+        you&apos;ll get a reply within 30 days.
       </p>
       <ul>
         <li>

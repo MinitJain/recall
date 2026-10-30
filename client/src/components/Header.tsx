@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import ThemeToggle from "./ThemeToggle";
 
@@ -26,6 +27,12 @@ export default function Header({ email }: { email: string }) {
       <div className="flex items-center gap-1">
         <span className="text-xs text-[var(--text-dim)] hidden sm:block mr-2">{email}</span>
         <ThemeToggle />
+        <Link
+          href="/app/settings"
+          className="h-8 px-3 inline-flex items-center text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] rounded-md transition-all duration-100"
+        >
+          Settings
+        </Link>
         <button
           onClick={handleLogout}
           className="h-8 px-3 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] rounded-md transition-all duration-100"
