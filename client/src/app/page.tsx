@@ -8,7 +8,8 @@ import BookmarkletLink from "@/components/landing/BookmarkletLink";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const GITHUB_URL = "https://github.com/ritrolabs/ritro";
-const RELEASES_URL = `${GITHUB_URL}/releases`;
+// Install steps (load unpacked) until the Chrome Web Store listing exists
+const EXTENSION_URL = `${GITHUB_URL}#chrome-extension`;
 
 const steps = [
   {
@@ -186,7 +187,7 @@ export default async function LandingPage() {
                   from GitHub.
                 </p>
                 <a
-                  href={RELEASES_URL}
+                  href={EXTENSION_URL}
                   className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent)] hover:underline"
                 >
                   Get the extension <ArrowRight size={14} aria-hidden />

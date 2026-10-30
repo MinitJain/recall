@@ -63,7 +63,7 @@ export default function BookmarkCard({
       timeZone: "UTC",
       day: "2-digit",
       month: "short",
-      ...(savedAt.getFullYear() !== new Date().getFullYear() && { year: "numeric" }),
+      ...(savedAt.getUTCFullYear() !== new Date().getUTCFullYear() && { year: "numeric" }),
     })
     .toUpperCase();
 
