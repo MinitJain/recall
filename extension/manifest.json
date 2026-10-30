@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Recall",
-  "version": "1.0.0",
+  "name": "Ritro",
+  "version": "1.1.0",
   "description": "Bookmark manager to save anything from the web in one click. AI tags it automatically. Search and resurface your saves anytime.",
 
   "icons": {
@@ -12,7 +12,7 @@
 
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Recall",
+    "default_title": "Ritro",
     "default_icon": {
       "16": "icon16.png",
       "48": "icon48.png",
@@ -30,14 +30,14 @@
         "default": "Alt+Shift+S",
         "mac": "Alt+Shift+S"
       },
-      "description": "Save current page to Recall"
+      "description": "Save current page to Ritro"
     }
   },
 
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "exclude_matches": ["https://recallsave.vercel.app/*", "http://localhost:3000/*", "http://localhost:3001/*"],
+      "exclude_matches": ["https://ritro.vercel.app/*", "http://localhost:3000/*", "http://localhost:3001/*"],
       "js": ["content.js"],
       "run_at": "document_end",
       "all_frames": false
@@ -46,5 +46,5 @@
 
   "permissions": ["activeTab", "storage"],
 
-  "host_permissions": ["http://localhost:3000/*", "http://localhost:3001/*", "https://gfdwrzaeofehgpwuulvr.supabase.co/*", "https://recallsave.vercel.app/*"]
+  "host_permissions": ["http://localhost:3000/*", "http://localhost:3001/*", "https://gfdwrzaeofehgpwuulvr.supabase.co/*", "https://ritro.vercel.app/*"]
 }

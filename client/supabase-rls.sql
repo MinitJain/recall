@@ -1,5 +1,5 @@
 -- ============================================================
--- Recall — Row Level Security Policies
+-- Ritro — Row Level Security Policies
 -- Run this in your Supabase SQL editor (Dashboard → SQL Editor)
 -- ============================================================
 

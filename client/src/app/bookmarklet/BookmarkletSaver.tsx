@@ -47,7 +47,7 @@ export default function BookmarkletSaver({ url }: { url: string }) {
               <polyline points="20 6 9 17 4 12" />
             </svg>
           </div>
-          <p className="text-sm font-medium text-[var(--text)]">Saved to Recall</p>
+          <p className="text-sm font-medium text-[var(--text)]">Saved to Ritro</p>
           <p className="text-xs text-[var(--text-dim)]">
             {window.opener ? "This window will close..." : (
               <a href="/app" className="text-[var(--accent)] hover:underline">View your bookmarks</a>
@@ -65,7 +65,7 @@ export default function BookmarkletSaver({ url }: { url: string }) {
             </svg>
           </div>
           <p className="text-sm font-medium text-[var(--text)]">Already saved</p>
-          <p className="text-xs text-[var(--text-dim)]">This URL is already in your Recall.</p>
+          <p className="text-xs text-[var(--text-dim)]">This URL is already in your Ritro.</p>
         </>
       )}
       {status === "error" && (

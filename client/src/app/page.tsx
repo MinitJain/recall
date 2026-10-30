@@ -61,7 +61,7 @@ export default async function LandingPage() {
               color: "var(--lp-text-primary)",
             }}
           >
-            Recall
+            Ritro
           </span>
         </Link>
         <div
@@ -186,7 +186,7 @@ export default async function LandingPage() {
             }}
           >
             The internet moves fast. Your saves shouldn&apos;t disappear with
-            it. Recall bookmarks anything, tags it automatically, and brings it
+            it. Ritro bookmarks anything, tags it automatically, and brings it
             back when you need it - even when you&apos;ve forgotten what you
             saved.
           </p>
@@ -303,7 +303,7 @@ export default async function LandingPage() {
                     textAlign: "left",
                   }}
                 >
-                  recall.app/bookmarks
+                  ritro.app/bookmarks
                 </div>
               </div>
 
@@ -859,7 +859,7 @@ export default async function LandingPage() {
                 }}
               >
                 At your desk, on your phone, on someone else&apos;s laptop. Open
-                Recall, drop the link. Done.
+                Ritro, drop the link. Done.
               </p>
               <span
                 style={{
@@ -965,14 +965,14 @@ export default async function LandingPage() {
                 }}
               >
                 Not a Chrome person? Drag this link to your bookmarks bar once.
-                From that moment on, every browser saves to Recall in one click.
+                From that moment on, every browser saves to Ritro in one click.
               </p>
               {/* dangerouslySetInnerHTML is required here — React sanitizes javascript: hrefs,
                   replacing them with an error string. This is the only way to render a
                   draggable bookmarklet link. The content is entirely static and server-generated. */}
               <span
                 dangerouslySetInnerHTML={{
-                  __html: `<a href="javascript:(function(){location.href='${process.env.NEXT_PUBLIC_APP_URL ?? "https://recallsave.vercel.app"}/bookmarklet?url='+encodeURIComponent(location.href)})();" draggable title="Drag this to your bookmarks bar" style="margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--lp-accent);background:var(--lp-accent-soft);border-radius:20px;padding:4px 12px;cursor:grab;user-select:none;border:1px dashed var(--lp-accent);text-decoration:none;align-self:flex-start;">← drag to bookmarks bar</a>`,
+                  __html: `<a href="javascript:(function(){location.href='${process.env.NEXT_PUBLIC_APP_URL ?? "https://ritro.vercel.app"}/bookmarklet?url='+encodeURIComponent(location.href)})();" draggable title="Drag this to your bookmarks bar" style="margin-top:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--lp-accent);background:var(--lp-accent-soft);border-radius:20px;padding:4px 12px;cursor:grab;user-select:none;border:1px dashed var(--lp-accent);text-decoration:none;align-self:flex-start;">← drag to bookmarks bar</a>`,
                 }}
               />
             </div>
@@ -1007,7 +1007,7 @@ export default async function LandingPage() {
                 The internet gave it to you once.
               </span>
               <span style={{ color: "var(--lp-accent)", display: "block" }}>
-                Recall gives it back.
+                Ritro gives it back.
               </span>
             </h2>
           </div>
@@ -1136,7 +1136,7 @@ export default async function LandingPage() {
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <Image
             src="/logo.svg"
-            alt="Recall"
+            alt="Ritro"
             width={16}
             height={16}
             style={{ display: "block" }}
@@ -1150,7 +1150,7 @@ export default async function LandingPage() {
                 marginRight: 6,
               }}
             >
-              Recall
+              Ritro
             </span>
             © 2025. All rights reserved.
           </span>
@@ -1159,7 +1159,7 @@ export default async function LandingPage() {
           {[
             ["Privacy", "#"],
             ["Terms", "#"],
-            ["GitHub", "https://github.com/MinitJain/recall"],
+            ["GitHub", "https://github.com/ritrolabs/ritro"],
           ].map(([label, href]) => (
             <a
               key={label}
@@ -1278,7 +1278,7 @@ const STATS = [
   {
     value: "Any URL",
     label:
-      "Tweet, video, article, Reddit thread - if it has a link, Recall saves it",
+      "Tweet, video, article, Reddit thread - if it has a link, Ritro saves it",
   },
   {
     value: "< 3 sec",
@@ -1315,7 +1315,7 @@ const FEATURES = [
   {
     icon: "🔖",
     title: "Save anything",
-    desc: "Tweet, blog, video, image, Reddit thread, product page. If it has a URL, Recall saves it.",
+    desc: "Tweet, blog, video, image, Reddit thread, product page. If it has a URL, Ritro saves it.",
     tag: "Any URL",
   },
   {
@@ -1339,7 +1339,7 @@ const FEATURES = [
   {
     icon: "✨",
     title: "Resurfacing",
-    desc: "Recall brings things back to you - daily digest, random rediscovery, 'you saved this a year ago'.",
+    desc: "Ritro brings things back to you - daily digest, random rediscovery, 'you saved this a year ago'.",
     tag: "Never forget",
   },
   {
@@ -1355,7 +1355,7 @@ const HOW_STEPS = [
     num: "01",
     icon: "🔗",
     title: "Paste any URL",
-    desc: "Copy a link from anywhere on the internet. Paste it into Recall.",
+    desc: "Copy a link from anywhere on the internet. Paste it into Ritro.",
   },
   {
     num: "02",
@@ -1367,7 +1367,7 @@ const HOW_STEPS = [
     num: "03",
     icon: "✨",
     title: "Find it when you need it",
-    desc: "Search naturally, browse collections, or let Recall surface it back to you.",
+    desc: "Search naturally, browse collections, or let Ritro surface it back to you.",
   },
 ];
 
@@ -1385,6 +1385,6 @@ const RESURFACE_MODES = [
   {
     icon: "⏰",
     title: "Time capsule",
-    desc: "'You saved this exactly one year ago.' Recall remembers so you don't have to.",
+    desc: "'You saved this exactly one year ago.' Ritro remembers so you don't have to.",
   },
 ];

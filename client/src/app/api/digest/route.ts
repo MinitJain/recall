@@ -55,7 +55,7 @@ function buildBookmarkCard(bookmark: BookmarkWithTags, isLast: boolean): string 
 }
 
 function buildDigestHtml(bookmarks: BookmarkWithTags[], email: string): string {
-  const unsubscribeUrl = `https://recallsave.vercel.app/api/unsubscribe?token=${unsubscribeToken(email)}&email=${encodeURIComponent(email)}`;
+  const unsubscribeUrl = `https://ritro.vercel.app/api/unsubscribe?token=${unsubscribeToken(email)}&email=${encodeURIComponent(email)}`;
   const cards = bookmarks
     .map((b, i) => buildBookmarkCard(b, i === bookmarks.length - 1))
     .join("");
@@ -65,7 +65,7 @@ function buildDigestHtml(bookmarks: BookmarkWithTags[], email: string): string {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Recall digest</title>
+  <title>Your Ritro digest</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;padding:32px 16px;">
@@ -75,7 +75,7 @@ function buildDigestHtml(bookmarks: BookmarkWithTags[], email: string): string {
         <!-- HEADER -->
         <tr><td style="background:#0f0f0f;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
           <div style="font-size:24px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">
-            recall<span style="color:#F0A500;">.</span>
+            ritro<span style="color:#F0A500;">.</span>
           </div>
           <div style="font-size:11px;color:#666;margin-top:6px;letter-spacing:1.5px;text-transform:uppercase;">
             Your daily digest
@@ -94,8 +94,8 @@ function buildDigestHtml(bookmarks: BookmarkWithTags[], email: string): string {
 
           <!-- CTA -->
           <div style="text-align:center;margin-top:32px;">
-            <a href="https://recallsave.vercel.app/app" style="display:inline-block;background:#F0A500;color:#0f0f0f;font-size:14px;font-weight:700;text-decoration:none;padding:13px 32px;border-radius:10px;letter-spacing:0.1px;">
-              Open Recall &rarr;
+            <a href="https://ritro.vercel.app/app" style="display:inline-block;background:#F0A500;color:#0f0f0f;font-size:14px;font-weight:700;text-decoration:none;padding:13px 32px;border-radius:10px;letter-spacing:0.1px;">
+              Open Ritro &rarr;
             </a>
           </div>
         </td></tr>
@@ -103,12 +103,12 @@ function buildDigestHtml(bookmarks: BookmarkWithTags[], email: string): string {
         <!-- FOOTER -->
         <tr><td style="background:#0f0f0f;border-radius:0 0 16px 16px;padding:24px 32px;text-align:center;">
           <div style="font-size:15px;font-weight:700;color:#ffffff;margin-bottom:8px;letter-spacing:-0.3px;">
-            recall<span style="color:#F0A500;">.</span>
+            ritro<span style="color:#F0A500;">.</span>
           </div>
           <p style="font-size:12px;color:#555;margin:0;line-height:1.7;">
             You&#39;re receiving this because you use
-            <a href="https://recallsave.vercel.app" style="color:#F0A500;text-decoration:none;">Recall</a>.<br />
-            The internet gave it to you once. Recall gives it back.<br /><br />
+            <a href="https://ritro.vercel.app" style="color:#F0A500;text-decoration:none;">Ritro</a>.<br />
+            The internet gave it to you once. Ritro gives it back.<br /><br />
             <a href="${unsubscribeUrl}" style="color:#555;text-decoration:underline;font-size:11px;">Unsubscribe</a>
           </p>
         </td></tr>
@@ -179,9 +179,9 @@ export async function POST(req: NextRequest) {
       const idempotencyKey = `digest-${user.id}-${date}`;
 
       const result = await resend.emails.send({
-        from: "Recall <onboarding@resend.dev>",
+        from: "Ritro <onboarding@resend.dev>",
         to: user.email,
-        subject: "Good morning. Here's your Recall digest.",
+        subject: "Good morning. Here's your Ritro digest.",
         html: buildDigestHtml(bookmarks, user.email),
       }, { idempotencyKey });
 

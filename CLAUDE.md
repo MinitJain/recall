@@ -1,4 +1,4 @@
-# Recall — Claude Code Guide
+# Ritro — Claude Code Guide
 
 Read `GUIDE.md` first — it contains the full project briefing and teaching rules for this session.
 
@@ -12,7 +12,7 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 | ORM | Prisma 7 |
 | AI Tagging | Google Gemini API |
 | Auth | Supabase Auth |
-| Deployment | Vercel — live at **recallsave.vercel.app** |
+| Deployment | Vercel — live at **ritro.vercel.app** |
 | Rate Limiting | Upstash Redis |
 | Analytics | Vercel Analytics + Speed Insights |
 
@@ -36,7 +36,7 @@ Read `GUIDE.md` first — it contains the full project briefing and teaching rul
 **Phase 1 is complete. Project is live.**
 
 - M8 (Chrome Extension) — ✅ Done
-- M9 (Vercel deployment) — ✅ Done at [recallsave.vercel.app](https://recallsave.vercel.app)
+- M9 (Vercel deployment) — ✅ Done at [ritro.vercel.app](https://ritro.vercel.app)
 - `proxy.ts` SSR session fix — ✅ Done
 - Landing page + smart `/` routing — ✅ Done
 
@@ -111,7 +111,7 @@ Build order agreed: P3.16 (schema) → P3.8 (Telegram) → P3.3 (resurfacing on 
 - WhatsApp/Instagram: Meta Business API, needs approval + cost. Do after Telegram proves the flow.
 - Save flow: user sends link/photo/text to bot → same ingest path as extension (`/api/items` once P3.16 lands)
 - Query flow: user message → Gemini parses intent (date range, tags, keywords) → hits existing `/api/bookmarks` search → formats reply
-- Auth: need to link a Telegram/WhatsApp user ID to a Recall account (one-time linking command, e.g. `/link <code>` shown in web dashboard)
+- Auth: need to link a Telegram/WhatsApp user ID to a Ritro account (one-time linking command, e.g. `/link <code>` shown in web dashboard)
 
 **P3.3 resurfacing on save — notes**
 - Triggers the moment a new item is saved (any channel), not just via digest or browsing
@@ -170,7 +170,7 @@ Biggest bet: chatbot-over-your-saves + multi-channel capture. Neither Pocket nor
 | P4.3 AI-generated weekly summary digest | Gist of what was saved this week, not just a link list — upgrade to P2.7 |
 | P4.4 Unified dashboard by source channel | Show + filter items by `sourceChannel` (WhatsApp/Telegram/extension/bookmarklet/web) — depends on P3.16 |
 | P4.5 Universal forward number | One phone number/bot works across WhatsApp + Telegram + SMS, same backend |
-| P4.6 Mobile app w/ native share sheet | Share from any app directly into Recall |
+| P4.6 Mobile app w/ native share sheet | Share from any app directly into Ritro |
 | P4.7 Shared team knowledge base | Org-wide saves, chatbot answers from team's collective saves |
 | P4.8 Slack/Teams integration | Save + retrieve without leaving work chat |
 | P4.9 Monetization tiers | Free: link-only, limited AI queries/month. Paid: photo/video storage, unlimited chatbot queries, semantic search, team spaces |
@@ -202,7 +202,7 @@ Biggest bet: chatbot-over-your-saves + multi-channel capture. Neither Pocket nor
 ## Project Structure
 
 ```
-recall/
+ritro/
 ├── client/          # Next.js app (all source code lives here)
 │   ├── app/         # App Router pages and API routes
 │   ├── components/  # React components

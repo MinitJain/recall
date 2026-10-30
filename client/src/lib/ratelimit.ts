@@ -27,19 +27,19 @@ const redis = new Redis({
 export const bookmarkRatelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(20, "1 h"),
-  prefix: "recall:bookmark",
+  prefix: "ritro:bookmark",
 });
 
 // 30 tag operations per user per hour
 export const tagRatelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(30, "1 h"),
-  prefix: "recall:tag",
+  prefix: "ritro:tag",
 });
 
 // 60 collection operations per user per hour
 export const collectionRatelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(60, "1 h"),
-  prefix: "recall:collection",
+  prefix: "ritro:collection",
 });
