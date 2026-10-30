@@ -298,6 +298,20 @@ function AuthForm() {
               </>
             )}
           </p>
+
+          {mode !== "forgot" && (
+            <p className="text-[11px] leading-relaxed text-[var(--text-dim)] mt-4 text-center">
+              By continuing, you agree to the{" "}
+              <Link href="/terms" className="underline underline-offset-2 hover:text-[var(--accent)]">
+                Terms
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="underline underline-offset-2 hover:text-[var(--accent)]">
+                Privacy Policy
+              </Link>
+              .
+            </p>
+          )}
         </div>
 
         <div className="mt-6 text-center">
