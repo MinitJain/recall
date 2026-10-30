@@ -50,14 +50,11 @@ function showAuthError(msg) {
 
 function showAuthSuccess(msg) {
   authError.textContent = msg;
-  authError.className = "error";
-  authError.style.cssText =
-    "color:#4ade80;border-color:#166534;background:#052e16;display:block";
+  authError.className = "error notice-success";
 }
 
 function hideAuthMessage() {
   authError.className = "error hidden";
-  authError.style.cssText = "";
 }
 
 function showSaveStatus(msg, type = "") {
@@ -110,7 +107,7 @@ function escapeHtml(str) {
 
 function renderBookmarks(bookmarks) {
   if (bookmarks.length === 0) {
-    bookmarksList.innerHTML = '<p class="empty-state">No bookmarks yet.</p>';
+    bookmarksList.innerHTML = '<p class="empty-state">Nothing saved yet. Save this page to start.</p>';
     return;
   }
   bookmarksList.innerHTML = bookmarks
@@ -129,7 +126,7 @@ function renderBookmarks(bookmarks) {
         </a>
         <span class="bookmark-url">${escapeHtml(hostname)}</span>
       </div>
-      <button class="delete-btn" data-id="${escapeHtml(b.id)}">×</button>
+      <button class="delete-btn" data-id="${escapeHtml(b.id)}" aria-label="Delete bookmark"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>`;
     })
     .join("");
@@ -141,7 +138,7 @@ function renderBookmarks(bookmarks) {
         btn.closest(".bookmark-item").remove();
         if (bookmarksList.children.length === 0) {
           bookmarksList.innerHTML =
-            '<p class="empty-state">No bookmarks yet.</p>';
+            '<p class="empty-state">Nothing saved yet. Save this page to start.</p>';
         }
       } catch (e) {
         if (e.status === 401) return showAuthView();
