@@ -54,16 +54,16 @@ let refreshing = null;
 
 function refreshSession() {
   refreshing ??= (async () => {
-    const { refresh_token } = await getSession();
+    const { refresh_token, user_email } = await getSession();
     if (!refresh_token) return null;
     try {
       const data = await requestToken("refresh_token", { refresh_token });
       // Logged out (or switched account) while this was in flight: don't write the old login back
       const stored = await getSession();
       if (stored.refresh_token !== refresh_token) {
-        // Another context (popup or service worker) already refreshed: use its token. If the
-        // user logged out instead, there is no token and this returns null.
-        return stored.access_token ?? null;
+        // Another context (popup or service worker) already refreshed the same account: use its
+        // token. After a logout, or a different account signing in, return null instead.
+        return stored.user_email === user_email ? (stored.access_token ?? null) : null;
       }
       await saveSession(data);
       return data.access_token;
