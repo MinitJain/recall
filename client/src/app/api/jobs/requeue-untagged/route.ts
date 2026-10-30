@@ -29,6 +29,11 @@ export async function GET(req: NextRequest) {
     take: MAX_PER_RUN,
   });
 
-  if (untagged.length > 0) await queueTaggingBatch(untagged.map((b) => b.id));
-  return NextResponse.json({ queued: untagged.length });
+  if (untagged.length === 0) return NextResponse.json({ queued: 0, failed: 0 });
+
+  const results = await queueTaggingBatch(untagged.map((b) => b.id));
+  // QStash can reject single messages in a batch; those come back without a messageId
+  const failed = results.filter((r) => !(r as { messageId?: string }).messageId).length;
+  if (failed > 0) console.error(`Requeue: ${failed} of ${untagged.length} tag jobs were not queued`);
+  return NextResponse.json({ queued: untagged.length - failed, failed });
 }
