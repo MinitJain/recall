@@ -11,7 +11,7 @@ Most bookmark managers help you save things. Ritro helps you actually use them.
 [![Live](https://img.shields.io/badge/live-ritro.vercel.app-F0A500?style=flat-square&logo=vercel&logoColor=black)](https://ritro.vercel.app)
 [![Build](https://img.shields.io/github/actions/workflow/status/ritrolabs/ritro/ci.yml?style=flat-square&label=build)](https://github.com/ritrolabs/ritro/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=flat-square)](https://github.com/ritrolabs/ritro/releases)
+[![Version](https://img.shields.io/badge/version-0.0.1-brightgreen?style=flat-square)](https://github.com/ritrolabs/ritro/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/ritrolabs/ritro/pulls)
 
 <br/>

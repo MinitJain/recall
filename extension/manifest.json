@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ritro",
-  "version": "1.1.0",
+  "version": "0.0.1",
   "description": "Bookmark manager to save anything from the web in one click. AI tags it automatically. Search and resurface your saves anytime.",
 
   "icons": {
