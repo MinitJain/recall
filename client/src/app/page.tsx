@@ -164,6 +164,7 @@ export default async function LandingPage() {
                   ))}
                 </ul>
               </div>
+              <p className="mt-3 text-center text-xs text-[var(--text-dim)]">Example search.</p>
             </div>
           </div>
         </section>

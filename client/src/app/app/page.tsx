@@ -37,25 +37,25 @@ function DashboardSkeleton() {
   return (
     <div className="flex flex-col gap-4">
       {/* Search bar skeleton */}
-      <div className="h-11 rounded-xl bg-[var(--surface)] border border-[var(--border-2)] animate-pulse" />
+      <div className="h-11 rounded-md bg-[var(--surface)] border border-[var(--border-2)] animate-skeleton" />
       {/* Stats row skeleton */}
       <div className="flex gap-3">
-        <div className="h-7 w-28 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
-        <div className="h-7 w-20 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
+        <div className="h-7 w-28 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
+        <div className="h-7 w-20 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
       </div>
       {/* Tag pills skeleton */}
       <div className="flex gap-2">
-        <div className="h-7 w-12 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
-        <div className="h-7 w-16 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
-        <div className="h-7 w-14 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
+        <div className="h-7 w-12 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
+        <div className="h-7 w-16 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
+        <div className="h-7 w-14 rounded-full bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
       </div>
       {/* Sort/view controls skeleton */}
       <div className="flex justify-between items-center">
-        <div className="h-5 w-16 rounded bg-[var(--surface)] animate-pulse" />
+        <div className="h-5 w-16 rounded bg-[var(--surface)] animate-skeleton" />
         <div className="flex gap-2">
-          <div className="h-7 w-16 rounded-lg bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
-          <div className="h-7 w-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
-          <div className="h-7 w-7 rounded-lg bg-[var(--surface)] border border-[var(--border)] animate-pulse" />
+          <div className="h-7 w-16 rounded-md bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
+          <div className="h-7 w-7 rounded-md bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
+          <div className="h-7 w-7 rounded-md bg-[var(--surface)] border border-[var(--border)] animate-skeleton" />
         </div>
       </div>
       {/* Card skeletons */}
