@@ -58,6 +58,9 @@ function refreshSession() {
     if (!refresh_token) return null;
     try {
       const data = await requestToken("refresh_token", { refresh_token });
+      // Logged out (or switched account) while this was in flight: don't write the old login back
+      const { refresh_token: current } = await getSession();
+      if (current !== refresh_token) return null;
       await saveSession(data);
       return data.access_token;
     } catch (e) {

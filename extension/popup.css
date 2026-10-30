@@ -216,6 +216,7 @@ button.ghost:hover { background: var(--surface-2); color: var(--text); }
 }
 
 .status { font-size: 12px; text-align: center; margin-bottom: 10px; }
+.status:empty { margin: 0; }
 .status.success { color: var(--success); }
 .status.error-text { color: var(--error); }
 
