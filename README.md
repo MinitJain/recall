@@ -159,6 +159,18 @@ Ritro will appear in your extensions list with the bookmark icon. Click the puzz
 
 > Remap it at `chrome://extensions/shortcuts`.
 
+### Developing the extension against a local server
+
+The extension talks to production (`ritro.vercel.app`) and only has permission for that host. To point it at `npm run dev`:
+
+1. In `extension/auth.js`, set `API_BASE` to `http://localhost:3000`.
+2. In `extension/manifest.json`, add `"http://localhost:3000/*"` to `host_permissions`.
+3. Reload the extension at `chrome://extensions`.
+
+Don't commit those two changes.
+
+> The extension signs in with email and password only. If you created your account with Google or GitHub, set a password from the website's "Forgot password?" link first.
+
 ## How It Works
 
 ```

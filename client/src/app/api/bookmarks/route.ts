@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { scrapeUrl } from "@/lib/scraper";
+import { scrapeUrl, titleFromUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { bookmarkRatelimit, checkRatelimit } from "@/lib/ratelimit";
 import { queueTagging } from "@/lib/tag-queue";
-import { isPrivateIp } from "@/lib/url-validation";
+import { isPublicHost } from "@/lib/url-validation";
 
 export async function POST(req: NextRequest) {
   const user = await getUserFromRequest(req);
@@ -42,16 +42,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid url" }, { status: 400 });
   }
 
-  const blockedHosts = new Set(["localhost", "127.0.0.1", "::1", "0.0.0.0"]);
-  const host = parsedUrl.hostname.toLowerCase();
-  if (blockedHosts.has(host) || host.endsWith(".local") || isPrivateIp(host)) {
+  // The scraper fetches this URL from our server, so it must not point at internal addresses
+  if (!(await isPublicHost(parsedUrl.hostname))) {
     return NextResponse.json({ error: "invalid url" }, { status: 400 });
   }
 
   const normalizedUrl = parsedUrl.href;
 
   const metadata = await scrapeUrl(normalizedUrl).catch(() => ({
-    title: normalizedUrl,
+    title: titleFromUrl(normalizedUrl),
     description: null,
     thumbnail: null,
   }));
@@ -76,7 +75,11 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await queueTagging(bookmark.id);
+    // Bounded: a hung publish must not hold up the save; the daily requeue covers a miss
+    await Promise.race([
+      queueTagging(bookmark.id),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("queue publish timeout")), 3000)),
+    ]);
   } catch (err) {
     // The daily /api/jobs/requeue-untagged cron picks this bookmark up again
     console.error("Failed to queue AI tagging (non-fatal):", err);

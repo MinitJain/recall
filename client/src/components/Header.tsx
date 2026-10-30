@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import ThemeToggle from "./ThemeToggle";
 
@@ -19,13 +20,19 @@ export default function Header({ email }: { email: string }) {
     <header className="sticky top-0 z-10 flex items-center justify-between px-4 h-12 border-b border-[var(--border)] backdrop-blur-md bg-[var(--bg)]/80">
       <div className="flex items-center gap-2">
         <Image src="/logo.svg" width={20} height={20} alt="Ritro logo" />
-        <span className="text-sm font-semibold tracking-tight text-[var(--text)]">
+        <span className="font-serif text-lg font-semibold text-[var(--text)]">
           Ritro
         </span>
       </div>
       <div className="flex items-center gap-1">
         <span className="text-xs text-[var(--text-dim)] hidden sm:block mr-2">{email}</span>
         <ThemeToggle />
+        <Link
+          href="/app/settings"
+          className="h-8 px-3 inline-flex items-center text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] rounded-md transition-all duration-100"
+        >
+          Settings
+        </Link>
         <button
           onClick={handleLogout}
           className="h-8 px-3 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] rounded-md transition-all duration-100"

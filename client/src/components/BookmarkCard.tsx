@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { Check, Plus, X } from "lucide-react";
 
 type Tag = { id: string; name: string };
 type Collection = { id: string; name: string };
@@ -53,6 +54,18 @@ export default function BookmarkCard({
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showCollectionMenu, setShowCollectionMenu] = useState(false);
+
+  // The return-slip date stamp; day and month only within the current year
+  const savedAt = new Date(bookmark.createdAt);
+  const savedLabel = savedAt
+    .toLocaleDateString("en-GB", {
+      // Fixed zone so the server render and the browser agree (no hydration mismatch)
+      timeZone: "UTC",
+      day: "2-digit",
+      month: "short",
+      ...(savedAt.getUTCFullYear() !== new Date().getUTCFullYear() && { year: "numeric" }),
+    })
+    .toUpperCase();
 
   const hostname = (() => {
     try {
@@ -171,9 +184,9 @@ export default function BookmarkCard({
               type="button"
               aria-label={`Remove from ${col.name}`}
               onClick={() => onRemoveFromCollection?.(bookmark.id, colId)}
-              className="text-[var(--text-dim)] hover:text-red-400 leading-none transition-colors"
+              className="inline-flex text-[var(--text-dim)] hover:text-[var(--error)] leading-none transition-colors"
             >
-              ×
+              <X size={12} strokeWidth={2} aria-hidden />
             </button>
           </span>
         );
@@ -207,7 +220,7 @@ export default function BookmarkCard({
       </button>
 
       {showCollectionMenu && (
-        <div className="absolute right-0 top-7 z-20 w-44 rounded-xl border border-[var(--border-2)] bg-[var(--surface)] shadow-lg py-1">
+        <div className="absolute right-0 top-7 z-20 w-44 rounded-md border border-[var(--border-2)] bg-[var(--surface)] shadow-[var(--shadow-lift)] py-1">
           {collections.map((col) => {
             const isMember = bookmark.collectionIds.includes(col.id);
             return (
@@ -218,7 +231,7 @@ export default function BookmarkCard({
                 className="w-full flex items-center gap-2 px-3 py-2 text-xs text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors text-left"
               >
                 <span className={`flex-shrink-0 font-medium ${isMember ? "text-[var(--accent)]" : "text-[var(--text-dim)]"}`}>
-                  {isMember ? "✓" : "+"}
+                  {isMember ? <Check size={12} strokeWidth={2} aria-hidden /> : <Plus size={12} strokeWidth={2} aria-hidden />}
                 </span>
                 <span className="truncate">{col.name}</span>
               </button>
@@ -231,7 +244,7 @@ export default function BookmarkCard({
 
   if (view === "grid") {
     return (
-      <div className="group relative flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-[var(--shadow-glow)] animate-fade-up">
+      <div className="group relative flex flex-col rounded-md border border-[var(--border)] bg-[var(--surface)] overflow-hidden transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-[var(--shadow-lift)] animate-fade-up">
         {/* Thumbnail */}
         {bookmark.thumbnail ? (
           <Image
@@ -254,7 +267,7 @@ export default function BookmarkCard({
               href={bookmark.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-2 leading-snug"
+              className="font-serif text-[17px] font-medium text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-2 leading-snug"
             >
               {bookmark.title ?? hostname}
             </a>
@@ -265,7 +278,7 @@ export default function BookmarkCard({
                 onClick={deleteBookmark}
                 disabled={deleting}
                 aria-label="Delete bookmark"
-                className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-red-400/50 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
+                className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-[var(--error)] w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-[var(--error)] hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
@@ -274,7 +287,12 @@ export default function BookmarkCard({
             </div>
           </div>
 
-          <span className="text-xs text-[var(--text-muted)]">{hostname}</span>
+          <span className="flex items-center gap-2.5">
+            <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
+            <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
+              Saved {savedLabel}
+            </span>
+          </span>
 
           {localTags.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-0.5">
@@ -295,7 +313,7 @@ export default function BookmarkCard({
   }
 
   return (
-    <div className="group relative flex gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-[var(--shadow-glow)] animate-fade-up">
+    <div className="group relative flex gap-4 rounded-md border border-[var(--border)] bg-[var(--surface)] p-4 transition-all duration-150 hover:border-[var(--border-2)] hover:shadow-[var(--shadow-lift)] animate-fade-up">
       {/* Thumbnail */}
       {bookmark.thumbnail && (
         <Image
@@ -303,7 +321,7 @@ export default function BookmarkCard({
           alt={bookmark.title ?? ""}
           width={64}
           height={64}
-          className="w-16 h-16 flex-shrink-0 rounded-xl object-cover bg-[var(--surface-2)]"
+          className="w-16 h-16 flex-shrink-0 rounded-md object-cover bg-[var(--surface-2)]"
           sizes="64px"
           priority={priority}
         />
@@ -317,7 +335,7 @@ export default function BookmarkCard({
             href={bookmark.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-1"
+            className="font-serif text-[17px] font-medium text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-1"
           >
             {bookmark.title ?? hostname}
           </a>
@@ -328,7 +346,7 @@ export default function BookmarkCard({
               onClick={deleteBookmark}
               disabled={deleting}
               aria-label="Delete bookmark"
-              className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-red-400/50 w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-red-400 hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
+              className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-[var(--error)] w-6 h-6 flex items-center justify-center rounded text-[var(--text-dim)] hover:text-[var(--error)] hover:bg-[var(--error-bg)] transition-all duration-100 disabled:opacity-30"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
@@ -345,7 +363,12 @@ export default function BookmarkCard({
         )}
 
         {/* Hostname */}
-        <span className="text-xs text-[var(--text-muted)]">{hostname}</span>
+        <span className="flex items-center gap-2.5">
+          <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
+          <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
+            Saved {savedLabel}
+          </span>
+        </span>
 
         {/* Tags + inline add input */}
         <div className="flex flex-wrap gap-1 mt-0.5 items-center">
@@ -360,9 +383,9 @@ export default function BookmarkCard({
                 aria-label={`Remove tag ${tag.name}`}
                 onClick={() => removeTag(tag.id)}
                 disabled={removingIds.has(tag.id)}
-                className="text-[var(--text-dim)] hover:text-[var(--error)] disabled:opacity-40 leading-none"
+                className="inline-flex text-[var(--text-dim)] hover:text-[var(--error)] disabled:opacity-40 leading-none"
               >
-                ×
+                <X size={12} strokeWidth={2} aria-hidden />
               </button>
             </span>
           ))}
@@ -371,7 +394,7 @@ export default function BookmarkCard({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addTag()}
-            placeholder="+ tag"
+            placeholder="Add tag"
             maxLength={50}
             aria-label="Add tag"
             disabled={loading}
