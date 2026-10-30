@@ -1,8 +1,8 @@
 export default function BookmarkCardSkeleton() {
   return (
-    <div className="flex gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+    <div className="flex gap-4 rounded-md border border-[var(--border)] bg-[var(--surface)] p-4">
       {/* Thumb placeholder */}
-      <div className="w-16 h-16 flex-shrink-0 rounded-xl bg-[var(--surface-2)] animate-skeleton" />
+      <div className="w-16 h-16 flex-shrink-0 rounded-md bg-[var(--surface-2)] animate-skeleton" />
 
       <div className="flex flex-col gap-2 flex-1 min-w-0">
         {/* Title bar */}

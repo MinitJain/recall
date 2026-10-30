@@ -42,3 +42,8 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# impeccable design review captures and build state
+.impeccable/review/
+.impeccable/build/
+.impeccable/mocks/

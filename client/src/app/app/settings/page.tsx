@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header";
 import AccountSettings from "@/components/AccountSettings";
@@ -19,11 +20,11 @@ export default async function SettingsPage() {
       <main className="max-w-2xl mx-auto pt-8 pb-16 px-4">
         <Link
           href="/app"
-          className="text-xs text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors duration-100"
+          className="inline-flex items-center gap-1 text-xs text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors duration-100"
         >
-          ← Back to bookmarks
+          <ArrowLeft size={13} strokeWidth={2} aria-hidden /> Back to bookmarks
         </Link>
-        <h1 className="mt-4 text-xl font-semibold tracking-tight text-[var(--text)]">Settings</h1>
+        <h1 className="mt-4 font-serif text-3xl font-medium text-[var(--text)]">Settings</h1>
         <p className="mt-1 text-sm text-[var(--text-muted)]">Signed in as {user.email}</p>
         <AccountSettings />
       </main>

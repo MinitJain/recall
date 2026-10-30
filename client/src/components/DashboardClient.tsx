@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Bookmark } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
 
 function DiceIcon({
@@ -336,7 +336,7 @@ export default function DashboardClient({
     try {
       const res = await fetch("/api/bookmarks/random");
       if (res.status === 404) {
-        setSurpriseError("No bookmarks yet. Save some first!");
+        setSurpriseError("Nothing to bring back yet. Save a link first.");
         return;
       }
       if (!res.ok) {
@@ -404,7 +404,7 @@ export default function DashboardClient({
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search bookmarks..."
           aria-label="Search bookmarks"
-          className="w-full h-11 rounded-xl border border-[var(--border-2)] bg-[var(--surface)] pl-9 pr-16 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+          className="w-full h-11 rounded-md border border-[var(--border-2)] bg-[var(--surface)] pl-9 pr-16 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
         />
         {query && (
           <button
@@ -445,15 +445,15 @@ export default function DashboardClient({
       {/* Collections */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wide">
+          <span className="font-serif text-[15px] italic text-[var(--text-muted)]">
             Collections
           </span>
           {!creatingCollection && (
             <button
               onClick={() => setCreatingCollection(true)}
-              className="text-xs text-[var(--accent)] hover:underline"
+              className="inline-flex items-center gap-1 text-xs text-[var(--accent)] hover:underline"
             >
-              + New
+              <Plus size={12} strokeWidth={2} aria-hidden /> New
             </button>
           )}
         </div>
@@ -476,12 +476,12 @@ export default function DashboardClient({
               autoFocus
               maxLength={100}
               aria-label="New collection name"
-              className="text-xs flex-1 rounded-lg border border-[var(--border-2)] bg-[var(--surface-2)] px-2.5 py-1.5 text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors"
+              className="text-xs flex-1 rounded-md border border-[var(--border-2)] bg-[var(--surface-2)] px-2.5 py-1.5 text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors"
             />
             <button
               onClick={handleCreateCollection}
               disabled={!newCollectionName.trim()}
-              className="text-xs px-2.5 py-1.5 rounded-lg bg-[var(--accent)] text-[var(--accent-text)] disabled:opacity-40 transition-opacity"
+              className="text-xs px-2.5 py-1.5 rounded-md bg-[var(--accent)] text-[var(--accent-text)] disabled:opacity-40 transition-opacity"
             >
               Create
             </button>
@@ -490,10 +490,10 @@ export default function DashboardClient({
                 setCreatingCollection(false);
                 setNewCollectionName("");
               }}
-              className="text-xs px-2 py-1.5 rounded-lg border border-[var(--border)] text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
+              className="text-xs px-2 py-1.5 rounded-md border border-[var(--border)] text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
               aria-label="Cancel"
             >
-              ×
+              <X size={12} strokeWidth={2} aria-hidden />
             </button>
           </div>
         )}
@@ -503,11 +503,11 @@ export default function DashboardClient({
             <span key={col.id} className="relative inline-flex items-center">
               {confirmingDeleteId === col.id ? (
                 // Inline confirmation state
-                <span className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-red-400/50 bg-[var(--surface)] text-[var(--text-muted)]">
+                <span className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-[var(--error)]/50 bg-[var(--surface)] text-[var(--text-muted)]">
                   Delete &ldquo;{col.name}&rdquo;?
                   <button
                     onClick={() => { handleDeleteCollection(col.id); setConfirmingDeleteId(null); }}
-                    className="text-red-400 hover:text-red-300 font-medium transition-colors"
+                    className="text-[var(--error)] hover:opacity-80 font-medium transition-colors"
                   >
                     Yes
                   </button>
@@ -544,10 +544,10 @@ export default function DashboardClient({
                     className={`absolute right-2 text-xs leading-none transition-colors ${
                       activeCollection === col.id
                         ? "text-[var(--accent-text)] opacity-70 hover:opacity-100"
-                        : "text-[var(--text-dim)] hover:text-red-400"
-                    }`}
+                        : "text-[var(--text-dim)] hover:text-[var(--error)]"
+                    } inline-flex`}
                   >
-                    ×
+                    <X size={12} strokeWidth={2} aria-hidden />
                   </button>
                 </>
               )}
@@ -571,7 +571,7 @@ export default function DashboardClient({
       {/* Tag filter pills */}
       {tagPills.length > 0 && (
         <div className="flex flex-col gap-3">
-        <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wide">Tags</span>
+        <span className="font-serif text-[15px] italic text-[var(--text-muted)]">Tags</span>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setActiveTag(null)}
@@ -614,7 +614,7 @@ export default function DashboardClient({
 
       {/* Active collection banner */}
       {activeCollection && activeCollectionName && (
-        <div className="flex items-center justify-between rounded-xl border border-[var(--accent)] bg-[var(--accent-soft)] px-3 py-2">
+        <div className="flex items-center justify-between rounded-md border border-[var(--accent)] bg-[var(--accent-soft)] px-3 py-2">
           <span className="flex items-center gap-2 text-xs font-medium text-[var(--accent)]">
             <svg
               width="12"
@@ -638,7 +638,7 @@ export default function DashboardClient({
             className="text-xs text-[var(--accent)] opacity-70 hover:opacity-100 transition-opacity"
             aria-label="Clear collection filter"
           >
-            Clear ×
+            <span className="inline-flex items-center gap-1">Clear <X size={12} strokeWidth={2} aria-hidden /></span>
           </button>
         </div>
       )}
@@ -668,18 +668,18 @@ export default function DashboardClient({
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
             aria-label="Sort bookmarks"
-            className="text-xs rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100 cursor-pointer"
+            className="text-xs rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100 cursor-pointer"
           >
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
-            <option value="az">A → Z</option>
+            <option value="az">A to Z</option>
           </select>
 
           <button
             onClick={() => setView("list")}
             aria-label="List view"
             aria-pressed={view === "list"}
-            className={`p-1.5 rounded-lg border transition-all duration-100 ${
+            className={`p-1.5 rounded-md border transition-all duration-100 ${
               view === "list"
                 ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
                 : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
@@ -708,7 +708,7 @@ export default function DashboardClient({
             onClick={() => setView("grid")}
             aria-label="Grid view"
             aria-pressed={view === "grid"}
-            className={`p-1.5 rounded-lg border transition-all duration-100 ${
+            className={`p-1.5 rounded-md border transition-all duration-100 ${
               view === "grid"
                 ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
                 : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
@@ -736,16 +736,18 @@ export default function DashboardClient({
       {/* No bookmarks at all */}
       {localBookmarks.length === 0 && (
         <div
-          className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-center"
+          className="flex flex-col items-center justify-center gap-4 rounded-md border border-[var(--border)] bg-[var(--surface)] text-center"
           style={{ padding: "48px 32px" }}
         >
-          <Bookmark size={40} className="text-[var(--accent)]" />
+          <span className="date-stamp" style={{ transform: "rotate(-3deg)" }}>
+            Archive opened
+          </span>
           <div>
-            <h2 className="text-xl font-semibold text-[var(--text)] mb-1">
+            <h2 className="font-serif text-2xl font-medium text-[var(--text)] mb-1.5">
               Nothing saved yet
             </h2>
             <p className="text-sm text-[var(--text-muted)]">
-              Paste any URL above to save your first bookmark
+              Paste a link above to save your first one. It gets tagged in a few seconds.
             </p>
           </div>
         </div>
@@ -753,7 +755,7 @@ export default function DashboardClient({
 
       {/* Empty filter state */}
       {localBookmarks.length > 0 && filtered.length === 0 && (activeTag || query || activeCollection) && (
-        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] text-center py-12">
+        <div className="flex flex-col items-center justify-center gap-3 rounded-md border border-[var(--border)] bg-[var(--surface)] text-center py-12">
           <p className="text-sm text-[var(--text-muted)]">
             No bookmarks found
             {query && (
@@ -863,20 +865,31 @@ export default function DashboardClient({
           onKeyDown={(e) => { if (e.key === "Escape") { setSurpriseBookmark(null); setSurpriseError(null); } }}
         >
           <div
-            className="w-full max-w-lg rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 shadow-2xl"
+            className="w-full max-w-lg rounded-md border border-[var(--border)] bg-[var(--bg)] p-5 shadow-[var(--shadow-lift)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-semibold text-[var(--text)] inline-flex items-center gap-1.5">
-                <DiceIcon width={14} height={14} aria-hidden="true" />
-                Rediscovered
+              <span className="inline-flex items-center gap-3">
+                <span className="font-serif text-lg font-medium text-[var(--text)] inline-flex items-center gap-1.5">
+                  <DiceIcon width={14} height={14} aria-hidden="true" />
+                  Rediscovered
+                </span>
+                {surpriseBookmark && (
+                  // The return-slip stamp lands when a save comes back
+                  <span className="date-stamp animate-stamp" style={{ ["--stamp-tilt" as string]: "-3deg" }}>
+                    Back{" "}
+                    {new Date()
+                      .toLocaleDateString("en-GB", { day: "2-digit", month: "short" })
+                      .toUpperCase()}
+                  </span>
+                )}
               </span>
               <button
                 onClick={() => { setSurpriseBookmark(null); setSurpriseError(null); }}
-                className="text-[var(--text-dim)] hover:text-[var(--text)] transition-colors text-xl leading-none"
+                className="inline-flex text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
                 aria-label="Close"
               >
-                ×
+                <X size={16} strokeWidth={2} aria-hidden />
               </button>
             </div>
             {surpriseError ? (
@@ -902,7 +915,7 @@ export default function DashboardClient({
             <button
               onClick={handleSurpriseMe}
               disabled={surpriseLoading}
-              className="mt-4 w-full text-xs py-2.5 rounded-xl border border-[var(--border-2)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-40 transition-all duration-100"
+              className="mt-4 w-full text-xs py-2.5 rounded-md border border-[var(--border-2)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-40 transition-all duration-100"
             >
               {surpriseLoading ? "Finding…" : "Try another"}
             </button>

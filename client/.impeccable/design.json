@@ -1,0 +1,776 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T08:31:53+00:00",
+  "title": "Design System: Ritro",
+  "extensions": {
+    "colorMeta": {
+      "stamp-violet": {
+        "role": "primary",
+        "displayName": "Stamp Violet",
+        "canonical": "#3E3A9C",
+        "cssVar": "--accent",
+        "theme": "light",
+        "tonalRamp": [
+          "#0F0049",
+          "#1E056C",
+          "#362F91",
+          "#5252B6",
+          "#7175DC",
+          "#9298FF",
+          "#B4BDFF",
+          "#D9E3FF"
+        ]
+      },
+      "stamp-violet-deep": {
+        "role": "primary",
+        "displayName": "Stamp Violet Deep",
+        "canonical": "#2F2B80",
+        "cssVar": "--accent-hover",
+        "theme": "light",
+        "tonalRamp": [
+          "#0D0043",
+          "#1D0F65",
+          "#353389",
+          "#5255AD",
+          "#7177D3",
+          "#929BFA",
+          "#B5BFFF",
+          "#DAE5FF"
+        ]
+      },
+      "on-stamp": {
+        "role": "primary",
+        "displayName": "On Stamp",
+        "canonical": "#FBF8F2",
+        "cssVar": "--accent-text",
+        "theme": "light",
+        "tonalRamp": [
+          "#0D0B07",
+          "#272520",
+          "#44423D",
+          "#63615C",
+          "#85827D",
+          "#A7A59F",
+          "#CCC9C3",
+          "#F1EEE8"
+        ]
+      },
+      "stamp-wash": {
+        "role": "primary",
+        "displayName": "Stamp Wash",
+        "canonical": "rgba(62, 58, 156, 0.09)",
+        "cssVar": "--accent-soft",
+        "theme": "light"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#F4EFE6",
+        "cssVar": "--bg",
+        "theme": "light",
+        "tonalRamp": [
+          "#0E0B06",
+          "#28251E",
+          "#45413A",
+          "#656159",
+          "#86827A",
+          "#A9A49C",
+          "#CDC8C0",
+          "#F3EEE5"
+        ]
+      },
+      "paper-raised": {
+        "role": "neutral",
+        "displayName": "Raised Paper",
+        "canonical": "#FBF8F2",
+        "cssVar": "--surface",
+        "theme": "light",
+        "tonalRamp": [
+          "#0D0B07",
+          "#272520",
+          "#44423D",
+          "#63615C",
+          "#85827D",
+          "#A7A59F",
+          "#CCC9C3",
+          "#F1EEE8"
+        ]
+      },
+      "paper-shade": {
+        "role": "neutral",
+        "displayName": "Paper Shade",
+        "canonical": "#EDE6DA",
+        "cssVar": "--surface-2",
+        "theme": "light",
+        "tonalRamp": [
+          "#0F0A04",
+          "#29241B",
+          "#474137",
+          "#666056",
+          "#888177",
+          "#ABA499",
+          "#CFC8BD",
+          "#F5EEE1"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#E2D9CA",
+        "cssVar": "--border",
+        "theme": "light",
+        "tonalRamp": [
+          "#100A02",
+          "#2B2419",
+          "#484135",
+          "#686053",
+          "#898173",
+          "#ACA496",
+          "#D1C8B9",
+          "#F6EDDE"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "canonical": "#CFC4B2",
+        "cssVar": "--border-2",
+        "theme": "light",
+        "tonalRamp": [
+          "#110A01",
+          "#2C2415",
+          "#4A4131",
+          "#6A6050",
+          "#8B8170",
+          "#AEA492",
+          "#D3C8B6",
+          "#F8EDDA"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#1F1B16",
+        "cssVar": "--text",
+        "theme": "light",
+        "tonalRamp": [
+          "#0E0A06",
+          "#28241F",
+          "#46413C",
+          "#65605A",
+          "#87817B",
+          "#A9A49D",
+          "#CEC8C1",
+          "#F3EDE6"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "#5E5548",
+        "cssVar": "--text-muted",
+        "theme": "light",
+        "tonalRamp": [
+          "#110A02",
+          "#2C2418",
+          "#494134",
+          "#696053",
+          "#8A8173",
+          "#AEA395",
+          "#D2C8B9",
+          "#F8EDDD"
+        ]
+      },
+      "ink-dim": {
+        "role": "neutral",
+        "displayName": "Dim Ink",
+        "canonical": "#766B5C",
+        "cssVar": "--text-dim",
+        "theme": "light",
+        "tonalRamp": [
+          "#120901",
+          "#2D2316",
+          "#4A4032",
+          "#6A5F51",
+          "#8C8071",
+          "#AFA393",
+          "#D3C7B7",
+          "#F9ECDB"
+        ]
+      },
+      "error": {
+        "role": "status",
+        "displayName": "Error",
+        "canonical": "#B42318",
+        "cssVar": "--error",
+        "theme": "light",
+        "tonalRamp": [
+          "#3B0000",
+          "#620000",
+          "#8A0000",
+          "#B12015",
+          "#DA4A3B",
+          "#FF705E",
+          "#FF9681",
+          "#FFBBA5"
+        ]
+      },
+      "error-wash": {
+        "role": "status",
+        "displayName": "Error Wash",
+        "canonical": "#FBEAE7",
+        "cssVar": "--error-bg",
+        "theme": "light",
+        "tonalRamp": [
+          "#120807",
+          "#2E2220",
+          "#4C3E3C",
+          "#6C5D5B",
+          "#8D7E7C",
+          "#B1A19E",
+          "#D5C5C2",
+          "#FBEAE7"
+        ]
+      },
+      "success": {
+        "role": "status",
+        "displayName": "Success",
+        "canonical": "#2F6B3A",
+        "cssVar": "--success",
+        "theme": "light",
+        "tonalRamp": [
+          "#001400",
+          "#003101",
+          "#0F5020",
+          "#34703F",
+          "#56935F",
+          "#79B681",
+          "#9DDBA4",
+          "#C1FFC9"
+        ]
+      },
+      "stamp-violet-dark": {
+        "role": "primary",
+        "displayName": "Stamp Violet (dark)",
+        "canonical": "#ABA6F2",
+        "cssVar": "--accent",
+        "theme": "dark",
+        "tonalRamp": [
+          "#0E0035",
+          "#241656",
+          "#3F3678",
+          "#5D569B",
+          "#7E78C0",
+          "#A09BE6",
+          "#C3BFFF",
+          "#E8E4FF"
+        ]
+      },
+      "stamp-violet-deep-dark": {
+        "role": "primary",
+        "displayName": "Stamp Violet Deep (dark)",
+        "canonical": "#C4C0F7",
+        "cssVar": "--accent-hover",
+        "theme": "dark",
+        "tonalRamp": [
+          "#0C0229",
+          "#241D47",
+          "#403B68",
+          "#5F5A8A",
+          "#807BAE",
+          "#A29ED3",
+          "#C6C2F9",
+          "#EBE7FF"
+        ]
+      },
+      "on-stamp-dark": {
+        "role": "primary",
+        "displayName": "On Stamp (dark)",
+        "canonical": "#171511",
+        "cssVar": "--accent-text",
+        "theme": "dark",
+        "tonalRamp": [
+          "#0D0B07",
+          "#272520",
+          "#44423D",
+          "#63615C",
+          "#85827D",
+          "#A7A59F",
+          "#CCC9C3",
+          "#F1EEE8"
+        ]
+      },
+      "stamp-wash-dark": {
+        "role": "primary",
+        "displayName": "Stamp Wash (dark)",
+        "canonical": "rgba(171, 166, 242, 0.12)",
+        "cssVar": "--accent-soft",
+        "theme": "dark"
+      },
+      "paper-dark": {
+        "role": "neutral",
+        "displayName": "Paper (dark)",
+        "canonical": "#171511",
+        "cssVar": "--bg",
+        "theme": "dark",
+        "tonalRamp": [
+          "#0D0B07",
+          "#272520",
+          "#44423D",
+          "#63615C",
+          "#85827D",
+          "#A7A59F",
+          "#CCC9C3",
+          "#F1EEE8"
+        ]
+      },
+      "paper-raised-dark": {
+        "role": "neutral",
+        "displayName": "Raised Paper (dark)",
+        "canonical": "#201D18",
+        "cssVar": "--surface",
+        "theme": "dark",
+        "tonalRamp": [
+          "#0D0B07",
+          "#28251F",
+          "#45413C",
+          "#64615B",
+          "#86827B",
+          "#A8A49E",
+          "#CDC9C2",
+          "#F2EEE7"
+        ]
+      },
+      "paper-shade-dark": {
+        "role": "neutral",
+        "displayName": "Paper Shade (dark)",
+        "canonical": "#2A2620",
+        "cssVar": "--surface-2",
+        "theme": "dark",
+        "tonalRamp": [
+          "#0E0B06",
+          "#28241E",
+          "#46413B",
+          "#65605A",
+          "#86827A",
+          "#A9A49D",
+          "#CEC8C0",
+          "#F3EEE6"
+        ]
+      },
+      "rule-dark": {
+        "role": "neutral",
+        "displayName": "Rule (dark)",
+        "canonical": "rgba(244, 239, 230, 0.09)",
+        "cssVar": "--border",
+        "theme": "dark"
+      },
+      "rule-strong-dark": {
+        "role": "neutral",
+        "displayName": "Strong Rule (dark)",
+        "canonical": "rgba(244, 239, 230, 0.17)",
+        "cssVar": "--border-2",
+        "theme": "dark"
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Ink (dark)",
+        "canonical": "#F1EBDF",
+        "cssVar": "--text",
+        "theme": "dark",
+        "tonalRamp": [
+          "#0F0B04",
+          "#29241C",
+          "#464138",
+          "#666156",
+          "#878277",
+          "#AAA499",
+          "#CEC8BD",
+          "#F4EEE2"
+        ]
+      },
+      "ink-muted-dark": {
+        "role": "neutral",
+        "displayName": "Muted Ink (dark)",
+        "canonical": "#B5AB9B",
+        "cssVar": "--text-muted",
+        "theme": "dark",
+        "tonalRamp": [
+          "#110A02",
+          "#2C2417",
+          "#494133",
+          "#696051",
+          "#8A8172",
+          "#AEA494",
+          "#D2C8B7",
+          "#F8EDDC"
+        ]
+      },
+      "ink-dim-dark": {
+        "role": "neutral",
+        "displayName": "Dim Ink (dark)",
+        "canonical": "#958B7B",
+        "cssVar": "--text-dim",
+        "theme": "dark",
+        "tonalRamp": [
+          "#110A01",
+          "#2C2416",
+          "#494132",
+          "#696051",
+          "#8B8171",
+          "#AEA493",
+          "#D2C8B7",
+          "#F8EDDB"
+        ]
+      },
+      "error-dark": {
+        "role": "status",
+        "displayName": "Error (dark)",
+        "canonical": "#F28B82",
+        "cssVar": "--error",
+        "theme": "dark",
+        "tonalRamp": [
+          "#2F0000",
+          "#530000",
+          "#771B1B",
+          "#9D3E39",
+          "#C36159",
+          "#EA847B",
+          "#FFA89E",
+          "#FFCDC2"
+        ]
+      },
+      "error-wash-dark": {
+        "role": "status",
+        "displayName": "Error Wash (dark)",
+        "canonical": "#2A1513",
+        "cssVar": "--error-bg",
+        "theme": "dark",
+        "tonalRamp": [
+          "#170504",
+          "#341E1C",
+          "#533B38",
+          "#745A57",
+          "#967B77",
+          "#BA9D9A",
+          "#DFC1BD",
+          "#FFE6E2"
+        ]
+      },
+      "success-dark": {
+        "role": "status",
+        "displayName": "Success (dark)",
+        "canonical": "#8CC79A",
+        "cssVar": "--success",
+        "theme": "dark",
+        "tonalRamp": [
+          "#001400",
+          "#00300B",
+          "#134F29",
+          "#376F47",
+          "#589267",
+          "#7BB589",
+          "#9EDAAC",
+          "#C3FFD1"
+        ]
+      }
+    },
+    "themes": {
+      "mechanism": "class 'dark' on <html>; initial theme from localStorage 'ritro-theme' or prefers-color-scheme",
+      "default": "light"
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing hero only; second line serif italic 400 in stamp violet."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Landing section heads and closing statement, balanced wrap."
+      },
+      "page-title": {
+        "displayName": "Page Title",
+        "purpose": "404, error and legal page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Step titles, empty state, auth and settings headings, wordmark (600)."
+      },
+      "item-title": {
+        "displayName": "Item Title",
+        "purpose": "Every saved bookmark title; violet on hover."
+      },
+      "section-label": {
+        "displayName": "Section Label",
+        "purpose": "Serif italic catalogue labels (Collections, Tags, Ritro archive).",
+        "fontStyle": "italic"
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Hero paragraph."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Landing and legal reading copy in muted ink, max 60ch."
+      },
+      "ui": {
+        "displayName": "UI",
+        "purpose": "Buttons, nav, inputs."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Chips, small controls, captions, counts."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Hostnames, slip numbers, kbd keys. Mono only for data."
+      },
+      "stamp": {
+        "displayName": "Stamp",
+        "purpose": "Date stamp labels, uppercase; 10px on cards.",
+        "textTransform": "uppercase"
+      }
+    },
+    "fonts": [
+      {
+        "family": "Source Serif 4",
+        "cssVar": "--font-serif",
+        "source": "self-hosted variable woff2 (normal + italic), weights 200-900, optical sizing auto, tracking -0.015em via .font-serif"
+      },
+      {
+        "family": "Geist",
+        "cssVar": "--font-geist-sans",
+        "source": "self-hosted variable woff2, weights 100-900, body default with ss01 and cv11"
+      },
+      {
+        "family": "Geist Mono",
+        "cssVar": "--font-mono",
+        "source": "self-hosted variable woff2, not preloaded; .font-data adds tabular-nums"
+      }
+    ],
+    "shadows": [
+      {
+        "name": "lift",
+        "cssVar": "--shadow-lift",
+        "value": "0 1px 2px rgba(31, 27, 22, 0.05), 0 8px 24px -12px rgba(31, 27, 22, 0.18)",
+        "valueDark": "0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -14px rgba(0, 0, 0, 0.6)",
+        "purpose": "Presented or hovered slips: landing return slip and search demo, bookmark card hover, Save button hover."
+      }
+    ],
+    "focus": {
+      "value": "2px solid var(--accent)",
+      "offset": "2px",
+      "radius": "4px",
+      "note": "Global :focus-visible ring; text fields instead shift border to violet on focus."
+    },
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrances: fade-up and stamp-in."
+      },
+      {
+        "name": "fade-up",
+        "value": "0.35s, translateY(6px) to 0, opacity 0 to 1",
+        "purpose": "Cards and auth panel entering. Tags use a 0.15s ease variant."
+      },
+      {
+        "name": "fade-in",
+        "value": "0.2s ease",
+        "purpose": "Simple appearance."
+      },
+      {
+        "name": "stamp-in",
+        "value": "0.5s, scale 1.35 + blur 2px to 0.97 to 1, rotate(var(--stamp-tilt, -4deg))",
+        "purpose": "A date stamp landing for an event happening now (BACK)."
+      },
+      {
+        "name": "skeleton",
+        "value": "1.8s ease-in-out infinite, opacity 1 to 0.5",
+        "purpose": "Loading placeholders and the demo caret."
+      },
+      {
+        "name": "state-transition",
+        "value": "100-200ms",
+        "purpose": "Hover color, border and background changes; theme change 0.2s."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all animation and transition durations 0.01ms",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      }
+    ],
+    "containers": [
+      {
+        "name": "landing",
+        "value": "72rem (1152px), gutters 20px / 32px from sm, 12 column grid from md"
+      },
+      {
+        "name": "app",
+        "value": "42rem (672px), gutter 16px"
+      },
+      {
+        "name": "auth",
+        "value": "24rem (384px)"
+      }
+    ],
+    "icons": {
+      "library": "lucide-react (plus inline SVGs drawn to the same spec)",
+      "strokeWidth": 2,
+      "sizes": "12-16px",
+      "color": "currentColor"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one filled action per view: Start your archive, Save, Try again.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Start your archive <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 6px; background: var(--accent); color: var(--accent-text); font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 15px; font-weight: 500; text-decoration: none; transition: background-color 150ms; } .ds-btn-primary svg { transition: transform 200ms; } .ds-btn-primary:hover { background: var(--accent-hover); } .ds-btn-primary:hover svg { transform: translateX(2px); } .ds-btn-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text link",
+      "kind": "button",
+      "refersTo": null,
+      "description": "Secondary action beside a primary button.",
+      "html": "<a class=\"ds-link\" href=\"#\">Add the extension</a>",
+      "css": ".ds-link { font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 15px; font-weight: 500; color: var(--text); text-decoration: underline; text-decoration-color: var(--border-2); text-underline-offset: 4px; transition: text-decoration-color 150ms; } .ds-link:hover { text-decoration-color: var(--accent); } .ds-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }"
+    },
+    {
+      "name": "Quiet button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Header and nav actions: Settings, Log out, Log in.",
+      "html": "<button class=\"ds-btn-quiet\">Settings</button>",
+      "css": ".ds-btn-quiet { height: 32px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: var(--text-muted); font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; transition: background-color 100ms, color 100ms; } .ds-btn-quiet:hover { background: var(--surface-2); color: var(--text); } .ds-btn-quiet:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Search field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Text field on raised paper; focus shifts the border to violet.",
+      "html": "<label class=\"ds-search\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"/></svg><input type=\"text\" placeholder=\"Search bookmarks...\" aria-label=\"Search bookmarks\"></label>",
+      "css": ".ds-search { position: relative; display: block; width: 100%; max-width: 420px; } .ds-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--accent); pointer-events: none; } .ds-search input { width: 100%; height: 44px; padding: 0 16px 0 36px; border: 1px solid var(--border-2); border-radius: 6px; background: var(--surface); color: var(--text); font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 14px; caret-color: var(--accent); outline: none; transition: border-color 100ms; } .ds-search input::placeholder { color: var(--text-dim); } .ds-search input:focus { border-color: var(--accent); }"
+    },
+    {
+      "name": "Filter chips",
+      "kind": "chip",
+      "refersTo": "filter-chip",
+      "description": "Tag and collection filters; active is filled violet.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip is-active\">All</button><button class=\"ds-chip\">css</button><button class=\"ds-chip\"><svg width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z\"/></svg> Reading</button></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 9999px; background: var(--surface); color: var(--text-muted); font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 12px; cursor: pointer; transition: border-color 100ms, color 100ms; } .ds-chip:hover { border-color: var(--accent); color: var(--accent); } .ds-chip.is-active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); } .ds-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Tag chip",
+      "kind": "chip",
+      "refersTo": "tag-chip",
+      "description": "A tag on a saved item, with remove control.",
+      "html": "<span class=\"ds-tag\">reading <button aria-label=\"Remove tag reading\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg></button></span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; background: var(--accent-soft); color: var(--accent); font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 12px; } .ds-tag button { display: inline-flex; padding: 0; border: 0; background: none; color: var(--text-dim); cursor: pointer; } .ds-tag button:hover { color: var(--error); }"
+    },
+    {
+      "name": "Date stamp",
+      "kind": "signature",
+      "refersTo": "date-stamp",
+      "description": "The signature ink mark: SAVED on cards, BACK when a save returns, one word state labels.",
+      "html": "<span class=\"ds-stamp-row\"><span class=\"ds-stamp\" style=\"transform: rotate(-3deg)\">Saved 30 Mar 2026</span><span class=\"ds-stamp ds-stamp-in\" style=\"--stamp-tilt: 2.5deg\">Back 30 Oct 2026</span></span>",
+      "css": ".ds-stamp { display: inline-flex; align-items: center; gap: 0.4em; font-family: var(--font-mono), 'Geist Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); border: 1.5px solid currentColor; border-radius: 3px; padding: 0.2em 0.55em; line-height: 1.2; white-space: nowrap; } .ds-stamp-row { display: inline-flex; gap: 12px; } @keyframes ds-stamp-in { 0% { opacity: 0; transform: scale(1.35) rotate(var(--stamp-tilt, -4deg)); filter: blur(2px); } 60% { opacity: 1; transform: scale(0.97) rotate(var(--stamp-tilt, -4deg)); filter: blur(0); } 100% { opacity: 1; transform: scale(1) rotate(var(--stamp-tilt, -4deg)); } } .ds-stamp-in { animation: ds-stamp-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 450ms both; } @media (prefers-reduced-motion: reduce) { .ds-stamp-in { animation-duration: 0.01ms; } }"
+    },
+    {
+      "name": "Bookmark card",
+      "kind": "card",
+      "refersTo": "card-bookmark",
+      "description": "A saved item as a slip: serif title, hostname with SAVED stamp, tags.",
+      "html": "<article class=\"ds-card\"><a class=\"ds-card-title\" href=\"#\">How to Do Great Work</a><p class=\"ds-card-desc\">An essay on curiosity, delight and the shape of ambitious work.</p><div class=\"ds-card-meta\"><span class=\"ds-host\">paulgraham.com</span><span class=\"ds-stamp\" style=\"font-size:10px\">Saved 30 Oct</span></div><div class=\"ds-card-tags\"><span class=\"ds-tag\">motivation</span><span class=\"ds-tag\">productivity</span></div></article>",
+      "css": ".ds-stamp { display: inline-flex; align-items: center; gap: 0.4em; font-family: var(--font-mono), 'Geist Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); border: 1.5px solid currentColor; border-radius: 3px; padding: 0.2em 0.55em; line-height: 1.2; white-space: nowrap; } .ds-tag { display: inline-flex; padding: 2px 10px; border-radius: 9999px; background: var(--accent-soft); color: var(--accent); font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 12px; } .ds-card { display: flex; flex-direction: column; gap: 6px; max-width: 560px; padding: 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); transition: border-color 150ms, box-shadow 150ms; } .ds-card:hover { border-color: var(--border-2); box-shadow: var(--shadow-lift); } .ds-card-title { font-family: var(--font-serif), 'Source Serif 4', Georgia, serif; font-size: 17px; font-weight: 500; line-height: 1.375; letter-spacing: -0.015em; color: var(--text); text-decoration: none; transition: color 100ms; } .ds-card-title:hover { color: var(--accent); } .ds-card-desc { margin: 0; font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 12px; line-height: 1.625; color: var(--text-muted); } .ds-card-meta { display: flex; align-items: center; gap: 10px; } .ds-host { font-family: var(--font-mono), 'Geist Mono', ui-monospace, monospace; font-size: 11px; color: var(--text-muted); } .ds-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }"
+    },
+    {
+      "name": "App header",
+      "kind": "navigation",
+      "refersTo": null,
+      "description": "Sticky translucent paper header with serif wordmark and quiet actions.",
+      "html": "<header class=\"ds-nav\"><span class=\"ds-wordmark\">Ritro</span><nav><a href=\"#\">Settings</a><a href=\"#\">Log out</a></nav></header>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; height: 48px; padding: 0 16px; border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(12px); } .ds-wordmark { font-family: var(--font-serif), 'Source Serif 4', Georgia, serif; font-size: 18px; font-weight: 600; color: var(--text); } .ds-nav nav { display: flex; gap: 4px; } .ds-nav a { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 6px; font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 12px; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: background-color 100ms, color 100ms; } .ds-nav a:hover { background: var(--surface-2); color: var(--text); }"
+    },
+    {
+      "name": "Bookmarklet pill",
+      "kind": "signature",
+      "refersTo": "bookmarklet-pill",
+      "description": "Draggable dashed violet pill; the only dashed accent border.",
+      "html": "<a class=\"ds-bookmarklet\" href=\"#\" draggable=\"true\">Save to Ritro</a>",
+      "css": ".ds-bookmarklet { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.85rem; border: 1.5px dashed var(--accent); border-radius: 999px; color: var(--accent); font-family: var(--font-geist-sans), Geist, system-ui, sans-serif; font-size: 0.8125rem; font-weight: 500; text-decoration: none; cursor: grab; user-select: none; } .ds-bookmarklet:hover { background: var(--accent-soft); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lending Desk",
+    "overview": "**Creative North Star: \"The Lending Desk\"**\n\nRitro is a personal archive that returns things, and the interface is dressed as the desk of a small reading room: warm paper, dark ink, hairline rules, and a single stamp pad of violet ink that marks when something went out and when it came back. The landing page reads like an editorial page set in a serif, not a SaaS hero; the app is the card catalogue behind the desk, quieter and denser, with the same paper and ink.\n\nDensity is calm. The landing breathes on a wide 12 column measure with tall section rhythm and almost no containers; the app narrows to a single reading column of bordered slips. Depth comes from paper tone (three shades of paper) and hairlines, with one soft lift shadow reserved for things you can pick up. Motion is small and physical: items fade up into place, and a date stamp lands with a slight overshoot and settles crooked, the way a real one does.\n\nLight is the default and the reference; dark mode is a full sibling theme (warm near black paper, cream ink, a lighter lavender stamp) toggled by a class on the root and respected from the OS preference on first load.",
+    "keyCharacteristics": [
+      "Warm paper grounds with ink text; no pure white, no pure black.",
+      "One accent only: stamp violet, for the primary action, links, active filters, tags and date stamps.",
+      "Three type voices with fixed jobs: serif for headings and item titles, sans for UI and reading copy, mono only for dates, hostnames and counts.",
+      "The date stamp is the signature: an outlined, uppercase, slightly tilted mono label.",
+      "Square-ish 6px corners on containers; full pills only for chips.",
+      "Hairline rules and paper tone over shadows."
+    ],
+    "rules": [
+      {
+        "name": "The One Stamp Pad Rule",
+        "body": "Violet is the only hue in the interface besides error red. If a new element needs emphasis, it gets violet, weight or serif, never a second accent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper Not White Rule",
+        "body": "Surfaces are always one of the three paper tones; nothing is `#FFFFFF` or `#000000`. Dark mode is warm paper at night, not grey.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Voices Rule",
+        "body": "Serif speaks for content (headings, titles, labels in italic). Sans runs the interface. Mono is only for data: dates, hostnames, numbers, keys. Never set a button, a paragraph or a heading in mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The Italic Turn Rule",
+        "body": "When a headline turns toward the promise (\"Find everything.\", \"Ritro gives it back.\"), the turn is set in serif italic at regular weight in violet. Use it once per view at most.",
+        "section": "typography"
+      },
+      {
+        "name": "The Picked Up Rule",
+        "body": "A surface casts a shadow only when it is being presented or touched (a demo slip, a hovered card). Resting containers are borders on paper.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** use stamp violet for exactly one filled action per view and for links, active filters, tags and stamps.",
+      "**Do** set every heading and every saved item's title in Source Serif 4 at weight 500; use serif italic for small catalogue labels.",
+      "**Do** keep mono to dates, hostnames, counts and keys, with tabular numerals.",
+      "**Do** mark time with the date stamp: outlined, uppercase, slightly tilted; animate it only when the event is happening now.",
+      "**Do** use 6px corners on containers, fields and buttons, and full pills only for chips and the bookmarklet.",
+      "**Do** separate landing sections with hairline rules or a paper tone change rather than boxing them in cards.",
+      "**Do** keep shadows to the single lift token, and only on presented or hovered objects.",
+      "**Do** keep both themes in step: every new color is a token defined for light and dark.",
+      "**Do** write UI copy without em dashes, without hyphens as punctuation, and without emojis.",
+      "**Do** respect reduced motion; all animation collapses to near zero duration."
+    ],
+    "donts": [
+      "**Don't** add a second accent hue, gradients, or glow; violet and error red are the only colors beside paper and ink.",
+      "**Don't** use pure white or pure black surfaces.",
+      "**Don't** fill a date stamp or use it as a button; it is an ink mark.",
+      "**Don't** set body copy, buttons or headings in mono.",
+      "**Don't** build the landing from feature card grids or a mocked dashboard screenshot; show the mechanism with real looking slips labelled as examples.",
+      "**Don't** introduce larger radii (8px and up) on containers or buttons, or pill shaped primary buttons.",
+      "**Don't** use icons at mixed stroke weights; outline glyphs at stroke 2 only."
+    ]
+  }
+}

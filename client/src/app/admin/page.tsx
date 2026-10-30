@@ -112,7 +112,7 @@ export default async function AdminPage() {
           ].map(({ label, value }) => (
             <div
               key={label}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 flex flex-col gap-1"
+              className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-4 flex flex-col gap-1"
             >
               <span className="text-xs text-[var(--text-muted)]">{label}</span>
               <span className="text-2xl font-semibold text-[var(--accent)]">{value}</span>
@@ -123,7 +123,7 @@ export default async function AdminPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
 
           {/* Top tags */}
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+          <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5">
             <h2 className="text-sm font-semibold text-[var(--text)] mb-4">Top Tags</h2>
             {topTags.length === 0 ? (
               <p className="text-xs text-[var(--text-muted)]">No tags yet.</p>
@@ -145,7 +145,7 @@ export default async function AdminPage() {
           </div>
 
           {/* Top users */}
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+          <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5">
             <h2 className="text-sm font-semibold text-[var(--text)] mb-4">Most Active Users</h2>
             {topUsers.length === 0 ? (
               <p className="text-xs text-[var(--text-muted)]">No users yet.</p>
@@ -168,7 +168,7 @@ export default async function AdminPage() {
         </div>
 
         {/* Recent bookmarks */}
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+        <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5">
           <h2 className="text-sm font-semibold text-[var(--text)] mb-4">Recent Bookmarks</h2>
           {recentBookmarks.length === 0 ? (
             <p className="text-xs text-[var(--text-muted)]">No bookmarks yet.</p>

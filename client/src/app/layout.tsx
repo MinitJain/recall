@@ -12,22 +12,27 @@ const geist = localFont({
   weight: "100 900",
 });
 
-const syne = localFont({
-  src: "./fonts/syne.woff2",
-  variable: "--font-display",
-  weight: "400 800",
+const serif = localFont({
+  src: [
+    { path: "./fonts/sourceserif4.woff2", style: "normal" },
+    { path: "./fonts/sourceserif4-italic.woff2", style: "italic" },
+  ],
+  variable: "--font-serif",
+  weight: "200 900",
 });
 
-const dmSans = localFont({
-  src: "./fonts/dmsans.woff2",
-  variable: "--font-sans",
-  weight: "100 1000",
+const mono = localFont({
+  src: "./fonts/geistmono.woff2",
+  variable: "--font-mono",
+  weight: "100 900",
+  // Only used for small data labels, so don't compete with the body font for bandwidth
+  preload: false,
 });
 
 export const metadata: Metadata = {
-  title: "Ritro | Save anything. Find everything. Nothing gets lost.",
+  title: "Ritro | Save anything. Find everything.",
   description:
-    "The smart bookmarking app that saves anything from the internet, tags it automatically with AI, and resurfaces it back to you when you need it.",
+    "Ritro saves anything with a link, tags it for you, and brings it back when you've forgotten it. A personal archive that returns things.",
   icons: {
     icon: "/favicon.svg",
   },
@@ -45,7 +50,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${geist.variable} ${syne.variable} ${dmSans.variable} antialiased`}
+        className={`${geist.variable} ${serif.variable} ${mono.variable} antialiased`}
       >
         {children}
         <Analytics />
