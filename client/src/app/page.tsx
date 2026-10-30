@@ -1152,13 +1152,13 @@ export default async function LandingPage() {
             >
               Ritro
             </span>
-            © 2025. All rights reserved.
+            © 2026 Minit Jain. Code licensed under AGPL-3.0.
           </span>
         </div>
         <div style={{ display: "flex", gap: 24 }}>
           {[
-            ["Privacy", "#"],
-            ["Terms", "#"],
+            ["Privacy", "/privacy"],
+            ["Terms", "/terms"],
             ["GitHub", "https://github.com/ritrolabs/ritro"],
           ].map(([label, href]) => (
             <a
