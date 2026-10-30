@@ -12,8 +12,8 @@ the font file.
 | Font | Copyright | Licence file |
 |---|---|---|
 | Geist | Copyright 2024 The Geist Project Authors | `geist-OFL.txt` |
-| Syne | Copyright 2017 The Syne Project Authors | `syne-OFL.txt` |
-| DM Sans | Copyright 2014 The DM Sans Project Authors | `dmsans-OFL.txt` |
+| Geist Mono | Copyright 2024 The Geist Project Authors | `geistmono-OFL.txt` |
+| Source Serif 4 | Copyright 2014 The Source Serif 4 Project Authors | `sourceserif4-OFL.txt` |
 
 ## Icons
 

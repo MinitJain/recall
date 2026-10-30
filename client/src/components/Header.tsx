@@ -20,7 +20,7 @@ export default function Header({ email }: { email: string }) {
     <header className="sticky top-0 z-10 flex items-center justify-between px-4 h-12 border-b border-[var(--border)] backdrop-blur-md bg-[var(--bg)]/80">
       <div className="flex items-center gap-2">
         <Image src="/logo.svg" width={20} height={20} alt="Ritro logo" />
-        <span className="text-sm font-semibold tracking-tight text-[var(--text)]">
+        <span className="font-serif text-lg font-semibold text-[var(--text)]">
           Ritro
         </span>
       </div>

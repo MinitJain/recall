@@ -3,59 +3,59 @@
 /* ── Dark mode via class on <html> ──────────────────────────────────────── */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ── Design tokens ──────────────────────────────────────────────────────── */
+/* ── Design tokens ──────────────────────────────────────────────────────────
+   Paper and ink, with one stamp-pad violet accent. Every text colour here
+   passes WCAG AA on both --bg and --surface, in both themes. */
 :root {
-  /* Backgrounds */
-  --bg:         #FAFAF9;
-  --surface:    #FFFFFF;
-  --surface-2:  #F5F4F2;
+  --bg:          #F4EFE6;
+  --surface:     #FBF8F2;
+  --surface-2:   #EDE6DA;
 
-  /* Borders */
-  --border:     #E7E5E4;
-  --border-2:   #D6D3D1;
+  --border:      #E2D9CA;
+  --border-2:    #CFC4B2;
 
-  /* Text */
-  --text:       #1C1917;
-  --text-muted: #78716C;
-  --text-dim:   #A8A29E;
+  --text:        #1F1B16;
+  --text-muted:  #5E5548;
+  --text-dim:    #766B5C;
 
-  /* Accent — amber */
-  --accent:     #D97706;
-  --accent-hover: #B45309;
-  --accent-text:  #FFFFFF;
+  --accent:       #3E3A9C;
+  --accent-hover: #2F2B80;
+  --accent-text:  #FBF8F2;
+  --accent-soft:  rgba(62, 58, 156, 0.09);
 
-  /* States */
-  --error:      #DC2626;
-  --error-bg:   #FEF2F2;
-  --success:    #16A34A;
+  --error:       #B42318;
+  --error-bg:    #FBEAE7;
+  --success:     #2F6B3A;
+
+  --shadow-lift: 0 1px 2px rgba(31, 27, 22, 0.05), 0 8px 24px -12px rgba(31, 27, 22, 0.18);
+
+  color-scheme: light;
 }
 
 .dark {
-  --bg:         #0A0A08;
-  --surface:    #1A1A17;
-  --surface-2:  #252520;
+  --bg:          #171511;
+  --surface:     #201D18;
+  --surface-2:   #2A2620;
 
-  --border:     rgba(247,245,239,0.06);
-  --border-2:   rgba(247,245,239,0.12);
+  --border:      rgba(244, 239, 230, 0.09);
+  --border-2:    rgba(244, 239, 230, 0.17);
 
-  --text:       #FAFAF9;
-  --text-muted: #A8A29E;
-  --text-dim:   #78716C;
+  --text:        #F1EBDF;
+  --text-muted:  #B5AB9B;
+  --text-dim:    #958B7B;
 
-  --accent:     #F0A500;
-  --accent-hover: #E8820A;
-  --accent-text:  #0A0A08;
-  --accent-soft:  rgba(240,165,0,0.12);
-  --accent-glow:  rgba(240,165,0,0.15);
-  --shadow-glow:  0 0 40px rgba(240,165,0,0.12);
+  --accent:       #ABA6F2;
+  --accent-hover: #C4C0F7;
+  --accent-text:  #171511;
+  --accent-soft:  rgba(171, 166, 242, 0.12);
 
-  --error:      #F87171;
-  --error-bg:   #1C0A0A;
-  --success:    #4ADE80;
+  --error:       #F28B82;
+  --error-bg:    #2A1513;
+  --success:     #8CC79A;
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 2px; }
+  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -14px rgba(0, 0, 0, 0.6);
+
+  color-scheme: dark;
 }
 
 /* ── Base ───────────────────────────────────────────────────────────────── */
@@ -67,45 +67,90 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-/* ── Landing page design tokens (scoped — don't conflict with app tokens) ── */
-.landing-page {
-  --lp-bg-primary: #0A0A08;
-  --lp-bg-secondary: #111110;
-  --lp-bg-elevated: #1A1A17;
-  --lp-bg-card: #1F1F1B;
-  --lp-text-primary: #F7F5EF;
-  --lp-text-secondary: #9B9785;
-  --lp-text-muted: #5A5750;
-  --lp-accent: #F0A500;
-  --lp-accent-warm: #E8820A;
-  --lp-accent-soft: rgba(240,165,0,0.12);
-  --lp-accent-glow: rgba(240,165,0,0.25);
-  --lp-purple: #8B5CF6;
-  --lp-purple-soft: rgba(139,92,246,0.12);
-  --lp-teal: #14B8A6;
-  --lp-teal-soft: rgba(20,184,166,0.12);
-  --lp-border: rgba(247,245,239,0.06);
-  --lp-border-strong: rgba(247,245,239,0.12);
-  --lp-shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
-  --lp-shadow-md: 0 4px 20px rgba(0,0,0,0.5);
-  --lp-shadow-lg: 0 16px 48px rgba(0,0,0,0.7);
-  --lp-shadow-glow: 0 0 40px rgba(240,165,0,0.15);
+::selection {
+  background: var(--accent);
+  color: var(--accent-text);
 }
 
-/* ── Landing page font utilities ─────────────────────────────────────────── */
-.font-display { font-family: var(--font-display), system-ui, sans-serif; }
-.font-sans-lp { font-family: var(--font-sans), system-ui, sans-serif; }
-.font-mono-lp { font-family: monospace; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input,
+textarea {
+  caret-color: var(--accent);
+}
+
+/* Thin scrollbars tinted from the palette instead of the OS default */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+
+/* ── Type voices ────────────────────────────────────────────────────────── */
+/* Source Serif 4: headings and lead copy. Optical sizing tightens it at display sizes. */
+.font-serif {
+  font-family: var(--font-serif), Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+/* Geist Mono: only for data, i.e. dates, counts and URLs */
+.font-data {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The signature move: an ink date stamp, as on a library return slip */
+.date-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  padding: 0.2em 0.55em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Styled here because the bookmarklet anchor is injected as raw HTML */
+.bookmarklet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--accent);
+  border: 1.5px dashed var(--accent);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  cursor: grab;
+  user-select: none;
+  text-decoration: none;
+}
+.bookmarklet-link:hover {
+  background: var(--accent-soft);
+}
 
 /* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -123,8 +168,15 @@ body {
   50%       { opacity: 0.5; }
 }
 
+/* A stamp lands: slight overshoot in scale, settles crooked like a real one */
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: scale(1.35) rotate(var(--stamp-tilt, -4deg)); filter: blur(2px); }
+  60%  { opacity: 1; transform: scale(0.97) rotate(var(--stamp-tilt, -4deg)); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1) rotate(var(--stamp-tilt, -4deg)); }
+}
+
 .animate-fade-up {
-  animation: fade-up 0.3s ease both;
+  animation: fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-fade-in {
@@ -135,42 +187,12 @@ body {
   animation: pulse-subtle 1.8s ease-in-out infinite;
 }
 
-/* ── Tag height transition ──────────────────────────────────────────────── */
+.animate-stamp {
+  animation: stamp-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .tag-enter {
   animation: fade-up 0.15s ease both;
-}
-
-/* ── Landing page animations ─────────────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-12px); }
-}
-@keyframes blobDrift {
-  0%, 100% { transform: translate(0,0) scale(1); }
-  33%       { transform: translate(40px,-30px) scale(1.08); }
-  66%       { transform: translate(-30px,20px) scale(0.95); }
-}
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-@keyframes shimmerBorder {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-[data-animate] {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-[data-animate].visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {

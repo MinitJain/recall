@@ -36,7 +36,7 @@ export default function AccountSettings() {
   return (
     <div className="mt-8 flex flex-col gap-6">
       <section className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5">
-        <h2 className="text-sm font-semibold text-[var(--text)]">Export your data</h2>
+        <h2 className="font-serif text-lg font-medium text-[var(--text)]">Export your data</h2>
         <p className="mt-1 text-sm text-[var(--text-muted)]">
           Download every bookmark, tag and collection as a JSON file.
         </p>
@@ -49,8 +49,8 @@ export default function AccountSettings() {
         </a>
       </section>
 
-      <section className="rounded-xl border border-red-500/30 bg-[var(--surface)] p-5">
-        <h2 className="text-sm font-semibold text-[var(--text)]">Delete account</h2>
+      <section className="rounded-xl border border-[var(--error)]/30 bg-[var(--surface)] p-5">
+        <h2 className="font-serif text-lg font-medium text-[var(--text)]">Delete account</h2>
         <p className="mt-1 text-sm text-[var(--text-muted)]">
           Permanently deletes your account, bookmarks, tags and collections. This can&apos;t be
           undone. See the <Link href="/privacy" className="underline underline-offset-2">Privacy Policy</Link>{" "}
@@ -65,17 +65,17 @@ export default function AccountSettings() {
             value={phrase}
             onChange={(e) => setPhrase(e.target.value)}
             autoComplete="off"
-            className="h-9 rounded-lg border border-[var(--border)] bg-[var(--bg)] px-3 text-sm text-[var(--text)] outline-none focus:border-red-500/60"
+            className="h-9 rounded-lg border border-[var(--border)] bg-[var(--bg)] px-3 text-sm text-[var(--text)] outline-none focus:border-[var(--error)]"
           />
           {error && (
-            <p role="alert" className="text-sm text-red-500">
+            <p role="alert" className="text-sm text-[var(--error)]">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={phrase !== DELETE_CONFIRMATION || deleting}
-            className="h-9 self-start rounded-lg bg-red-600 px-4 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-100"
+            className="h-9 self-start rounded-lg bg-[var(--error)] px-4 text-sm font-medium text-[var(--surface)] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-100"
           >
             {deleting ? "Deleting…" : "Delete my account"}
           </button>

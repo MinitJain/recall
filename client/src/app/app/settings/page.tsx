@@ -23,7 +23,7 @@ export default async function SettingsPage() {
         >
           ← Back to bookmarks
         </Link>
-        <h1 className="mt-4 text-xl font-semibold tracking-tight text-[var(--text)]">Settings</h1>
+        <h1 className="mt-4 font-serif text-3xl font-medium text-[var(--text)]">Settings</h1>
         <p className="mt-1 text-sm text-[var(--text-muted)]">Signed in as {user.email}</p>
         <AccountSettings />
       </main>

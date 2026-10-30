@@ -54,6 +54,18 @@ export default function BookmarkCard({
   const [error, setError] = useState<string | null>(null);
   const [showCollectionMenu, setShowCollectionMenu] = useState(false);
 
+  // The return-slip date stamp; day and month only within the current year
+  const savedAt = new Date(bookmark.createdAt);
+  const savedLabel = savedAt
+    .toLocaleDateString("en-GB", {
+      // Fixed zone so the server render and the browser agree (no hydration mismatch)
+      timeZone: "UTC",
+      day: "2-digit",
+      month: "short",
+      ...(savedAt.getFullYear() !== new Date().getFullYear() && { year: "numeric" }),
+    })
+    .toUpperCase();
+
   const hostname = (() => {
     try {
       return new URL(bookmark.url).hostname.replace(/^www\./, "");
@@ -254,7 +266,7 @@ export default function BookmarkCard({
               href={bookmark.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-2 leading-snug"
+              className="font-serif text-[17px] font-medium text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-2 leading-snug"
             >
               {bookmark.title ?? hostname}
             </a>
@@ -274,7 +286,12 @@ export default function BookmarkCard({
             </div>
           </div>
 
-          <span className="text-xs text-[var(--text-muted)]">{hostname}</span>
+          <span className="flex items-center gap-2.5">
+            <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
+            <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
+              Saved {savedLabel}
+            </span>
+          </span>
 
           {localTags.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-0.5">
@@ -317,7 +334,7 @@ export default function BookmarkCard({
             href={bookmark.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-1"
+            className="font-serif text-[17px] font-medium text-[var(--text)] hover:text-[var(--accent)] transition-colors duration-100 line-clamp-1"
           >
             {bookmark.title ?? hostname}
           </a>
@@ -345,7 +362,12 @@ export default function BookmarkCard({
         )}
 
         {/* Hostname */}
-        <span className="text-xs text-[var(--text-muted)]">{hostname}</span>
+        <span className="flex items-center gap-2.5">
+          <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
+          <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
+            Saved {savedLabel}
+          </span>
+        </span>
 
         {/* Tags + inline add input */}
         <div className="flex flex-wrap gap-1 mt-0.5 items-center">
