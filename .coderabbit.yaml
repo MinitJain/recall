@@ -20,10 +20,10 @@ chat:
   auto_reply: true
 
 instructions: |
-  Recall is an AI-powered bookmark manager. Stack: Next.js 16 (App Router),
+  Ritro is an AI-powered bookmark manager. Stack: Next.js 16 (App Router),
   TypeScript, Prisma v7 with @prisma/adapter-pg, Supabase (PostgreSQL + Auth),
   Tailwind CSS v4, Google Gemini API, Upstash Redis for rate limiting.
-  Live at recallsave.vercel.app. This is a production app.
+  Live at ritro.vercel.app. This is a production app.
 
   The developer is experienced with MERN but is learning this stack.
   Explain WHY something is wrong and give the Express/Mongoose equivalent

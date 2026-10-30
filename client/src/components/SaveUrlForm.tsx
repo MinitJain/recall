@@ -12,7 +12,7 @@ export default function SaveUrlForm() {
 
   useEffect(() => {
     if (bookmarkletRef.current) {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://recallsave.vercel.app";
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://ritro.vercel.app";
       bookmarkletRef.current.setAttribute(
         "href",
         `javascript:(function(){location.href='${appUrl}/bookmarklet?url='+encodeURIComponent(location.href)})();`

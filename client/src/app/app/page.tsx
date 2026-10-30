@@ -7,7 +7,7 @@ import DashboardClient from "@/components/DashboardClient";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
-export const metadata = { title: "Your Bookmarks | Recall" };
+export const metadata = { title: "Your Bookmarks | Ritro" };
 
 async function DashboardLoader({ userId }: { userId: string }) {
   const [bookmarks, collections] = await Promise.all([

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { unstable_cache } from "next/cache";
 import Header from "@/components/Header";
 
-export const metadata = { title: "Admin | Recall" };
+export const metadata = { title: "Admin | Ritro" };
 
 // Cache only the expensive listUsers call for 5 minutes.
 // revalidate = 300 is ineffective here because cookies() forces dynamic rendering.
@@ -99,7 +99,7 @@ export default async function AdminPage() {
         {/* Page title */}
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-[var(--text)]">Admin</h1>
-          <p className="text-sm text-[var(--text-muted)] mt-1">Overview of all activity on Recall</p>
+          <p className="text-sm text-[var(--text-muted)] mt-1">Overview of all activity on Ritro</p>
         </div>
 
         {/* Stat cards */}

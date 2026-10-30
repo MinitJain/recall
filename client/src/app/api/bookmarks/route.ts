@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 import { getUserFromRequest } from "@/lib/supabase/get-user";
 import { bookmarkRatelimit, checkRatelimit } from "@/lib/ratelimit";
-import { generateTags } from "@/lib/gemini";
+import { queueTagging } from "@/lib/tag-queue";
 import { isPrivateIp } from "@/lib/url-validation";
 
 export async function POST(req: NextRequest) {
@@ -75,21 +75,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let aiTagsFailed = false;
   try {
-    const tagNames = await generateTags(metadata.title ?? null, metadata.description);
-    if (tagNames.length > 0) {
-      await prisma.tag.createMany({
-        data: tagNames.map((name) => ({ name, bookmarkId: bookmark.id })),
-        skipDuplicates: true,
-      });
-    }
+    await queueTagging(bookmark.id);
   } catch (err) {
-    console.error("AI tagging failed (non-fatal):", err);
-    aiTagsFailed = true;
+    // The daily /api/jobs/requeue-untagged cron picks this bookmark up again
+    console.error("Failed to queue AI tagging (non-fatal):", err);
   }
 
-  return NextResponse.json({ ...bookmark, aiTagsFailed }, { status: 201 });
+  return NextResponse.json(bookmark, { status: 201 });
 }
 
 export async function GET(req: NextRequest) {

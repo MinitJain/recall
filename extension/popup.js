@@ -3,7 +3,7 @@
 // Find them in your .env.local as NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
 const SUPABASE_URL = "https://gfdwrzaeofehgpwuulvr.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_PLZj21S_KtFVCz1-jiq5PQ_3WNyg3dQ";
-const API_BASE = "https://recallsave.vercel.app";
+const API_BASE = "https://ritro.vercel.app";
 
 // ── DOM REFS ─────────────────────────────────────────────────────────────────
 const authView = document.getElementById("auth-view");
@@ -303,12 +303,8 @@ saveBtn.addEventListener("click", async () => {
       active: true,
       currentWindow: true,
     });
-    const data = await saveBookmark(tab.url, access_token);
-    if (data.aiTagsFailed) {
-      showSaveStatus("Saved — add tags manually", "success");
-    } else {
-      showSaveStatus("Saved!", "success");
-    }
+    await saveBookmark(tab.url, access_token);
+    showSaveStatus("Saved!", "success");
     const bookmarks = await loadBookmarks(access_token);
     renderBookmarks(bookmarks);
     await updateBookmarksCache(bookmarks);
