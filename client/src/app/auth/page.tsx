@@ -301,7 +301,7 @@ function AuthForm() {
           </p>
 
           {mode !== "forgot" && (
-            <p className="text-[11px] leading-relaxed text-[var(--text-dim)] mt-4 text-center">
+            <p className="text-[11px] leading-relaxed text-[var(--text-muted)] mt-4 text-center">
               By continuing, you agree to the{" "}
               <Link href="/terms" className="underline underline-offset-2 hover:text-[var(--accent)]">
                 Terms

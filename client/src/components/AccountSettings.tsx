@@ -17,11 +17,18 @@ export default function AccountSettings() {
     if (phrase !== DELETE_CONFIRMATION) return;
     setDeleting(true);
     setError(null);
-    const res = await fetch("/api/account", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ confirm: phrase }),
-    });
+    let res: Response;
+    try {
+      res = await fetch("/api/account", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: phrase }),
+      });
+    } catch {
+      setError("Couldn't reach Ritro. Check your connection and try again.");
+      setDeleting(false);
+      return;
+    }
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
       setError(data.error ?? "Something went wrong. Try again.");

@@ -27,10 +27,12 @@ export default function TermsPage() {
 
       <h2>Your content</h2>
       <p>
-        You own what you save. You give Ritro permission to store, process and display it only as
-        needed to run the service for you, including sending page titles and descriptions to an AI
-        provider to suggest tags, as described in the Privacy Policy. The pages you save belong to
-        their owners; saving a link doesn&apos;t give you or Ritro any rights to that content.
+        You own what you save. You give Ritro permission to store, process and display it to run the
+        service for you. That includes sending page titles and descriptions to an AI provider to
+        suggest tags, which may use that text under its own terms as the{" "}
+        <Link href="/privacy">Privacy Policy</Link> explains. Ritro itself uses your content for nothing
+        else. The pages you save belong to their owners; saving a link doesn&apos;t give you or Ritro
+        any rights to that content.
       </p>
 
       <h2>Acceptable use</h2>
