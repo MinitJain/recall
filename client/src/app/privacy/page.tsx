@@ -59,7 +59,7 @@ export default function PrivacyPage() {
         <li>To run your account and show you your saves (needed to provide the service).</li>
         <li>To suggest tags for what you save, using AI (part of the service).</li>
         <li>
-          To send the daily digest of things you saved. Every email has a one-click unsubscribe
+          To send the daily digest of things you saved. Every email has an unsubscribe
           link.
         </li>
         <li>To keep the service secure and prevent abuse, for example through rate limiting.</li>

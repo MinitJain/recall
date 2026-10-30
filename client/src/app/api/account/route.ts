@@ -15,13 +15,13 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "asc" },
       include: {
         tags: { select: { name: true } },
-        collections: { select: { collection: { select: { name: true } } } },
+        collections: { select: { collectionId: true } },
       },
     }),
     prisma.collection.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: "asc" },
-      select: { name: true, createdAt: true },
+      select: { id: true, name: true, createdAt: true },
     }),
   ]);
 
@@ -31,6 +31,8 @@ export async function GET(req: NextRequest) {
       email: user.email ?? null,
       createdAt: user.created_at,
       digestOptOut: user.user_metadata?.digest_opt_out === true,
+      // Profile details from Google or GitHub sign-in (name, picture), as stored by the auth provider
+      profile: user.user_metadata ?? {},
     },
     collections,
     bookmarks: bookmarks.map((b) => ({
@@ -40,7 +42,8 @@ export async function GET(req: NextRequest) {
       thumbnail: b.thumbnail,
       createdAt: b.createdAt,
       tags: b.tags.map((t) => t.name),
-      collections: b.collections.map((c) => c.collection.name),
+      // Collection ids, so two collections with the same name stay distinguishable
+      collections: b.collections.map((c) => c.collectionId),
     })),
   };
 
@@ -58,29 +61,38 @@ export async function DELETE(req: NextRequest) {
   const user = await getUserFromRequest(req);
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  let body: { confirm?: unknown };
+  let body: unknown;
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "invalid json" }, { status: 400 });
   }
   // Guards against an accidental or scripted call: the client must send the exact phrase
-  if (body.confirm !== DELETE_CONFIRMATION) {
+  const confirm = typeof body === "object" && body !== null ? (body as { confirm?: unknown }).confirm : undefined;
+  if (confirm !== DELETE_CONFIRMATION) {
     return NextResponse.json({ error: "confirmation phrase does not match" }, { status: 400 });
   }
 
-  // Data first: if the auth deletion then fails, the user can retry with nothing left behind.
-  // Tags and collection links are removed by the schema's cascading deletes.
-  await prisma.$transaction([
-    prisma.collection.deleteMany({ where: { userId: user.id } }),
-    prisma.bookmark.deleteMany({ where: { userId: user.id } }),
-  ]);
-
+  // Auth user first. Once it's gone, every token for it is rejected (getUserFromRequest checks
+  // with the auth server), so no save can race in after the data is wiped. If this step fails,
+  // nothing has been deleted and the user can simply retry.
   const { error } = await getSupabaseAdmin().auth.admin.deleteUser(user.id);
   if (error) {
     console.error("Account deletion: auth user removal failed:", error);
+    return NextResponse.json({ error: "could not delete your account. Try again." }, { status: 500 });
+  }
+
+  // Tags and collection links are removed by the schema's cascading deletes
+  try {
+    await prisma.$transaction([
+      prisma.collection.deleteMany({ where: { userId: user.id } }),
+      prisma.bookmark.deleteMany({ where: { userId: user.id } }),
+    ]);
+  } catch (err) {
+    // The account is gone but its rows remain: log the id so they can be removed by hand
+    console.error(`Account deletion: data removal failed for user ${user.id}:`, err);
     return NextResponse.json(
-      { error: "your saves were deleted, but the account could not be removed. Try again." },
+      { error: "your account was deleted, but some saves could not be removed. Contact support." },
       { status: 500 },
     );
   }
