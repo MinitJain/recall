@@ -18,7 +18,7 @@ export default function LegalPage({
           ← Ritro
         </Link>
         <h1 className="mt-8 text-3xl font-semibold tracking-tight text-[var(--text)]">{title}</h1>
-        <p className="mt-2 text-sm text-[var(--text-dim)]">Last updated {updated}</p>
+        <p className="mt-2 text-sm text-[var(--text-muted)]">Last updated {updated}</p>
         {children}
       </article>
     </main>
