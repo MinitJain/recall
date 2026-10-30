@@ -1,0 +1,25 @@
+import { NextResponse } from "next/server";
+import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
+import { prisma } from "@/lib/prisma";
+import { generateTags } from "@/lib/gemini";
+
+// QStash calls this after a bookmark is saved. Throwing returns 500, so QStash retries.
+async function handler(req: Request) {
+  const { bookmarkId } = await req.json();
+
+  const bookmark = await prisma.bookmark.findUnique({ where: { id: bookmarkId } });
+  // Deleted before the job ran: nothing to tag, and a retry won't change that
+  if (!bookmark) return NextResponse.json({ skipped: true });
+
+  const tagNames = await generateTags(bookmark.title, bookmark.description);
+  if (tagNames.length > 0) {
+    await prisma.tag.createMany({
+      data: tagNames.map((name) => ({ name, bookmarkId })),
+      skipDuplicates: true,
+    });
+  }
+
+  return NextResponse.json({ tags: tagNames.length });
+}
+
+export const POST = verifySignatureAppRouter(handler);
