@@ -120,7 +120,8 @@ function buildDigestHtml(bookmarks: BookmarkWithTags[], email: string): string {
 </html>`;
 }
 
-export async function POST(req: NextRequest) {
+// Vercel Cron calls with GET (and sends Authorization: Bearer CRON_SECRET)
+export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("Authorization");
   const secret = process.env.CRON_SECRET;
   if (!secret || authHeader !== `Bearer ${secret}`) {
