@@ -10,6 +10,7 @@
 
 import ogs from "open-graph-scraper";
 import { isPublicHost, isSafeUrl } from "@/lib/url-validation";
+import { publicOnlyAgent, safeFetch } from "@/lib/safe-fetch";
 
 const MAX_REDIRECTS = 5;
 
@@ -24,7 +25,7 @@ export function titleFromUrl(url: string) {
 async function resolvePublicUrl(url: string): Promise<string> {
   let current = url;
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
-    const res = await fetch(current, { redirect: "manual", signal: AbortSignal.timeout(4000) });
+    const res = await safeFetch(current, { redirect: "manual", signal: AbortSignal.timeout(4000) });
     await res.body?.cancel();
     const location = res.headers.get("location");
     if (res.status < 300 || res.status >= 400 || !location) return current;
@@ -44,7 +45,7 @@ export async function scrapeUrl(url: string) {
 
   const scrape = resolvePublicUrl(url).then((finalUrl) =>
     // The final URL was checked above; any further redirect would skip that check
-    ogs({ url: finalUrl, fetchOptions: { redirect: "error" } }).then(({ result }) => {
+    ogs({ url: finalUrl, fetchOptions: { redirect: "error", dispatcher: publicOnlyAgent } }).then(({ result }) => {
       const rawThumbnail = result.ogImage?.[0]?.url ?? null;
       return {
         title: result.ogTitle ?? result.dcTitle ?? titleFromUrl(url),
