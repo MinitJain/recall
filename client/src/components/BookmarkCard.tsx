@@ -298,9 +298,9 @@ export default function BookmarkCard({
           </div>
 
           <span className="flex items-center gap-1.5">
-            <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
+            <span className="font-data text-[13px] text-[var(--text-muted)]">{hostname}</span>
             <span aria-hidden className="text-[var(--text-dim)]">·</span>
-            <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[11px] text-[var(--text-dim)]">
+            <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[12px] text-[var(--text-muted)]">
               {savedAgo}
             </time>
           </span>
@@ -375,9 +375,9 @@ export default function BookmarkCard({
 
         {/* Hostname */}
         <span className="flex items-center gap-1.5">
-          <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
+          <span className="font-data text-[13px] text-[var(--text-muted)]">{hostname}</span>
           <span aria-hidden className="text-[var(--text-dim)]">·</span>
-          <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[11px] text-[var(--text-dim)]">
+          <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[12px] text-[var(--text-muted)]">
             {savedAgo}
           </time>
         </span>
