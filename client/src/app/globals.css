@@ -295,3 +295,11 @@ textarea {
     0 30px 80px -30px rgba(0, 0, 0, 0.75);
 }
 
+/* Frosted panel for feature blocks on content pages */
+.glass-panel {
+  background: color-mix(in srgb, var(--surface) 62%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lift);
+}
