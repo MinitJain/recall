@@ -46,17 +46,17 @@ export default function ChangelogPage() {
     <ContentPage title="Every release, newest first." lead="What changed in Ritro, in plain words.">
       <div className="mt-16 space-y-20">
         {RELEASES.map((r) => (
-          <article key={r.version} className="reveal grid gap-8 border-t border-[var(--border)] pt-10 md:grid-cols-12">
-            <header className="md:col-span-4">
+          <article key={r.version} className="reveal border-t border-[var(--border)] pt-10">
+            <header className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <span className="date-stamp" style={{ transform: "rotate(-2deg)" }}>
                 v{r.version}
               </span>
-              <p className="mt-4 font-data text-xs text-[var(--text-dim)]">{r.date}</p>
-              <h2 className="mt-2 font-serif text-2xl font-medium leading-snug text-[var(--text)]">{r.title}</h2>
+              <h2 className="font-serif text-2xl font-medium leading-snug text-[var(--text)]">{r.title}</h2>
+              <p className="font-data text-xs text-[var(--text-dim)]">{r.date}</p>
             </header>
-            <div className="space-y-8 md:col-span-8">
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
               {r.groups.map(([heading, items]) => (
-                <section key={heading}>
+                <section key={heading} className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5">
                   <h3 className="font-serif text-lg italic text-[var(--text-muted)]">{heading}</h3>
                   <ul className="mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-[var(--text-muted)] marker:text-[var(--accent)]">
                     {items.map((item) => (
