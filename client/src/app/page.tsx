@@ -44,7 +44,7 @@ export default async function LandingPage() {
             <h1 className="animate-fade-up font-serif text-[clamp(2.75rem,7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.03em] text-balance">
               Save anything.
               <br />
-              <em className="font-normal text-[var(--accent)]">Find everything.</em>
+              <em className="font-normal text-[var(--accent)]"><span className="highlight highlight-now">Find everything</span>.</em>
             </h1>
             <p className="animate-fade-up mt-7 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]" style={{ animationDelay: "120ms" }}>
               Ritro is a personal archive for the links you mean to come back to. Save in a second,

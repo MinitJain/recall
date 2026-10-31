@@ -227,6 +227,14 @@ textarea {
   }
 }
 
+/* Above the fold there is no scroll to drive it, so draw once on load instead */
+@media (prefers-reduced-motion: no-preference) {
+  .highlight-now::before {
+    animation: highlight-draw 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.5s both;
+    animation-timeline: auto;
+  }
+}
+
 /* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fade-up {
   from {
