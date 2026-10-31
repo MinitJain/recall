@@ -57,7 +57,7 @@ export default function ChangelogPage() {
             <div className="mt-8 grid gap-4 md:grid-cols-3">
               {r.groups.map(([heading, items]) => (
                 <section key={heading} className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-5">
-                  <h3 className="font-serif text-lg italic text-[var(--text-muted)]">{heading}</h3>
+                  <h3 className="font-serif text-xl font-semibold italic text-[var(--text)]">{heading}</h3>
                   <ul className="mt-3 list-disc space-y-2 pl-5 text-[15px] leading-relaxed text-[var(--text-muted)] marker:text-[var(--accent)]">
                     {items.map((item) => (
                       <li key={item}>{item}</li>
