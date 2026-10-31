@@ -83,6 +83,11 @@ export function stampDate(date: Date) {
 
 export function monthsBefore(iso: string, months: number) {
   const d = new Date(iso);
+  const day = d.getUTCDate();
+  // Step via the 1st, then clamp: 30 April minus 2 months is 28 February, not 2 March
+  d.setUTCDate(1);
   d.setUTCMonth(d.getUTCMonth() - months);
+  const lastDay = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+  d.setUTCDate(Math.min(day, lastDay));
   return d;
 }
