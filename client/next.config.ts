@@ -15,7 +15,8 @@ const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://*.supaba
 // injection, clickjacking, protocol-relative asset loads).
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+  // React's development build uses eval() for readable error stacks; production never does
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self' data:",

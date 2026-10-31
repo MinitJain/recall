@@ -108,10 +108,6 @@ function AuthForm() {
 
   return (
     <main className="auth-backdrop relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
-      {/* Soft colour fields behind the glass card; decorative only */}
-      <div aria-hidden className="auth-orb auth-orb-violet" />
-      <div aria-hidden className="auth-orb auth-orb-amber" />
-      <div aria-hidden className="auth-orb auth-orb-rose" />
 
       <div className="glass-card animate-fade-up relative w-full max-w-[420px] px-7 py-9 sm:px-10">
         <Link href="/" className="inline-flex items-center gap-2" aria-label="Ritro home">
