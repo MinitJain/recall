@@ -48,6 +48,7 @@ const PROMISES: { title: string; body: string; proof: string; href: string }[] =
 const RUN_IT = `git clone ${GITHUB_URL}.git && cd ritro/client
 npm install
 cp .env.example .env.local   # add your Supabase, Gemini and Upstash keys
+npx prisma generate          # build the database client
 npx prisma db push           # create the tables
 npm run dev                  # http://localhost:3000`;
 
