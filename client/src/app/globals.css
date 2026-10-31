@@ -253,37 +253,46 @@ textarea {
 /* ── Sign-in page: colour washes from the corners, a frosted glass card over the calm middle ── */
 .auth-backdrop {
   background:
-    radial-gradient(60rem 42rem at 0% 0%, rgba(118, 112, 220, 0.28), transparent 62%),
-    radial-gradient(52rem 38rem at 100% 100%, rgba(240, 168, 96, 0.24), transparent 62%),
-    radial-gradient(40rem 30rem at 100% 0%, rgba(232, 140, 168, 0.16), transparent 60%),
+    radial-gradient(60rem 42rem at 0% 0%, rgba(118, 112, 220, 0.34), transparent 62%),
+    radial-gradient(52rem 38rem at 100% 100%, rgba(240, 168, 96, 0.30), transparent 62%),
+    radial-gradient(40rem 30rem at 100% 0%, rgba(232, 140, 168, 0.22), transparent 60%),
+    radial-gradient(36rem 28rem at 0% 100%, rgba(120, 190, 200, 0.16), transparent 60%),
+    /* faint hints that pass behind the card's edges, so the glass has colour to frost */
+    radial-gradient(18rem 22rem at 38% 62%, rgba(118, 112, 220, 0.22), transparent 70%),
+    radial-gradient(16rem 20rem at 62% 38%, rgba(240, 168, 96, 0.22), transparent 70%),
     var(--bg);
   background-attachment: fixed;
 }
 .dark .auth-backdrop {
   background:
-    radial-gradient(60rem 42rem at 0% 0%, rgba(118, 112, 220, 0.22), transparent 62%),
-    radial-gradient(52rem 38rem at 100% 100%, rgba(240, 168, 96, 0.10), transparent 62%),
-    radial-gradient(40rem 30rem at 100% 0%, rgba(232, 140, 168, 0.08), transparent 60%),
+    radial-gradient(60rem 42rem at 0% 0%, rgba(118, 112, 220, 0.26), transparent 62%),
+    radial-gradient(52rem 38rem at 100% 100%, rgba(240, 168, 96, 0.13), transparent 62%),
+    radial-gradient(40rem 30rem at 100% 0%, rgba(232, 140, 168, 0.11), transparent 60%),
+    radial-gradient(36rem 28rem at 0% 100%, rgba(120, 190, 200, 0.08), transparent 60%),
+    radial-gradient(18rem 22rem at 38% 62%, rgba(118, 112, 220, 0.20), transparent 70%),
+    radial-gradient(16rem 20rem at 62% 38%, rgba(240, 168, 96, 0.10), transparent 70%),
     var(--bg);
   background-attachment: fixed;
 }
 
+/* Frosted glass: mostly see-through, heavy blur, a bright top edge like the rim of a glass pane */
 .glass-card {
   border-radius: 1.75rem;
-  background: color-mix(in srgb, var(--surface) 52%, transparent);
-  -webkit-backdrop-filter: blur(28px) saturate(1.5);
-  backdrop-filter: blur(28px) saturate(1.5);
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.14));
+  -webkit-backdrop-filter: blur(36px) saturate(1.8);
+  backdrop-filter: blur(36px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 30px 80px -32px rgba(31, 27, 22, 0.35);
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+    0 30px 80px -30px rgba(31, 27, 22, 0.32);
 }
 .dark .glass-card {
-  background: color-mix(in srgb, var(--surface) 55%, transparent);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  border-color: rgba(255, 255, 255, 0.12);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 30px 80px -32px rgba(0, 0, 0, 0.7);
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 30px 80px -30px rgba(0, 0, 0, 0.75);
 }
 
 /* Frosted panel for feature blocks on content pages */
