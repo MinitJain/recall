@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { LayoutGrid, List, Plus, X } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
+import { confirmAction } from "@/lib/confirm";
 
 function DiceIcon({
   width = 16,
@@ -109,7 +110,6 @@ export default function DashboardClient({
     useState<CollectionItem[]>(initialCollections);
   const [creatingCollection, setCreatingCollection] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
-  const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
   const [collectionError, setCollectionError] = useState<string | null>(null);
 
   // IDs that have been optimistically deleted — bookmarks prop flows in from parent on refresh
@@ -453,26 +453,7 @@ export default function DashboardClient({
         <div className="flex flex-wrap gap-2">
           {collections.map((col) => (
             <span key={col.id} className="relative inline-flex items-center">
-              {confirmingDeleteId === col.id ? (
-                // Inline confirmation state
-                <span className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-[var(--error)]/50 bg-[var(--surface)] text-[var(--text-muted)]">
-                  Delete &ldquo;{col.name}&rdquo;?
-                  <button
-                    onClick={() => { handleDeleteCollection(col.id); setConfirmingDeleteId(null); }}
-                    className="text-[var(--error)] hover:opacity-80 font-medium transition-colors"
-                  >
-                    Yes
-                  </button>
-                  <button
-                    onClick={() => setConfirmingDeleteId(null)}
-                    className="text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
-                  >
-                    No
-                  </button>
-                </span>
-              ) : (
-                // Normal pill
-                <>
+              <>
                   <button
                     onClick={() =>
                       setActiveCollection(
@@ -491,7 +472,13 @@ export default function DashboardClient({
                     {col.name}
                   </button>
                   <button
-                    onClick={() => setConfirmingDeleteId(col.id)}
+                    onClick={async () => {
+                      const ok = await confirmAction({
+                        title: `Delete the collection "${col.name}"?`,
+                        body: "The bookmarks in it stay in your archive.",
+                      });
+                      if (ok) handleDeleteCollection(col.id);
+                    }}
                     aria-label={`Delete collection ${col.name}`}
                     className={`absolute right-2 text-xs leading-none transition-colors ${
                       activeCollection === col.id
@@ -502,7 +489,6 @@ export default function DashboardClient({
                     <X size={12} strokeWidth={2} aria-hidden />
                   </button>
                 </>
-              )}
             </span>
           ))}
           {collections.length === 0 && !creatingCollection && (

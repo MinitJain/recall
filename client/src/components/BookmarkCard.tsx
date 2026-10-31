@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Check, Plus, X } from "lucide-react";
+import { confirmAction } from "@/lib/confirm";
 
 type Tag = { id: string; name: string };
 type Collection = { id: string; name: string };
@@ -126,6 +127,7 @@ export default function BookmarkCard({
     const removedIndex = localTags.findIndex((t) => t.id === tagId);
     const removedTag = localTags[removedIndex];
     if (removedIndex === -1 || !removedTag) return;
+    if (!(await confirmAction({ title: `Remove the tag "${removedTag.name}"?`, confirmLabel: "Remove" }))) return;
     setRemovingIds((prev) => new Set(prev).add(tagId));
     setError(null);
     setLocalTags((prev) => prev.filter((t) => t.id !== tagId));
@@ -158,6 +160,11 @@ export default function BookmarkCard({
 
   async function deleteBookmark() {
     if (deleting) return;
+    const confirmed = await confirmAction({
+      title: "Delete this bookmark?",
+      body: `"${bookmark.title ?? hostname}" and its tags will be removed. This can't be undone.`,
+    });
+    if (!confirmed) return;
     setDeleting(true);
     onDelete?.(bookmark.id); // optimistic — component will unmount here
     try {
@@ -171,11 +178,21 @@ export default function BookmarkCard({
     }
   }
 
+  async function removeFromCollection(collectionId: string) {
+    const name = collections?.find((c) => c.id === collectionId)?.name ?? "this collection";
+    const confirmed = await confirmAction({
+      title: `Remove from ${name}?`,
+      body: "The bookmark stays in your archive; it just leaves this collection.",
+      confirmLabel: "Remove",
+    });
+    if (confirmed) onRemoveFromCollection?.(bookmark.id, collectionId);
+  }
+
   function toggleCollection(collectionId: string) {
     const isMember = bookmark.collectionIds.includes(collectionId);
-    if (isMember) onRemoveFromCollection?.(bookmark.id, collectionId);
-    else onAddToCollection?.(bookmark.id, collectionId);
     setShowCollectionMenu(false);
+    if (isMember) removeFromCollection(collectionId);
+    else onAddToCollection?.(bookmark.id, collectionId);
   }
 
   // Collection chips — always visible on the card, with inline remove
@@ -193,7 +210,7 @@ export default function BookmarkCard({
             <button
               type="button"
               aria-label={`Remove from ${col.name}`}
-              onClick={() => onRemoveFromCollection?.(bookmark.id, colId)}
+              onClick={() => removeFromCollection(colId)}
               className="inline-flex text-[var(--text-dim)] hover:text-[var(--error)] leading-none transition-colors"
             >
               <X size={12} strokeWidth={2} aria-hidden />
