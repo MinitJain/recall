@@ -6,6 +6,9 @@ import { createClient } from "@/lib/supabase/server";
 import ReturnSlip from "@/components/landing/ReturnSlip";
 import BookmarkletLink from "@/components/landing/BookmarkletLink";
 import ThemeToggle from "@/components/ThemeToggle";
+import StickyHeader from "@/components/landing/StickyHeader";
+import SearchDemo from "@/components/landing/SearchDemo";
+import SurpriseDemo from "@/components/landing/SurpriseDemo";
 
 const GITHUB_URL = "https://github.com/ritrolabs/ritro";
 // Install steps (load unpacked) until the Chrome Web Store listing exists
@@ -32,10 +35,12 @@ export default async function LandingPage() {
     data: { user },
   } = await supabase.auth.getUser();
   if (user) redirect("/app");
+  const todayIso = new Date().toISOString();
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
-      <header className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+      <StickyHeader>
+      <div className="site-header-bar mx-auto flex h-16 items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2.5" aria-label="Ritro home">
           <Image src="/logo.svg" alt="" width={22} height={22} />
           <span className="font-serif text-xl font-semibold">Ritro</span>
@@ -61,22 +66,23 @@ export default async function LandingPage() {
             Log in
           </Link>
         </nav>
-      </header>
+      </div>
+      </StickyHeader>
 
       <main>
         {/* Hero: the promise on the left, the mechanism (a returned save) on the right */}
         <section className="mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-12 sm:px-8 md:grid-cols-12 md:gap-10 md:pb-28 md:pt-20">
           <div className="min-w-0 md:col-span-7">
-            <h1 className="font-serif text-[clamp(2.75rem,7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.03em] text-balance">
+            <h1 className="animate-fade-up font-serif text-[clamp(2.75rem,7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.03em] text-balance">
               Save anything.
               <br />
               <em className="font-normal text-[var(--accent)]">Find everything.</em>
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]">
+            <p className="animate-fade-up mt-7 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]" style={{ animationDelay: "120ms" }}>
               Ritro is a personal archive for the links you mean to come back to. Save in a second,
               let it tag things for you, and it brings them back once you have forgotten them.
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <div className="animate-fade-up mt-9 flex flex-wrap items-center gap-x-6 gap-y-4" style={{ animationDelay: "240ms" }}>
               <Link
                 href="/auth?mode=signup"
                 className="group inline-flex h-12 items-center gap-2 rounded-md bg-[var(--accent)] px-6 text-[15px] font-medium text-[var(--accent-text)] transition-colors hover:bg-[var(--accent-hover)]"
@@ -98,13 +104,13 @@ export default async function LandingPage() {
             <p className="mt-6 text-sm text-[var(--text-dim)]">Free and open source. No ads, no tracking cookies.</p>
           </div>
           <div className="min-w-0 md:col-span-5">
-            <ReturnSlip today={new Date()} />
+            <ReturnSlip todayIso={todayIso} />
           </div>
         </section>
 
         <section id="how" className="border-t border-[var(--border)]">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 md:py-28">
-            <h2 className="max-w-2xl font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-[-0.02em]">
+            <h2 className="reveal max-w-2xl font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-[-0.02em]">
               Most bookmarks are saved once and never opened again.
             </h2>
             <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-[var(--text-muted)]">
@@ -112,7 +118,7 @@ export default async function LandingPage() {
             </p>
             <ol className="mt-14 divide-y divide-[var(--border)] border-y border-[var(--border)]">
               {steps.map((step) => (
-                <li key={step.title} className="grid gap-3 py-8 md:grid-cols-12 md:gap-10">
+                <li key={step.title} className="reveal grid gap-3 py-8 md:grid-cols-12 md:gap-10">
                   <h3 className="font-serif text-2xl font-medium md:col-span-4">{step.title}</h3>
                   <p className="max-w-[60ch] text-[16px] leading-relaxed text-[var(--text-muted)] md:col-span-8">
                     {step.body}
@@ -120,6 +126,14 @@ export default async function LandingPage() {
                 </li>
               ))}
             </ol>
+            <div className="reveal mt-12 grid gap-6 md:grid-cols-12 md:gap-10">
+              <p className="font-serif text-xl italic text-[var(--text-muted)] md:col-span-4">
+                Try it on an example archive.
+              </p>
+              <div className="md:col-span-8">
+                <SurpriseDemo todayIso={todayIso} />
+              </div>
+            </div>
           </div>
         </section>
 
@@ -134,48 +148,19 @@ export default async function LandingPage() {
                 phrase is usually enough. Narrow it down with a tag or a collection.
               </p>
             </div>
-            <div className="min-w-0 md:col-span-7" aria-hidden>
-              <div className="rounded-md border border-[var(--border-2)] bg-[var(--surface)] p-5 shadow-[var(--shadow-lift)]">
-                <div className="flex h-11 items-center rounded-md border border-[var(--border-2)] bg-[var(--bg)] px-4 text-[15px]">
-                  <span className="text-[var(--text)]">focus music</span>
-                  <span className="ml-0.5 h-5 w-px animate-skeleton bg-[var(--accent)]" />
-                </div>
-                <ul className="mt-4 divide-y divide-[var(--border)]">
-                  {[
-                    { site: "youtube.com", title: "Three hours of lofi for deep work", tags: ["focus", "music"] },
-                    { site: "nature.com", title: "Does background music help concentration?", tags: ["research", "focus"] },
-                    { site: "open.spotify.com", title: "Brian Eno, Music for Airports", tags: ["ambient", "music"] },
-                  ].map((r) => (
-                    <li key={r.title} className="flex flex-col gap-2 py-3.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                      <div className="min-w-0">
-                        <p className="font-data text-[11px] text-[var(--text-dim)]">{r.site}</p>
-                        <p className="mt-0.5 truncate text-[15px] text-[var(--text)]">{r.title}</p>
-                      </div>
-                      <div className="flex shrink-0 gap-1.5">
-                        {r.tags.map((t) => (
-                          <span
-                            key={t}
-                            className="rounded-full bg-[var(--accent-soft)] px-2 py-0.5 text-xs text-[var(--accent)]"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="mt-3 text-center text-xs text-[var(--text-dim)]">Example search.</p>
+            <div className="reveal min-w-0 md:col-span-7">
+              <SearchDemo />
+              <p className="mt-3 text-center text-xs text-[var(--text-dim)]">Example archive. Type to search it.</p>
             </div>
           </div>
         </section>
 
         <section id="capture" className="border-b border-[var(--border)]">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 md:py-28">
-            <h2 className="max-w-2xl font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-[-0.02em]">
+            <h2 className="reveal max-w-2xl font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-[-0.02em]">
               Save from wherever you are reading.
             </h2>
-            <div className="mt-14 grid gap-12 md:grid-cols-3 md:gap-10">
+            <div className="reveal mt-14 grid gap-12 md:grid-cols-3 md:gap-10">
               <div>
                 <h3 className="font-serif text-xl font-medium">Chrome extension</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-[var(--text-muted)]">
@@ -219,7 +204,7 @@ export default async function LandingPage() {
             <h2 className="font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-[-0.02em] md:col-span-5">
               Your archive stays yours.
             </h2>
-            <ul className="space-y-6 text-[16px] leading-relaxed text-[var(--text-muted)] md:col-span-7">
+            <ul className="reveal space-y-6 text-[16px] leading-relaxed text-[var(--text-muted)] md:col-span-7">
               <li>
                 <strong className="font-medium text-[var(--text)]">Open source.</strong> Every line of Ritro is
                 public on{" "}
@@ -246,7 +231,7 @@ export default async function LandingPage() {
 
         <section className="border-t border-[var(--border)] bg-[var(--surface)]">
           <div className="mx-auto max-w-6xl px-5 py-24 text-center sm:px-8 md:py-32">
-            <p className="mx-auto max-w-3xl font-serif text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-tight tracking-[-0.02em] text-balance">
+            <p className="reveal mx-auto max-w-3xl font-serif text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-tight tracking-[-0.02em] text-balance">
               The internet gave it to you once.{" "}
               <em className="font-normal text-[var(--accent)]">Ritro gives it back.</em>
             </p>

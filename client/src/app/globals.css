@@ -146,6 +146,54 @@ textarea {
   background: var(--accent-soft);
 }
 
+/* Landing header: a full-width bar at rest. Once the page scrolls, the bar floats: it pulls in
+   from the edges, drops a little below the top and becomes a rounded, lightly frosted pill. */
+.site-header {
+  padding: 0 0.75rem;
+  transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.site-header[data-scrolled] {
+  padding-top: 0.75rem;
+}
+.site-header-bar {
+  max-width: 72rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+  transition:
+    max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 0.35s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.site-header[data-scrolled] .site-header-bar {
+  max-width: 56rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-color: var(--border);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Sections ease in as they enter the viewport. CSS scroll timelines only (no JavaScript);
+   browsers without support, and visitors who prefer less motion, simply see the content. */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+  }
+}
+
 /* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fade-up {
   from {
@@ -200,4 +248,59 @@ textarea {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ── Sign-in page: soft colour fields behind a frosted glass card ──────────── */
+.auth-backdrop {
+  background: var(--bg);
+}
+.auth-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  pointer-events: none;
+  animation: orb-drift 24s ease-in-out infinite alternate;
+}
+.auth-orb-violet {
+  width: 34rem; height: 34rem; left: 50%; top: 50%;
+  margin: -26rem 0 0 -30rem;
+  background: rgba(118, 112, 220, 0.42);
+}
+.auth-orb-amber {
+  width: 26rem; height: 26rem; left: 50%; top: 50%;
+  margin: -6rem 0 0 2rem;
+  background: rgba(240, 168, 96, 0.38);
+  animation-duration: 30s;
+}
+.auth-orb-rose {
+  width: 22rem; height: 22rem; left: 50%; top: 50%;
+  margin: 6rem 0 0 -22rem;
+  background: rgba(232, 140, 168, 0.32);
+  animation-duration: 36s;
+}
+.dark .auth-orb-violet { background: rgba(118, 112, 220, 0.30); }
+.dark .auth-orb-amber  { background: rgba(240, 168, 96, 0.16); }
+.dark .auth-orb-rose   { background: rgba(232, 140, 168, 0.14); }
+
+@keyframes orb-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(2.5rem, -1.5rem, 0) scale(1.08); }
+}
+
+.glass-card {
+  border-radius: 1.75rem;
+  background: color-mix(in srgb, var(--surface) 52%, transparent);
+  -webkit-backdrop-filter: blur(28px) saturate(1.5);
+  backdrop-filter: blur(28px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 30px 80px -32px rgba(31, 27, 22, 0.35);
+}
+.dark .glass-card {
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 30px 80px -32px rgba(0, 0, 0, 0.7);
 }
