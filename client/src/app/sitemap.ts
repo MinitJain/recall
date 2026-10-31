@@ -12,7 +12,7 @@ export default function sitemap() {
       changeFrequency: "yearly" as const,
       priority: 0.5,
     },
-    ...["privacy", "terms"].map((path) => ({
+    ...["extension", "open-source", "changelog", "contact", "privacy", "terms"].map((path) => ({
       url: `https://ritro.vercel.app/${path}`,
       lastModified: new Date(),
       changeFrequency: "yearly" as const,

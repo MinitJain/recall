@@ -1,18 +1,14 @@
 import Link from "next/link";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import ReturnSlip from "@/components/landing/ReturnSlip";
 import BookmarkletLink from "@/components/landing/BookmarkletLink";
-import ThemeToggle from "@/components/ThemeToggle";
-import StickyHeader from "@/components/landing/StickyHeader";
+import { SiteFooter, SiteHeader, GITHUB_URL } from "@/components/site/SiteChrome";
 import SearchDemo from "@/components/landing/SearchDemo";
 import SurpriseDemo from "@/components/landing/SurpriseDemo";
 
-const GITHUB_URL = "https://github.com/ritrolabs/ritro";
-// Install steps (load unpacked) until the Chrome Web Store listing exists
-const EXTENSION_URL = `${GITHUB_URL}#chrome-extension`;
+const EXTENSION_URL = "/extension";
 
 const steps = [
   {
@@ -39,35 +35,7 @@ export default async function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
-      <StickyHeader>
-      <div className="site-header-bar mx-auto flex h-16 items-center justify-between px-5 sm:px-8">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Ritro home">
-          <Image src="/logo.svg" alt="" width={22} height={22} />
-          <span className="font-serif text-xl font-semibold">Ritro</span>
-        </Link>
-        <nav aria-label="Main" className="flex items-center gap-1 sm:gap-2">
-          <a
-            href="#how"
-            className="hidden rounded-md px-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] sm:block"
-          >
-            How it works
-          </a>
-          <a
-            href="#capture"
-            className="hidden rounded-md px-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] sm:block"
-          >
-            Extension
-          </a>
-          <ThemeToggle />
-          <Link
-            href="/auth"
-            className="rounded-md px-3 py-2 text-sm font-medium text-[var(--text)] hover:bg-[var(--surface-2)]"
-          >
-            Log in
-          </Link>
-        </nav>
-      </div>
-      </StickyHeader>
+      <SiteHeader />
 
       <main>
         {/* Hero: the promise on the left, the mechanism (a returned save) on the right */}
@@ -245,28 +213,7 @@ export default async function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-[var(--border)]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 text-sm text-[var(--text-dim)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p>
-            <span className="font-serif font-semibold text-[var(--text)]">Ritro</span>
-            <span className="mx-2" aria-hidden>
-              ·
-            </span>
-            © 2026 Minit Jain. Code licensed under AGPL-3.0.
-          </p>
-          <nav aria-label="Footer" className="flex items-center gap-5">
-            <Link href="/privacy" className="hover:text-[var(--text)]">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-[var(--text)]">
-              Terms
-            </Link>
-            <a href={GITHUB_URL} className="hover:text-[var(--text)]">
-              GitHub
-            </a>
-          </nav>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

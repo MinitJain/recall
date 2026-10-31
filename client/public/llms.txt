@@ -1,0 +1,29 @@
+# Ritro
+
+> Ritro is a free, open source personal archive for links. Save anything with a URL, AI tags it a few seconds later, and Ritro brings saves back through a daily digest email and a "Surprise me" button. Built by one person, Minit Jain. Licensed AGPL-3.0.
+
+Ritro is a web app at https://ritro.vercel.app with a Chrome extension (popup only, Alt+Shift+S to save the current tab) and a bookmarklet for other browsers. It is not a paid product and has no pricing plans.
+
+What it does:
+- Saves any link instantly; reads the page's title, description and preview image
+- Adds 3 to 5 tags with Google Gemini in the background
+- Search across titles, descriptions and tags; filter by tag or collection
+- Daily digest email with up to five saves; "Surprise me" brings back a random save
+- Export all data as JSON or delete the account from Settings
+- No ads and no tracking cookies
+
+What it does not do yet: semantic or vector search, notes or photo uploads, saving from Telegram or WhatsApp, Google or GitHub sign-in inside the extension, a Chrome Web Store listing.
+
+## Pages
+
+- [Home](https://ritro.vercel.app/): what Ritro does, with live examples
+- [Chrome extension](https://ritro.vercel.app/extension): install steps, keyboard shortcut, bookmarklet
+- [Open source](https://ritro.vercel.app/open-source): repository layout, privacy and security promises with links to the code, how to run your own copy
+- [Changelog](https://ritro.vercel.app/changelog): releases in plain words
+- [Privacy policy](https://ritro.vercel.app/privacy): what is stored and which services process it
+- [Terms](https://ritro.vercel.app/terms)
+- [Contact](https://ritro.vercel.app/contact)
+
+## Source
+
+- [GitHub repository](https://github.com/ritrolabs/ritro): Next.js 16, Supabase (Postgres and auth), Prisma, Google Gemini, Upstash QStash and Redis, Resend, deployed on Vercel
