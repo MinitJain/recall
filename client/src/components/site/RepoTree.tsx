@@ -86,17 +86,20 @@ export default function RepoTree() {
           );
         })}
       </ul>
-      <div key={entry.path} className="animate-fade-up p-6 md:col-span-3 md:p-8" aria-live="polite">
-        <p className="font-data text-xs text-[var(--text-dim)]">{entry.path}/</p>
-        <p className="mt-2 font-serif text-2xl leading-snug text-[var(--text)]">{entry.summary}</p>
-        <dl className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2">
-          {entry.items.map(([name, what]) => (
-            <div key={name}>
-              <dt className="font-data text-[13px] text-[var(--text)]">{name}</dt>
-              <dd className="mt-0.5 text-sm text-[var(--text-muted)]">{what}</dd>
-            </div>
-          ))}
-        </dl>
+      {/* The live region stays mounted; only the inner block is keyed so it re-animates */}
+      <div className="md:col-span-3" aria-live="polite">
+        <div key={entry.path} className="animate-fade-up p-6 md:p-8">
+          <p className="font-data text-xs text-[var(--text-dim)]">{entry.path}/</p>
+          <p className="mt-2 font-serif text-2xl leading-snug text-[var(--text)]">{entry.summary}</p>
+          <dl className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            {entry.items.map(([name, what]) => (
+              <div key={name}>
+                <dt className="font-data text-[13px] text-[var(--text)]">{name}</dt>
+                <dd className="mt-0.5 text-sm text-[var(--text-muted)]">{what}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </div>
   );
