@@ -6,7 +6,7 @@ import StickyHeader from "@/components/landing/StickyHeader";
 export const GITHUB_URL = "https://github.com/ritrolabs/ritro";
 
 const NAV_LINKS: [label: string, href: string][] = [
-  ["How it works", "/#how"],
+  ["How it works", "/?home#how"],
   ["Extension", "/extension"],
   ["Changelog", "/changelog"],
   ["Open source", "/open-source"],

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect, type ReactNode } from "react";
+import { useState, useMemo, useRef, useEffect, type KeyboardEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { LayoutGrid, List, Plus, X } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
@@ -61,6 +61,17 @@ const SORT_OPTIONS: [Sort, string][] = [
   ["oldest", "Oldest"],
   ["az", "A to Z"],
 ];
+
+// Radio group keyboard behaviour: arrows move to and select the next option, Tab leaves the group
+function radioArrowKeys(e: KeyboardEvent<HTMLDivElement>) {
+  const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+  if (!step) return;
+  const radios = Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]'));
+  const next = radios[(radios.indexOf(document.activeElement as HTMLButtonElement) + step + radios.length) % radios.length];
+  e.preventDefault();
+  next.focus();
+  next.click();
+}
 
 export default function DashboardClient({
   bookmarks,
@@ -645,7 +656,7 @@ export default function DashboardClient({
       )}
 
       {/* Sort + view controls — only when there are bookmarks */}
-      {localBookmarks.length > 0 && <div className="flex items-center justify-between">
+      {localBookmarks.length > 0 && <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-[var(--text-dim)]">
           {filtered.length} result{filtered.length !== 1 ? "s" : ""}
           {activeCollectionName && (
@@ -666,13 +677,14 @@ export default function DashboardClient({
         </p>
         <div className="flex items-center gap-2">
           {/* Sort and view: two segmented controls with the same height and style */}
-          <div role="radiogroup" aria-label="Sort bookmarks" className="segmented">
+          <div role="radiogroup" aria-label="Sort bookmarks" className="segmented" onKeyDown={radioArrowKeys}>
             {SORT_OPTIONS.map(([value, label]) => (
               <button
                 key={value}
                 type="button"
                 role="radio"
                 aria-checked={sort === value}
+                tabIndex={sort === value ? 0 : -1}
                 onClick={() => setSort(value)}
                 className="segmented-item px-2.5 text-xs"
               >
@@ -681,11 +693,12 @@ export default function DashboardClient({
             ))}
           </div>
 
-          <div role="radiogroup" aria-label="Layout" className="segmented">
+          <div role="radiogroup" aria-label="Layout" className="segmented" onKeyDown={radioArrowKeys}>
             <button
               type="button"
               role="radio"
               aria-checked={view === "list"}
+              tabIndex={view === "list" ? 0 : -1}
               aria-label="List view"
               onClick={() => setView("list")}
               className="segmented-item w-8"
@@ -696,6 +709,7 @@ export default function DashboardClient({
               type="button"
               role="radio"
               aria-checked={view === "grid"}
+              tabIndex={view === "grid" ? 0 : -1}
               aria-label="Grid view"
               onClick={() => setView("grid")}
               className="segmented-item w-8"

@@ -35,7 +35,9 @@ const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 // "today", "yesterday", "3 days ago", "2 weeks ago", "5 months ago", "last year"
 function timeAgo(date: Date) {
-  const days = Math.floor((Date.now() - date.getTime()) / 86_400_000);
+  // Count calendar days, so something saved last night reads "yesterday" this morning
+  const midnight = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const days = Math.round((midnight(new Date()) - midnight(date)) / 86_400_000);
   if (days < 1) return "today";
   if (days < 7) return relative.format(-days, "day");
   if (days < 30) return relative.format(-Math.floor(days / 7), "week");

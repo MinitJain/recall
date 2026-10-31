@@ -18,13 +18,17 @@ export function confirmAction({
 
     const heading = document.createElement("h2");
     heading.className = "confirm-title";
+    heading.id = "confirm-title";
     heading.textContent = title;
+    dialog.setAttribute("aria-labelledby", heading.id);
     dialog.append(heading);
 
     if (body) {
       const text = document.createElement("p");
       text.className = "confirm-body";
+      text.id = "confirm-body";
       text.textContent = body;
+      dialog.setAttribute("aria-describedby", text.id);
       dialog.append(text);
     }
 

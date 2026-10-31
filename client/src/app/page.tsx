@@ -31,12 +31,13 @@ const steps = [
   },
 ];
 
-export default async function LandingPage() {
+export default async function LandingPage({ searchParams }: { searchParams: Promise<{ home?: string }> }) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user) redirect("/app");
+  // Signed-in visitors go to their archive, unless they asked for the home page (?home, used by the nav)
+  if (user && (await searchParams).home === undefined) redirect("/app");
   const todayIso = new Date().toISOString();
 
   return (
