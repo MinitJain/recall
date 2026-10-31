@@ -10,6 +10,6 @@
       <stop offset="50%"  stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <path d="M9.5 1 L22.5 1 Q25 1 25 3.5 L25 31 L16 25 L7 31 L7 3.5 Q7 1 9.5 1 Z" fill="url(#g)"/>
-  <path d="M9.5 1 L22.5 1 Q25 1 25 3.5 L25 31 L16 25 L7 31 L7 3.5 Q7 1 9.5 1 Z" fill="url(#sh)"/>
+  <path d="M9.8 1.5 L22.2 1.5 Q24.5 1.5 24.5 3.8 L24.5 30 L16 24.5 L7.5 30 L7.5 3.8 Q7.5 1.5 9.8 1.5 Z" fill="url(#g)" stroke="#F4EFE6" stroke-width="1.5" stroke-linejoin="round" paint-order="stroke"/>
+  <path d="M9.8 1.5 L22.2 1.5 Q24.5 1.5 24.5 3.8 L24.5 30 L16 24.5 L7.5 30 L7.5 3.8 Q7.5 1.5 9.8 1.5 Z" fill="url(#sh)"/>
 </svg>
