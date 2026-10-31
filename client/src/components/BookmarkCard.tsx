@@ -30,6 +30,18 @@ type Props = {
   onTagsChange?: (bookmarkId: string, tags: Tag[]) => void;
 };
 
+const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+// "today", "yesterday", "3 days ago", "2 weeks ago", "5 months ago", "last year"
+function timeAgo(date: Date) {
+  const days = Math.floor((Date.now() - date.getTime()) / 86_400_000);
+  if (days < 1) return "today";
+  if (days < 7) return relative.format(-days, "day");
+  if (days < 30) return relative.format(-Math.floor(days / 7), "week");
+  if (days < 365) return relative.format(-Math.floor(days / 30), "month");
+  return relative.format(-Math.floor(days / 365), "year");
+}
+
 export default function BookmarkCard({
   bookmark,
   view = "list",
@@ -55,17 +67,15 @@ export default function BookmarkCard({
   const [error, setError] = useState<string | null>(null);
   const [showCollectionMenu, setShowCollectionMenu] = useState(false);
 
-  // The return-slip date stamp; day and month only within the current year
+  // "2 days ago" on the card, the full date on hover
   const savedAt = new Date(bookmark.createdAt);
-  const savedLabel = savedAt
-    .toLocaleDateString("en-GB", {
-      // Fixed zone so the server render and the browser agree (no hydration mismatch)
-      timeZone: "UTC",
-      day: "2-digit",
-      month: "short",
-      ...(savedAt.getUTCFullYear() !== new Date().getUTCFullYear() && { year: "numeric" }),
-    })
-    .toUpperCase();
+  const savedFull = savedAt.toLocaleDateString("en-GB", {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const savedAgo = timeAgo(savedAt);
 
   const hostname = (() => {
     try {
@@ -287,11 +297,12 @@ export default function BookmarkCard({
             </div>
           </div>
 
-          <span className="flex items-center gap-2.5">
+          <span className="flex items-center gap-1.5">
             <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
-            <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
-              Saved {savedLabel}
-            </span>
+            <span aria-hidden className="text-[var(--text-dim)]">·</span>
+            <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[11px] text-[var(--text-dim)]">
+              {savedAgo}
+            </time>
           </span>
 
           {localTags.length > 0 && (
@@ -363,11 +374,12 @@ export default function BookmarkCard({
         )}
 
         {/* Hostname */}
-        <span className="flex items-center gap-2.5">
+        <span className="flex items-center gap-1.5">
           <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
-          <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
-            Saved {savedLabel}
-          </span>
+          <span aria-hidden className="text-[var(--text-dim)]">·</span>
+          <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[11px] text-[var(--text-dim)]">
+            {savedAgo}
+          </time>
         </span>
 
         {/* Tags + inline add input */}
