@@ -5,6 +5,13 @@ import StickyHeader from "@/components/landing/StickyHeader";
 
 export const GITHUB_URL = "https://github.com/ritrolabs/ritro";
 
+const NAV_LINKS: [label: string, href: string][] = [
+  ["How it works", "/#how"],
+  ["Extension", "/extension"],
+  ["Changelog", "/changelog"],
+  ["Open source", "/open-source"],
+];
+
 // Shared header for every public page: full-width at the top, a floating glass pill once scrolled
 export function SiteHeader() {
   return (
@@ -15,18 +22,15 @@ export function SiteHeader() {
           <span className="font-serif text-xl font-semibold">Ritro</span>
         </Link>
         <nav aria-label="Main" className="flex items-center gap-1 sm:gap-2">
-          <Link
-            href="/extension"
-            className="hidden rounded-md px-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] sm:block"
-          >
-            Extension
-          </Link>
-          <Link
-            href="/open-source"
-            className="hidden rounded-md px-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] sm:block"
-          >
-            Open source
-          </Link>
+          {NAV_LINKS.map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              className="hidden rounded-md px-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] md:block"
+            >
+              {label}
+            </Link>
+          ))}
           <ThemeToggle />
           <Link
             href="/auth"
