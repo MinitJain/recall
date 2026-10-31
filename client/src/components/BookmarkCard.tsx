@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { Check, Plus, X } from "lucide-react";
 import { confirmAction } from "@/lib/confirm";
@@ -34,6 +34,8 @@ type Props = {
 const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 // "today", "yesterday", "3 days ago", "2 weeks ago", "5 months ago", "last year"
+const noSubscribe = () => () => {};
+
 function timeAgo(date: Date) {
   // Count calendar days, so something saved last night reads "yesterday" this morning
   const midnight = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
@@ -78,7 +80,8 @@ export default function BookmarkCard({
     month: "long",
     year: "numeric",
   });
-  const savedAgo = timeAgo(savedAt);
+  // Local calendar days depend on the viewer's time zone, so the label renders only in the browser
+  const savedAgo = useSyncExternalStore(noSubscribe, () => timeAgo(savedAt), () => "");
 
   const hostname = (() => {
     try {
@@ -319,7 +322,7 @@ export default function BookmarkCard({
           <span className="flex items-center gap-1.5">
             <span className="font-data text-[13px] text-[var(--text-muted)]">{hostname}</span>
             <span aria-hidden className="text-[var(--text-dim)]">·</span>
-            <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[12px] text-[var(--text-muted)]">
+            <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} className="text-[12px] text-[var(--text-muted)]">
               {savedAgo}
             </time>
           </span>
@@ -396,7 +399,7 @@ export default function BookmarkCard({
         <span className="flex items-center gap-1.5">
           <span className="font-data text-[13px] text-[var(--text-muted)]">{hostname}</span>
           <span aria-hidden className="text-[var(--text-dim)]">·</span>
-          <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} suppressHydrationWarning className="text-[12px] text-[var(--text-muted)]">
+          <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} className="text-[12px] text-[var(--text-muted)]">
             {savedAgo}
           </time>
         </span>
