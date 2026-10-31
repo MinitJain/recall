@@ -135,6 +135,7 @@ function renderBookmarks(bookmarks) {
 
   bookmarksList.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
+      if (!confirm("Delete this bookmark? This can't be undone.")) return;
       try {
         await deleteBookmark(btn.dataset.id);
         btn.closest(".bookmark-item").remove();

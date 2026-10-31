@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, type KeyboardEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, X } from "lucide-react";
+import { LayoutGrid, List, Plus, X } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
+import { confirmAction } from "@/lib/confirm";
 
 function DiceIcon({
   width = 16,
@@ -55,12 +56,32 @@ type BookmarkItem = {
 type Sort = "newest" | "oldest" | "az";
 type View = "list" | "grid";
 
+const SORT_OPTIONS: [Sort, string][] = [
+  ["newest", "Newest"],
+  ["oldest", "Oldest"],
+  ["az", "A to Z"],
+];
+
+// Radio group keyboard behaviour: arrows move to and select the next option, Tab leaves the group
+function radioArrowKeys(e: KeyboardEvent<HTMLDivElement>) {
+  const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+  if (!step) return;
+  const radios = Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]'));
+  const next = radios[(radios.indexOf(document.activeElement as HTMLButtonElement) + step + radios.length) % radios.length];
+  e.preventDefault();
+  next.focus();
+  next.click();
+}
+
 export default function DashboardClient({
   bookmarks,
   initialCollections,
+  topSlot,
 }: {
   bookmarks: BookmarkItem[];
   initialCollections: CollectionItem[];
+  /** Rendered at the top of the main column (the save box) */
+  topSlot?: ReactNode;
 }) {
   const router = useRouter();
 
@@ -100,7 +121,6 @@ export default function DashboardClient({
     useState<CollectionItem[]>(initialCollections);
   const [creatingCollection, setCreatingCollection] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
-  const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
   const [collectionError, setCollectionError] = useState<string | null>(null);
 
   // IDs that have been optimistically deleted — bookmarks prop flows in from parent on refresh
@@ -381,67 +401,10 @@ export default function DashboardClient({
   )?.name;
 
   return (
-    <div className="flex flex-col gap-5">
-      {/* Search */}
-      <div className="relative">
-        <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--accent)] pointer-events-none"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search bookmarks..."
-          aria-label="Search bookmarks"
-          className="w-full h-11 rounded-md border border-[var(--border-2)] bg-[var(--surface)] pl-9 pr-16 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
-        />
-        {query && (
-          <button
-            onClick={() => setQuery("")}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
-          >
-            Clear
-          </button>
-        )}
-      </div>
-
-      {/* Stats + Surprise me */}
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-[var(--text-dim)]">
-          {localBookmarks.length} bookmark{localBookmarks.length !== 1 ? "s" : ""}{" "}
-          <span className="mx-1.5 opacity-40">·</span>{" "}
-          {totalTags} tag{totalTags !== 1 ? "s" : ""}{" "}
-          <span className="mx-1.5 opacity-40">·</span>{" "}
-          {collections.length} collection{collections.length !== 1 ? "s" : ""}
-        </p>
-        {localBookmarks.length > 0 && (
-          <button
-            onClick={handleSurpriseMe}
-            disabled={surpriseLoading}
-            aria-label="Show a random saved bookmark"
-            className="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-40 transition-all duration-100 inline-flex items-center gap-1.5"
-          >
-            {surpriseLoading ? "…" : (
-              <>
-                <DiceIcon width={12} height={12} aria-hidden="true" />
-                Surprise me
-              </>
-            )}
-          </button>
-        )}
-      </div>
-
+    // On phones the save box comes first, then filters, then search and saves
+    <div className="grid gap-x-10 gap-y-6 lg:grid-cols-[15rem_minmax(0,1fr)]">
+      {topSlot && <div className="min-w-0 lg:col-start-2 lg:row-start-1">{topSlot}</div>}
+      <aside className="flex flex-col gap-8 lg:sticky lg:top-20 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:max-h-[calc(100vh-6rem)] lg:self-start lg:overflow-y-auto lg:pb-6 lg:pr-1">
       {/* Collections */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
@@ -501,26 +464,7 @@ export default function DashboardClient({
         <div className="flex flex-wrap gap-2">
           {collections.map((col) => (
             <span key={col.id} className="relative inline-flex items-center">
-              {confirmingDeleteId === col.id ? (
-                // Inline confirmation state
-                <span className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border border-[var(--error)]/50 bg-[var(--surface)] text-[var(--text-muted)]">
-                  Delete &ldquo;{col.name}&rdquo;?
-                  <button
-                    onClick={() => { handleDeleteCollection(col.id); setConfirmingDeleteId(null); }}
-                    className="text-[var(--error)] hover:opacity-80 font-medium transition-colors"
-                  >
-                    Yes
-                  </button>
-                  <button
-                    onClick={() => setConfirmingDeleteId(null)}
-                    className="text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
-                  >
-                    No
-                  </button>
-                </span>
-              ) : (
-                // Normal pill
-                <>
+              <>
                   <button
                     onClick={() =>
                       setActiveCollection(
@@ -539,7 +483,13 @@ export default function DashboardClient({
                     {col.name}
                   </button>
                   <button
-                    onClick={() => setConfirmingDeleteId(col.id)}
+                    onClick={async () => {
+                      const ok = await confirmAction({
+                        title: `Delete the collection "${col.name}"?`,
+                        body: "The bookmarks in it stay in your archive.",
+                      });
+                      if (ok) handleDeleteCollection(col.id);
+                    }}
                     aria-label={`Delete collection ${col.name}`}
                     className={`absolute right-2 text-xs leading-none transition-colors ${
                       activeCollection === col.id
@@ -550,7 +500,6 @@ export default function DashboardClient({
                     <X size={12} strokeWidth={2} aria-hidden />
                   </button>
                 </>
-              )}
             </span>
           ))}
           {collections.length === 0 && !creatingCollection && (
@@ -612,6 +561,69 @@ export default function DashboardClient({
         </div>
       )}
 
+      </aside>
+
+      <div className="flex min-w-0 flex-col gap-5 lg:col-start-2 lg:row-start-2">
+      {/* Search */}
+      <div className="relative">
+        <svg
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--accent)] pointer-events-none"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search bookmarks..."
+          aria-label="Search bookmarks"
+          className="w-full h-11 rounded-md border border-[var(--border-2)] bg-[var(--surface)] pl-9 pr-16 text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100"
+        />
+        {query && (
+          <button
+            onClick={() => setQuery("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-dim)] hover:text-[var(--text)] transition-colors"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Stats + Surprise me */}
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-[var(--text-dim)]">
+          {localBookmarks.length} bookmark{localBookmarks.length !== 1 ? "s" : ""}{" "}
+          <span className="mx-1.5 opacity-40">·</span>{" "}
+          {totalTags} tag{totalTags !== 1 ? "s" : ""}{" "}
+          <span className="mx-1.5 opacity-40">·</span>{" "}
+          {collections.length} collection{collections.length !== 1 ? "s" : ""}
+        </p>
+        {localBookmarks.length > 0 && (
+          <button
+            onClick={handleSurpriseMe}
+            disabled={surpriseLoading}
+            aria-label="Show a random saved bookmark"
+            className="text-xs px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-40 transition-all duration-100 inline-flex items-center gap-1.5"
+          >
+            {surpriseLoading ? "…" : (
+              <>
+                <DiceIcon width={12} height={12} aria-hidden="true" />
+                Surprise me
+              </>
+            )}
+          </button>
+        )}
+      </div>
+
       {/* Active collection banner */}
       {activeCollection && activeCollectionName && (
         <div className="flex items-center justify-between rounded-md border border-[var(--accent)] bg-[var(--accent-soft)] px-3 py-2">
@@ -644,7 +656,7 @@ export default function DashboardClient({
       )}
 
       {/* Sort + view controls — only when there are bookmarks */}
-      {localBookmarks.length > 0 && <div className="flex items-center justify-between">
+      {localBookmarks.length > 0 && <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-[var(--text-dim)]">
           {filtered.length} result{filtered.length !== 1 ? "s" : ""}
           {activeCollectionName && (
@@ -664,72 +676,47 @@ export default function DashboardClient({
           )}
         </p>
         <div className="flex items-center gap-2">
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as Sort)}
-            aria-label="Sort bookmarks"
-            className="text-xs rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100 cursor-pointer"
-          >
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="az">A to Z</option>
-          </select>
+          {/* Sort and view: two segmented controls with the same height and style */}
+          <div role="radiogroup" aria-label="Sort bookmarks" className="segmented" onKeyDown={radioArrowKeys}>
+            {SORT_OPTIONS.map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={sort === value}
+                tabIndex={sort === value ? 0 : -1}
+                onClick={() => setSort(value)}
+                className="segmented-item px-2.5 text-xs"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
-          <button
-            onClick={() => setView("list")}
-            aria-label="List view"
-            aria-pressed={view === "list"}
-            className={`p-1.5 rounded-md border transition-all duration-100 ${
-              view === "list"
-                ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
-                : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            }`}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div role="radiogroup" aria-label="Layout" className="segmented" onKeyDown={radioArrowKeys}>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={view === "list"}
+              tabIndex={view === "list" ? 0 : -1}
+              aria-label="List view"
+              onClick={() => setView("list")}
+              className="segmented-item w-8"
             >
-              <line x1="8" y1="6" x2="21" y2="6" />
-              <line x1="8" y1="12" x2="21" y2="12" />
-              <line x1="8" y1="18" x2="21" y2="18" />
-              <line x1="3" y1="6" x2="3.01" y2="6" />
-              <line x1="3" y1="12" x2="3.01" y2="12" />
-              <line x1="3" y1="18" x2="3.01" y2="18" />
-            </svg>
-          </button>
-
-          <button
-            onClick={() => setView("grid")}
-            aria-label="Grid view"
-            aria-pressed={view === "grid"}
-            className={`p-1.5 rounded-md border transition-all duration-100 ${
-              view === "grid"
-                ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
-                : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            }`}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              <List size={14} aria-hidden />
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={view === "grid"}
+              tabIndex={view === "grid" ? 0 : -1}
+              aria-label="Grid view"
+              onClick={() => setView("grid")}
+              className="segmented-item w-8"
             >
-              <rect x="3" y="3" width="7" height="7" />
-              <rect x="14" y="3" width="7" height="7" />
-              <rect x="3" y="14" width="7" height="7" />
-              <rect x="14" y="14" width="7" height="7" />
-            </svg>
-          </button>
+              <LayoutGrid size={14} aria-hidden />
+            </button>
+          </div>
         </div>
       </div>}
 
@@ -800,7 +787,7 @@ export default function DashboardClient({
       {/* Bookmark list / grid */}
       {filtered.length > 0 &&
         (view === "grid" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-3">
             {filtered.map((bookmark, i) => (
               <div
                 key={bookmark.id}
@@ -854,6 +841,8 @@ export default function DashboardClient({
             ))}
           </div>
         ))}
+      </div>
+
       {/* Surprise me modal */}
       {(surpriseBookmark || surpriseError || surpriseLoading) && (
         <div

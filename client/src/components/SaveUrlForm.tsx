@@ -48,7 +48,7 @@ export default function SaveUrlForm() {
   }
 
   return (
-    <div className="mb-6 rounded-md border border-[var(--border)] bg-[var(--surface)] p-4">
+    <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-4">
       <form onSubmit={handleSubmit} className="flex gap-2">
         <label htmlFor="bookmark-url" className="sr-only">
           URL

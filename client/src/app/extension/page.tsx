@@ -16,8 +16,12 @@ const STEPS: [title: string, body: React.ReactNode][] = [
   ["Pin it", <>Open the puzzle piece menu in the toolbar and pin Ritro so it&apos;s one click away.</>],
 ];
 
-const FIRST_MINUTE: [when: string, what: string][] = [
-  ["On any page", "Click the Ritro icon and press Save this page. Or press Alt+Shift+S (Option+Shift+S on a Mac) and it saves without opening anything."],
+const FIRST_MINUTE: [when: string, what: React.ReactNode][] = [
+  ["On any page", <>
+      Click the Ritro icon and press Save this page. Or press{" "}
+      <span className="highlight highlight-soft">Alt+Shift+S (Option+Shift+S on a Mac)</span> and it saves without
+      opening anything.
+    </>],
   ["A few seconds later", "AI tags appear on the save. Open your archive to see them, add your own, or put it in a collection."],
   ["Tomorrow morning", "Your digest can bring it back, along with other things you saved and forgot."],
 ];

@@ -30,7 +30,7 @@ async function DashboardLoader({ userId }: { userId: string }) {
     collectionIds: cols.map((c) => c.collectionId),
   }));
 
-  return <DashboardClient bookmarks={serialized} initialCollections={collections} />;
+  return <DashboardClient bookmarks={serialized} initialCollections={collections} topSlot={<SaveUrlForm />} />;
 }
 
 function DashboardSkeleton() {
@@ -76,8 +76,7 @@ export default async function AppPage() {
   return (
     <div className="min-h-screen bg-[var(--bg)]">
       <Header email={user.email ?? ""} />
-      <main className="max-w-2xl mx-auto pt-6 pb-16 px-4">
-        <SaveUrlForm />
+      <main className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 lg:px-8">
         <Suspense fallback={<DashboardSkeleton />}>
           <DashboardLoader userId={user.id} />
         </Suspense>

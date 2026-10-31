@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { Check, Plus, X } from "lucide-react";
+import { confirmAction } from "@/lib/confirm";
 
 type Tag = { id: string; name: string };
 type Collection = { id: string; name: string };
@@ -30,6 +31,22 @@ type Props = {
   onTagsChange?: (bookmarkId: string, tags: Tag[]) => void;
 };
 
+const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+// "today", "yesterday", "3 days ago", "2 weeks ago", "5 months ago", "last year"
+const noSubscribe = () => () => {};
+
+function timeAgo(date: Date) {
+  // Count calendar days, so something saved last night reads "yesterday" this morning
+  const midnight = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const days = Math.round((midnight(new Date()) - midnight(date)) / 86_400_000);
+  if (days < 1) return "today";
+  if (days < 7) return relative.format(-days, "day");
+  if (days < 30) return relative.format(-Math.floor(days / 7), "week");
+  if (days < 365) return relative.format(-Math.floor(days / 30), "month");
+  return relative.format(-Math.floor(days / 365), "year");
+}
+
 export default function BookmarkCard({
   bookmark,
   view = "list",
@@ -55,17 +72,16 @@ export default function BookmarkCard({
   const [error, setError] = useState<string | null>(null);
   const [showCollectionMenu, setShowCollectionMenu] = useState(false);
 
-  // The return-slip date stamp; day and month only within the current year
+  // "2 days ago" on the card, the full date on hover
   const savedAt = new Date(bookmark.createdAt);
-  const savedLabel = savedAt
-    .toLocaleDateString("en-GB", {
-      // Fixed zone so the server render and the browser agree (no hydration mismatch)
-      timeZone: "UTC",
-      day: "2-digit",
-      month: "short",
-      ...(savedAt.getUTCFullYear() !== new Date().getUTCFullYear() && { year: "numeric" }),
-    })
-    .toUpperCase();
+  const savedFull = savedAt.toLocaleDateString("en-GB", {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  // Local calendar days depend on the viewer's time zone, so the label renders only in the browser
+  const savedAgo = useSyncExternalStore(noSubscribe, () => timeAgo(savedAt), () => "");
 
   const hostname = (() => {
     try {
@@ -116,6 +132,7 @@ export default function BookmarkCard({
     const removedIndex = localTags.findIndex((t) => t.id === tagId);
     const removedTag = localTags[removedIndex];
     if (removedIndex === -1 || !removedTag) return;
+    if (!(await confirmAction({ title: `Remove the tag "${removedTag.name}"?`, confirmLabel: "Remove" }))) return;
     setRemovingIds((prev) => new Set(prev).add(tagId));
     setError(null);
     setLocalTags((prev) => prev.filter((t) => t.id !== tagId));
@@ -148,6 +165,11 @@ export default function BookmarkCard({
 
   async function deleteBookmark() {
     if (deleting) return;
+    const confirmed = await confirmAction({
+      title: "Delete this bookmark?",
+      body: `"${bookmark.title ?? hostname}" and its tags will be removed. This can't be undone.`,
+    });
+    if (!confirmed) return;
     setDeleting(true);
     onDelete?.(bookmark.id); // optimistic — component will unmount here
     try {
@@ -161,11 +183,21 @@ export default function BookmarkCard({
     }
   }
 
+  async function removeFromCollection(collectionId: string) {
+    const name = collections?.find((c) => c.id === collectionId)?.name ?? "this collection";
+    const confirmed = await confirmAction({
+      title: `Remove from ${name}?`,
+      body: "The bookmark stays in your archive; it just leaves this collection.",
+      confirmLabel: "Remove",
+    });
+    if (confirmed) onRemoveFromCollection?.(bookmark.id, collectionId);
+  }
+
   function toggleCollection(collectionId: string) {
     const isMember = bookmark.collectionIds.includes(collectionId);
-    if (isMember) onRemoveFromCollection?.(bookmark.id, collectionId);
-    else onAddToCollection?.(bookmark.id, collectionId);
     setShowCollectionMenu(false);
+    if (isMember) removeFromCollection(collectionId);
+    else onAddToCollection?.(bookmark.id, collectionId);
   }
 
   // Collection chips — always visible on the card, with inline remove
@@ -183,7 +215,7 @@ export default function BookmarkCard({
             <button
               type="button"
               aria-label={`Remove from ${col.name}`}
-              onClick={() => onRemoveFromCollection?.(bookmark.id, colId)}
+              onClick={() => removeFromCollection(colId)}
               className="inline-flex text-[var(--text-dim)] hover:text-[var(--error)] leading-none transition-colors"
             >
               <X size={12} strokeWidth={2} aria-hidden />
@@ -287,11 +319,12 @@ export default function BookmarkCard({
             </div>
           </div>
 
-          <span className="flex items-center gap-2.5">
-            <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
-            <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
-              Saved {savedLabel}
-            </span>
+          <span className="flex items-center gap-1.5">
+            <span className="font-data text-[13px] text-[var(--text-muted)]">{hostname}</span>
+            <span aria-hidden className="text-[var(--text-dim)]">·</span>
+            <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} className="text-[12px] text-[var(--text-muted)]">
+              {savedAgo}
+            </time>
           </span>
 
           {localTags.length > 0 && (
@@ -363,11 +396,12 @@ export default function BookmarkCard({
         )}
 
         {/* Hostname */}
-        <span className="flex items-center gap-2.5">
-          <span className="font-data text-[11px] text-[var(--text-muted)]">{hostname}</span>
-          <span className="date-stamp !text-[10px]" title={`Saved ${savedLabel}`}>
-            Saved {savedLabel}
-          </span>
+        <span className="flex items-center gap-1.5">
+          <span className="font-data text-[13px] text-[var(--text-muted)]">{hostname}</span>
+          <span aria-hidden className="text-[var(--text-dim)]">·</span>
+          <time dateTime={bookmark.createdAt} title={`Saved ${savedFull}`} className="text-[12px] text-[var(--text-muted)]">
+            {savedAgo}
+          </time>
         </span>
 
         {/* Tags + inline add input */}

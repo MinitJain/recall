@@ -13,7 +13,13 @@ const EXTENSION_URL = "/extension";
 const steps = [
   {
     title: "You save it.",
-    body: "Paste a link on the site, click the extension, press Alt+Shift+S, or use the bookmarklet in any browser. Saving takes a second and never waits on anything else.",
+    body: (
+      <>
+        Paste a link on the site, click the extension, press{" "}
+        <span className="highlight highlight-soft">Alt+Shift+S</span>, or use the bookmarklet in any browser. Saving
+        takes a second and never waits on anything else.
+      </>
+    ),
   },
   {
     title: "Ritro files it.",
@@ -25,12 +31,13 @@ const steps = [
   },
 ];
 
-export default async function LandingPage() {
+export default async function LandingPage({ searchParams }: { searchParams: Promise<{ home?: string }> }) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user) redirect("/app");
+  // Signed-in visitors go to their archive, unless they asked for the home page (?home, used by the nav)
+  if (user && (await searchParams).home === undefined) redirect("/app");
   const todayIso = new Date().toISOString();
 
   return (
@@ -44,7 +51,7 @@ export default async function LandingPage() {
             <h1 className="animate-fade-up font-serif text-[clamp(2.75rem,7vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.03em] text-balance">
               Save anything.
               <br />
-              <em className="font-normal text-[var(--accent)]">Find everything.</em>
+              <em className="font-normal text-[var(--accent)]"><span className="highlight highlight-now">Find everything</span>.</em>
             </h1>
             <p className="animate-fade-up mt-7 max-w-xl text-lg leading-relaxed text-[var(--text-muted)]" style={{ animationDelay: "120ms" }}>
               Ritro is a personal archive for the links you mean to come back to. Save in a second,
@@ -79,7 +86,7 @@ export default async function LandingPage() {
         <section id="how" className="border-t border-[var(--border)]">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 md:py-28">
             <h2 className="reveal max-w-2xl font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-[-0.02em]">
-              Most bookmarks are saved once and never opened again.
+              Most bookmarks are saved once and <span className="highlight highlight-soft">never opened again</span>.
             </h2>
             <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-[var(--text-muted)]">
               Ritro is built around the part every other tool leaves out: getting things back to you.
@@ -201,7 +208,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-6xl px-5 py-24 text-center sm:px-8 md:py-32">
             <p className="reveal mx-auto max-w-3xl font-serif text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-tight tracking-[-0.02em] text-balance">
               The internet gave it to you once.{" "}
-              <em className="font-normal text-[var(--accent)]">Ritro gives it back.</em>
+              <em className="font-normal text-[var(--accent)]"><span className="highlight">Ritro gives it back</span>.</em>
             </p>
             <Link
               href="/auth?mode=signup"
