@@ -79,7 +79,7 @@ export default async function LandingPage() {
         <section id="how" className="border-t border-[var(--border)]">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 md:py-28">
             <h2 className="reveal max-w-2xl font-serif text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-[-0.02em]">
-              Most bookmarks are saved once and never opened again.
+              Most bookmarks are saved once and <span className="highlight highlight-soft">never opened again</span>.
             </h2>
             <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-[var(--text-muted)]">
               Ritro is built around the part every other tool leaves out: getting things back to you.

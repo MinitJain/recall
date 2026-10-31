@@ -227,6 +227,9 @@ textarea {
   }
 }
 
+/* For supporting lines that shouldn't compete with the main highlight */
+.highlight-soft::before { opacity: 0.4; }
+
 /* Above the fold there is no scroll to drive it, so draw once on load instead */
 @media (prefers-reduced-motion: no-preference) {
   .highlight-now::before {
