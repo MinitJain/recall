@@ -201,7 +201,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-6xl px-5 py-24 text-center sm:px-8 md:py-32">
             <p className="reveal mx-auto max-w-3xl font-serif text-[clamp(2rem,4.5vw,3.5rem)] font-medium leading-tight tracking-[-0.02em] text-balance">
               The internet gave it to you once.{" "}
-              <em className="font-normal text-[var(--accent)]">Ritro gives it back.</em>
+              <em className="font-normal text-[var(--accent)]"><span className="highlight">Ritro gives it back</span>.</em>
             </p>
             <Link
               href="/auth?mode=signup"

@@ -22,6 +22,7 @@
   --accent-hover: #2F2B80;
   --accent-text:  #FBF8F2;
   --accent-soft:  rgba(62, 58, 156, 0.09);
+  --highlight:    rgba(250, 204, 21, 0.45);
 
   --error:       #B42318;
   --error-bg:    #FBEAE7;
@@ -48,6 +49,7 @@
   --accent-hover: #C4C0F7;
   --accent-text:  #171511;
   --accent-soft:  rgba(171, 166, 242, 0.12);
+  --highlight:    rgba(250, 204, 21, 0.22);
 
   --error:       #F28B82;
   --error-bg:    #2A1513;
@@ -190,6 +192,29 @@ textarea {
       animation: reveal linear both;
       animation-timeline: view();
       animation-range: entry 5% cover 30%;
+    }
+  }
+}
+
+/* Highlighter pen: a marker stroke on the lower part of the line, slightly uneven at the ends.
+   It draws itself left to right as the text scrolls into view. */
+.highlight {
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  border-radius: 0.3em 0.15em 0.35em 0.2em;
+  background: linear-gradient(transparent 38%, var(--highlight) 38%, var(--highlight) 92%, transparent 92%) no-repeat 0 0 / 100% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+@keyframes highlight-draw {
+  from { background-size: 0% 100%; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .highlight {
+      animation: highlight-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 60% cover 50%;
     }
   }
 }
