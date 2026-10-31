@@ -13,7 +13,13 @@ const EXTENSION_URL = "/extension";
 const steps = [
   {
     title: "You save it.",
-    body: "Paste a link on the site, click the extension, press Alt+Shift+S, or use the bookmarklet in any browser. Saving takes a second and never waits on anything else.",
+    body: (
+      <>
+        Paste a link on the site, click the extension, press{" "}
+        <span className="highlight highlight-soft">Alt+Shift+S</span>, or use the bookmarklet in any browser. Saving
+        takes a second and never waits on anything else.
+      </>
+    ),
   },
   {
     title: "Ritro files it.",
