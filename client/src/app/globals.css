@@ -250,41 +250,22 @@ textarea {
   }
 }
 
-/* ── Sign-in page: soft colour fields behind a frosted glass card ──────────── */
+/* ── Sign-in page: colour washes from the corners, a frosted glass card over the calm middle ── */
 .auth-backdrop {
-  background: var(--bg);
+  background:
+    radial-gradient(60rem 42rem at 0% 0%, rgba(118, 112, 220, 0.28), transparent 62%),
+    radial-gradient(52rem 38rem at 100% 100%, rgba(240, 168, 96, 0.24), transparent 62%),
+    radial-gradient(40rem 30rem at 100% 0%, rgba(232, 140, 168, 0.16), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
 }
-.auth-orb {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(70px);
-  pointer-events: none;
-  animation: orb-drift 24s ease-in-out infinite alternate;
-}
-.auth-orb-violet {
-  width: 34rem; height: 34rem; left: 50%; top: 50%;
-  margin: -26rem 0 0 -30rem;
-  background: rgba(118, 112, 220, 0.42);
-}
-.auth-orb-amber {
-  width: 26rem; height: 26rem; left: 50%; top: 50%;
-  margin: -6rem 0 0 2rem;
-  background: rgba(240, 168, 96, 0.38);
-  animation-duration: 30s;
-}
-.auth-orb-rose {
-  width: 22rem; height: 22rem; left: 50%; top: 50%;
-  margin: 6rem 0 0 -22rem;
-  background: rgba(232, 140, 168, 0.32);
-  animation-duration: 36s;
-}
-.dark .auth-orb-violet { background: rgba(118, 112, 220, 0.30); }
-.dark .auth-orb-amber  { background: rgba(240, 168, 96, 0.16); }
-.dark .auth-orb-rose   { background: rgba(232, 140, 168, 0.14); }
-
-@keyframes orb-drift {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to   { transform: translate3d(2.5rem, -1.5rem, 0) scale(1.08); }
+.dark .auth-backdrop {
+  background:
+    radial-gradient(60rem 42rem at 0% 0%, rgba(118, 112, 220, 0.22), transparent 62%),
+    radial-gradient(52rem 38rem at 100% 100%, rgba(240, 168, 96, 0.10), transparent 62%),
+    radial-gradient(40rem 30rem at 100% 0%, rgba(232, 140, 168, 0.08), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
 }
 
 .glass-card {
