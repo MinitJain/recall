@@ -49,7 +49,7 @@
   --accent-hover: #C4C0F7;
   --accent-text:  #171511;
   --accent-soft:  rgba(171, 166, 242, 0.12);
-  --highlight:    linear-gradient(90deg, rgba(171, 166, 242, 0.28), rgba(244, 172, 196, 0.2));
+  --highlight:    linear-gradient(90deg, rgba(124, 118, 236, 0.45), rgba(226, 120, 178, 0.32));
 
   --error:       #F28B82;
   --error-bg:    #2A1513;
