@@ -22,6 +22,7 @@ What it does not do yet: semantic or vector search, notes or photo uploads, savi
 - [Changelog](https://ritro.vercel.app/changelog): releases in plain words
 - [Privacy policy](https://ritro.vercel.app/privacy): what is stored and which services process it
 - [Terms](https://ritro.vercel.app/terms)
+- [FAQ](https://ritro.vercel.app/faq): cost, data, tags, export and deletion
 - [Contact](https://ritro.vercel.app/contact)
 
 ## Source

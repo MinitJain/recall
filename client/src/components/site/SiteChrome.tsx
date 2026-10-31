@@ -64,6 +64,7 @@ const FOOTER_COLUMNS: { title: string; links: [label: string, href: string][] }[
   {
     title: "Ritro",
     links: [
+      ["FAQ", "/faq"],
       ["Contact", "/contact"],
       ["Privacy", "/privacy"],
       ["Terms", "/terms"],
