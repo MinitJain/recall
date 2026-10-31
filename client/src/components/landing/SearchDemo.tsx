@@ -6,13 +6,23 @@ import { EXAMPLES } from "./examples";
 
 const SUGGESTIONS = ["focus music", "recipes", "essays"];
 
-// Every word must appear in the title, site or tags, the same way the real search narrows down
+// Every word must appear in the title, description, site or tags, the same way the real search narrows down
 function matches(query: string) {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   return EXAMPLES.filter((e) => {
-    const haystack = `${e.title} ${e.site} ${e.tags.join(" ")}`.toLowerCase();
+    const haystack = `${e.title} ${e.description} ${e.site} ${e.tags.join(" ")}`.toLowerCase();
     return words.every((w) => haystack.includes(w));
   });
+}
+
+// Show the description only when a word matched there and not in the title, so the reason is visible
+function inDescriptionOnly(e: (typeof EXAMPLES)[number], query: string) {
+  const title = e.title.toLowerCase();
+  const description = e.description.toLowerCase();
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .some((w) => w && description.includes(w) && !title.includes(w));
 }
 
 function highlight(text: string, query: string): ReactNode {
@@ -70,8 +80,11 @@ export default function SearchDemo() {
             <div className="min-w-0">
               <p className="font-data text-[11px] text-[var(--text-dim)]">{r.site}</p>
               <p className="mt-0.5 truncate text-[15px] text-[var(--text)]">{highlight(r.title, query)}</p>
+              {inDescriptionOnly(r, query) && (
+                <p className="mt-0.5 text-[13px] text-[var(--text-muted)]">{highlight(r.description, query)}</p>
+              )}
             </div>
-            <div className="flex shrink-0 gap-1.5">
+            <div className="flex flex-wrap gap-1.5">
               {r.tags.map((t) => (
                 <button
                   key={t}
