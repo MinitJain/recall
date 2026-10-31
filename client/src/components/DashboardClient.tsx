@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, X } from "lucide-react";
+import { LayoutGrid, List, Plus, X } from "lucide-react";
 import BookmarkCard from "./BookmarkCard";
 
 function DiceIcon({
@@ -54,6 +54,12 @@ type BookmarkItem = {
 
 type Sort = "newest" | "oldest" | "az";
 type View = "list" | "grid";
+
+const SORT_OPTIONS: [Sort, string][] = [
+  ["newest", "Newest"],
+  ["oldest", "Oldest"],
+  ["az", "A to Z"],
+];
 
 export default function DashboardClient({
   bookmarks,
@@ -673,72 +679,44 @@ export default function DashboardClient({
           )}
         </p>
         <div className="flex items-center gap-2">
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as Sort)}
-            aria-label="Sort bookmarks"
-            className="text-xs rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] transition-colors duration-100 cursor-pointer"
-          >
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="az">A to Z</option>
-          </select>
+          {/* Sort and view: two segmented controls with the same height and style */}
+          <div role="radiogroup" aria-label="Sort bookmarks" className="segmented">
+            {SORT_OPTIONS.map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={sort === value}
+                onClick={() => setSort(value)}
+                className="segmented-item px-2.5 text-xs"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
-          <button
-            onClick={() => setView("list")}
-            aria-label="List view"
-            aria-pressed={view === "list"}
-            className={`p-1.5 rounded-md border transition-all duration-100 ${
-              view === "list"
-                ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
-                : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            }`}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div role="radiogroup" aria-label="Layout" className="segmented">
+            <button
+              type="button"
+              role="radio"
+              aria-checked={view === "list"}
+              aria-label="List view"
+              onClick={() => setView("list")}
+              className="segmented-item w-8"
             >
-              <line x1="8" y1="6" x2="21" y2="6" />
-              <line x1="8" y1="12" x2="21" y2="12" />
-              <line x1="8" y1="18" x2="21" y2="18" />
-              <line x1="3" y1="6" x2="3.01" y2="6" />
-              <line x1="3" y1="12" x2="3.01" y2="12" />
-              <line x1="3" y1="18" x2="3.01" y2="18" />
-            </svg>
-          </button>
-
-          <button
-            onClick={() => setView("grid")}
-            aria-label="Grid view"
-            aria-pressed={view === "grid"}
-            className={`p-1.5 rounded-md border transition-all duration-100 ${
-              view === "grid"
-                ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-soft)]"
-                : "border-[var(--border)] text-[var(--text-dim)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            }`}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              <List size={14} aria-hidden />
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={view === "grid"}
+              aria-label="Grid view"
+              onClick={() => setView("grid")}
+              className="segmented-item w-8"
             >
-              <rect x="3" y="3" width="7" height="7" />
-              <rect x="14" y="3" width="7" height="7" />
-              <rect x="3" y="14" width="7" height="7" />
-              <rect x="14" y="14" width="7" height="7" />
-            </svg>
-          </button>
+              <LayoutGrid size={14} aria-hidden />
+            </button>
+          </div>
         </div>
       </div>}
 
