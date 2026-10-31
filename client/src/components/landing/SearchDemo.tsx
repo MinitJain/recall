@@ -15,6 +15,16 @@ function matches(query: string) {
   });
 }
 
+// Show the description only when a word matched there and not in the title, so the reason is visible
+function inDescriptionOnly(e: (typeof EXAMPLES)[number], query: string) {
+  const title = e.title.toLowerCase();
+  const description = e.description.toLowerCase();
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .some((w) => w && description.includes(w) && !title.includes(w));
+}
+
 function highlight(text: string, query: string): ReactNode {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   if (words.length === 0) return text;
@@ -70,6 +80,9 @@ export default function SearchDemo() {
             <div className="min-w-0">
               <p className="font-data text-[11px] text-[var(--text-dim)]">{r.site}</p>
               <p className="mt-0.5 truncate text-[15px] text-[var(--text)]">{highlight(r.title, query)}</p>
+              {inDescriptionOnly(r, query) && (
+                <p className="mt-0.5 text-[13px] text-[var(--text-muted)]">{highlight(r.description, query)}</p>
+              )}
             </div>
             <div className="flex flex-wrap gap-1.5">
               {r.tags.map((t) => (
